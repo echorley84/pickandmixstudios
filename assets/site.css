@@ -136,6 +136,10 @@ img { max-width: 100%; }
   .tc-nav a { font-size: 14px; }
 }
 
+@media (max-width: 440px) {
+  .tc-nav { gap: 4px 12px; }
+}
+
 /* ==========================================================================
    Shared buttons (pill buttons used on Showcase, Tutorials, Contact)
    ========================================================================== */
