@@ -1,0 +1,1023 @@
+/* ==========================================================================
+   Pick and Mix Studios — shared site stylesheet
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Maven Pro', Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, #2780b1 0%, #4fa5cf 100%);
+}
+
+:root {
+  --c1: #1c6fba;           /* dark blue, used for nav links on the white header */
+  --bg: linear-gradient(180deg, #2780b1 0%, #4fa5cf 100%);
+  --card-bg: #ffffff;      /* solid white cards */
+  --card-bg-light: #ffffff; /* same, used on Tutorials */
+  --text-heading: #ffffff; /* white — used for hero/page-intro text sitting directly on the gradient */
+  --text-body: #e7f4fb;    /* light — used for hero/page-intro text sitting directly on the gradient */
+  --card-heading: #1a3c52; /* dark navy — used for headings inside the white cards */
+  --card-body: #1a3c52;    /* dark navy — used for body copy inside the white cards */
+  --btn-border: #1c6fba;
+  --btn-hover: #9e5092;    /* magenta */
+  --btn-hover-text: #ffffff;
+  --accent-orange: #f8a433;
+  --input-bg: #ffffff;
+  --input-border: #a9c9db;
+  --input-text: #1a3c52;
+}
+
+img { max-width: 100%; }
+
+.tc-skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  background: #ffffff;
+  color: var(--c1);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 2000;
+  transition: top 0.2s ease;
+}
+
+.tc-skip-link:focus {
+  top: 12px;
+}
+
+/* ==========================================================================
+   Header / Nav
+   ========================================================================== */
+
+.tc-header-wrap {
+  width: 100%;
+  background: #ffffff;
+}
+
+.tc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  flex-wrap: wrap;
+}
+
+.tc-logo img {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
+.tc-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.tc-nav a {
+  position: relative;
+  color: var(--c1);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 8px 2px;
+  letter-spacing: 0.2px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.tc-nav a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 0%;
+  height: 1px;
+  border-radius: 2px;
+  background: var(--c1);
+  transition: width 0.25s ease, left 0.25s ease;
+}
+
+.tc-nav a:hover {
+  transform: translateY(-1px);
+}
+
+.tc-nav a:hover::after {
+  width: 100%;
+  left: 0%;
+}
+
+.tc-nav a.is-active {
+  font-weight: 700;
+}
+
+.tc-nav a.is-active::after {
+  width: 100%;
+  left: 0%;
+}
+
+@media (max-width: 700px) {
+  .tc-header { gap: 16px; padding: 10px 16px; }
+  .tc-nav { gap: 16px; }
+  .tc-nav a { font-size: 14px; }
+}
+
+/* ==========================================================================
+   Shared buttons (pill buttons used on Showcase, Tutorials, Contact)
+   ========================================================================== */
+
+.tc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 2px solid var(--btn-border);
+  border-radius: 30px;
+  padding: 10px 22px;
+  color: var(--btn-border);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  font-family: inherit;
+  background: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.tc-btn:hover {
+  background: var(--btn-hover);
+  border-color: var(--btn-hover);
+  color: var(--btn-hover-text);
+}
+  color: #ffffff;
+}
+
+.tc-btn[disabled] {
+  opacity: 0.6;
+  cursor: default;
+  pointer-events: none;
+}
+
+.tc-btn.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: default;
+}
+
+.tc-btn.tc-video-btn {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.tc-btn-primary {
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: #262626;
+}
+
+.tc-btn-primary:hover {
+  background: var(--btn-hover);
+  border-color: var(--btn-hover);
+  color: var(--btn-hover-text);
+}
+
+.tc-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.tc-btn-group {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Video lightbox modal (Showcase + Tutorials)
+   ========================================================================== */
+
+.tc-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.tc-modal-overlay.is-open {
+  display: flex;
+}
+
+.tc-modal {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+}
+
+.tc-modal-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tc-modal-video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.tc-modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* ==========================================================================
+   Home page (hero)
+   ========================================================================== */
+
+.tc-hero-wrap {
+  width: 100%;
+  background: var(--bg);
+  padding: 80px 24px;
+}
+
+.tc-hero {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tc-hero img.tc-hero-welcome-img {
+  max-width: 340px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 32px;
+}
+
+.tc-hero h1 {
+  color: var(--text-heading);
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  line-height: 1.2;
+}
+
+.tc-hero p {
+  color: var(--text-body);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 36px;
+}
+
+.tc-hero-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .tc-hero-wrap { padding: 56px 20px; }
+  .tc-hero h1 { font-size: 30px; }
+  .tc-hero p { font-size: 16px; }
+}
+
+/* ==========================================================================
+   Team Chorley (profile cards)
+   ========================================================================== */
+
+.tc-team-wrap {
+  width: 100%;
+  background: var(--bg);
+  padding: 56px 24px;
+}
+
+.tc-team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.tc-profile-card {
+  background: var(--card-bg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  border-radius: 14px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tc-profile-card h2 {
+  color: var(--card-heading);
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.tc-profile-image {
+  width: 48%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+  margin: 0 auto 20px;
+}
+
+.tc-profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tc-profile-card p {
+  color: var(--card-body);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: left;
+  margin: 0 0 26px;
+}
+
+.tc-profile-card p:last-of-type {
+  margin-bottom: 0;
+}
+
+.tc-profile-card strong {
+  color: var(--card-heading);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .tc-team-grid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   Showcase (game demo cards, stacked full-width sections)
+   ========================================================================== */
+
+.tc-showcase-wrap {
+  width: 100%;
+  background: var(--bg);
+  padding: 56px 24px;
+}
+
+.tc-showcase-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tc-card {
+  background: var(--card-bg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  border-radius: 14px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.tc-card-content {
+  flex: 1 1 55%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tc-card h2 {
+  color: var(--card-heading);
+  text-align: left;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.tc-card-image {
+  flex: 1 1 40%;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.tc-card-image > img:not(.tc-award-img) {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+img.tc-award-img {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: 70px !important;
+  height: auto;
+  z-index: 2;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
+}
+
+/* Floor is Goo thumbnail doesn't have its own rounded/outline treatment baked in */
+.tc-card-image.goo {
+  border-radius: 8px;
+  border: 2px solid #d5e6f0;
+  overflow: hidden;
+}
+
+.tc-card p {
+  color: var(--card-body);
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: left;
+  margin: 0 0 20px;
+  flex-grow: 1;
+}
+
+@media (max-width: 700px) {
+  .tc-card { flex-direction: column; align-items: stretch; gap: 18px; padding: 20px; }
+  .tc-card-image { flex: none; width: 100%; }
+  .tc-showcase-grid { gap: 28px; }
+}
+
+/* ==========================================================================
+   Tutorials / Bite Size Live Streams
+   ========================================================================== */
+
+.tc-bss-wrap {
+  width: 100%;
+  background: var(--bg);
+  padding: 56px 24px;
+}
+
+.tc-bss-grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.tc-bss-card {
+  background: var(--card-bg-light);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  border-radius: 14px;
+  padding: 20px;
+  flex: 1 1 300px;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tc-bss-card h2 {
+  color: var(--card-heading);
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.tc-bss-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  border: 2px solid #d5e6f0;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.tc-bss-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tc-bss-card p {
+  color: var(--card-body);
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: left;
+  margin: 0 0 18px;
+}
+
+.tc-bss-card .tc-btn-group {
+  flex-direction: column;
+}
+
+@media (max-width: 700px) {
+  .tc-bss-grid { gap: 18px; }
+  .tc-bss-card { max-width: 100%; flex: 1 1 100%; }
+}
+
+/* ==========================================================================
+   Contact page
+   ========================================================================== */
+
+.tc-contact-wrap {
+  width: 100%;
+  background: var(--bg);
+  padding: 56px 24px;
+}
+
+.tc-contact-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.tc-contact-card {
+  background: var(--card-bg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.tc-contact-card h2 {
+  color: var(--card-heading);
+  text-align: left;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.tc-contact-card p {
+  color: var(--card-body);
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+
+/* Contact form */
+.tc-field {
+  margin-bottom: 16px;
+}
+
+.tc-field label {
+  display: block;
+  color: var(--card-heading);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.tc-field input,
+.tc-field textarea {
+  width: 100%;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--input-text);
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.tc-field input::placeholder,
+.tc-field textarea::placeholder {
+  color: rgba(231,244,251,0.6);
+}
+
+.tc-field input:focus,
+.tc-field textarea:focus {
+  outline: none;
+  border-color: #ffffff;
+}
+
+.tc-form-note {
+  color: var(--card-body);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 4px 0 18px;
+}
+
+/* LinkedIn cards */
+.tc-social-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.tc-social-card {
+  flex: 1 1 220px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  border: 2px solid #d5e6f0;
+  border-radius: 12px;
+  padding: 16px;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.tc-social-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c1);
+}
+
+.tc-social-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: #0a66c2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.tc-social-icon svg {
+  width: 26px;
+  height: 26px;
+  color: #ffffff;
+}
+
+.tc-social-text strong {
+  display: block;
+  color: var(--card-heading);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.tc-social-text span {
+  display: block;
+  color: var(--card-body);
+  font-size: 13px;
+}
+
+.tc-social-arrow {
+  margin-left: auto;
+  color: var(--card-heading);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.tc-social-card:hover .tc-social-arrow {
+  opacity: 1;
+}
+
+@media (max-width: 500px) {
+  .tc-social-card { flex: 1 1 100%; }
+}
+
+/* Patreon post preview */
+.tc-series-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 16px;
+}
+
+.tc-series-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.tc-series-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tc-series-title {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.tc-series-title a {
+  color: var(--card-heading);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tc-series-title a:hover {
+  text-decoration: underline;
+}
+
+.tc-series-title span {
+  display: block;
+  color: var(--card-body);
+  font-size: 12px;
+}
+
+.tc-series-nav {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.tc-series-nav button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #d5e6f0;
+  background: transparent;
+  color: var(--card-heading);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  opacity: 0.5;
+}
+
+.tc-post-grid {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.tc-post-card {
+  flex: 1 1 160px;
+  min-width: 0;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.tc-post-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease;
+}
+
+.tc-post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tc-post-card:hover .tc-post-thumb {
+  transform: translateY(-3px);
+}
+
+.tc-post-card h4 {
+  color: var(--card-heading);
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  line-height: 1.3;
+}
+
+.tc-post-card p {
+  color: var(--card-body);
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0 0 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tc-post-date {
+  color: var(--card-body);
+  font-size: 11px;
+}
+
+@media (max-width: 560px) {
+  .tc-post-card { flex: 1 1 100%; }
+}
+
+.tc-page-heading {
+  text-align: center;
+  margin: 0 0 20px;
+  font-weight: normal;
+  font-size: 1em;
+}
+
+.tc-page-heading img {
+  max-width: 340px;
+  width: 100%;
+  height: auto;
+}
+
+.tc-page-heading img.tc-page-heading-img--small {
+  max-width: 260px;
+}
+
+.tc-page-intro {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  text-align: center;
+  color: var(--text-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Pop up Shop (Gumroad products)
+   ========================================================================== */
+
+.tc-shop-wrap {
+  width: 100%;
+  background: var(--bg);
+  padding: 56px 24px;
+}
+
+.tc-shop-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tc-product-card {
+  background: var(--card-bg);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.tc-product-card h2 {
+  color: var(--card-heading);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.tc-product-main-image {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  border: 2px solid #d5e6f0;
+}
+
+.tc-product-main-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.tc-product-card p {
+  color: var(--card-body);
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.tc-product-card h3 {
+  color: var(--card-heading);
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.tc-product-card ul {
+  color: var(--card-body);
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0 0 20px;
+  padding-left: 22px;
+}
+
+.tc-product-card ul li {
+  margin-bottom: 6px;
+}
+
+.tc-product-card ul li a {
+  color: var(--c1);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tc-product-card ul li a:hover {
+  text-decoration: underline;
+}
+
+.tc-product-note {
+  color: var(--card-body);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+.tc-readmore-content {
+  display: none;
+}
+
+.tc-readmore-content.is-open {
+  display: block;
+}
+
+.tc-readmore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--c1);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 0;
+  margin: 0 0 20px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tc-readmore-btn:hover {
+  color: var(--btn-hover);
+}
+
+.tc-readmore-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.tc-readmore-btn[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.tc-product-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.tc-product-gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #d5e6f0;
+  display: block;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.tc-footer {
+  width: 100%;
+  background: #ffffff;
+  padding: 24px;
+  text-align: center;
+}
+
+.tc-footer img {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+
+.tc-footer p {
+  color: #60707c;
+  font-size: 13px;
+  margin: 0;
+}
