@@ -2041,3 +2041,17 @@ body.tc-no-scroll { overflow: hidden; }
   .tc-client-panel { padding: 24px 22px; }
 }
 .tc-tb-feature + .tc-section { padding-top: 0; }
+
+/* More room between the pill and the Tiny Bytes logo */
+.tc-tb-copy .tc-meta { margin-bottom: 20px; }
+.tc-tb-logo { margin-top: 0; }
+
+/* Trophy shelf: centred to line up with the hero */
+.tc-stats-wrap { padding-top: 4px; }
+@media (max-width: 640px) {
+  .tc-trophy { flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  .tc-trophy-chips { justify-content: center; }
+  .tc-trophy-badge { width: 84px; height: 84px; }
+  .tc-trophy-badge img { width: 44px; }
+}
+.tc-tb-copy .tc-meta { margin-bottom: 26px; } .tc-stats-wrap + .tc-tb-feature { padding-top: 40px; }
