@@ -11,159 +11,154 @@
 <meta property="og:description" content="Get in touch with Pick and Mix Studios — send Team Chorley a message, find them on LinkedIn, or check out free downloads on the Pick and Mix Arcade Patreon.">
 <meta property="og:image" content="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png">
 <meta property="og:url" content="https://pickandmixstudios.com/contact.html">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Get in Touch | Pick and Mix Studios">
 <meta name="twitter:description" content="Get in touch with Pick and Mix Studios — send Team Chorley a message, find them on LinkedIn, or check out free downloads on the Pick and Mix Arcade Patreon.">
 <meta name="twitter:image" content="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png">
 <link rel="icon" href="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=20261110">
-<script>try{var t=localStorage.getItem("bs-theme"),s=localStorage.getItem("bs-size");if(t&&t!=="auto")document.documentElement.dataset.theme=t;if(s&&s!=="0")document.documentElement.classList.add("size-"+s)}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Maven+Pro:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=20261111">
+<script>document.documentElement.classList.add("js-menu");try{var t=localStorage.getItem("bs-theme"),s=localStorage.getItem("bs-size");if(t&&t!=="auto")document.documentElement.dataset.theme=t;if(s&&s!=="0")document.documentElement.classList.add("size-"+s)}catch(e){}</script>
 </head>
 <body>
 
 <a class="tc-skip-link" href="#main-content">Skip to main content</a>
 
-<div class="tc-header-wrap">
+<header class="tc-header-wrap">
   <div class="tc-header">
     <a href="index.html" class="tc-logo">
-      <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="Pick and Mix Studios logo">
+      <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="Pick and Mix Studios home" width="512" height="512">
     </a>
 
-    <nav class="tc-nav">
+    <button type="button" class="tc-menu-btn" id="tcMenuBtn" aria-expanded="false" aria-controls="tcNav">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <span>Menu</span>
+    </button>
+
+    <nav class="tc-nav" id="tcNav" aria-label="Main">
       <a href="index.html">Home</a>
       <a href="team-chorley.html">Team Chorley</a>
       <a href="showcase.html">Showcase</a>
       <a href="tutorials.html">Free Tutorials</a>
-      <a href="popup-shop.html">Pop up Shop</a>
+      <a href="popup-shop.html">Pop-up Shop</a>
       <a href="tinybytes/">Tiny Bytes</a>
-      <a href="contact.html" class="is-active">Get in Touch</a>
+      <a href="contact.html" aria-current="page">Get in Touch</a>
     </nav>
 
     <div class="tc-tools" id="tcTools"></div>
   </div>
-</div>
-
+</header>
 <main id="main-content">
 <div class="tc-contact-wrap">
-  <h1 class="tc-page-heading">
-    <img class="tc-page-heading-img--small" src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/get-in-touch.png" alt="Get in Touch">
-  </h1>
+  <h1 class="tc-display">Get in Touch</h1>
+  <p class="tc-page-intro">Got a project in mind, a question about our templates, or want to see our client work? Send us a message and we&rsquo;ll get back to you.</p>
   <div class="tc-contact-grid">
 
     <!-- Contact form -->
-    <div class="tc-contact-card">
-      <h2>Get in Touch</h2>
-      <p>Got a question, a project idea, or just want to say hi? Fill in the form below and it'll come straight to our inbox.</p>
+    <section class="tc-contact-card" aria-labelledby="tcFormTitle">
+      <h2 id="tcFormTitle">Send us a message</h2>
+      <p>Fill in the form and it&rsquo;ll come straight to our inbox. Fields marked <span aria-hidden="true">*</span><span class="tc-sr">with an asterisk</span> are required.</p>
 
       <form id="tcContactForm">
         <input type="hidden" name="access_key" value="65f027db-d92f-4a14-897a-4bc23ba48447">
         <input type="hidden" name="subject" value="Website enquiry from Pick and Mix Studios contact page">
-        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="checkbox" name="botcheck" class="tc-sr" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="tc-field">
-          <label for="tcName">Name</label>
-          <input type="text" id="tcName" name="name" placeholder="Your name" required>
+          <label for="tcTopic">What&rsquo;s it about?</label>
+          <select id="tcTopic" name="topic">
+            <option value="general">A general question</option>
+            <option value="project">Starting a project with us</option>
+            <option value="client-work">Requesting access to our client work</option>
+            <option value="shop">Templates and the Pop-up Shop</option>
+            <option value="other">Something else</option>
+          </select>
+        </div>
+        <p class="tc-access-note" id="tcAccessNote" hidden>Most of our client work is under NDA, so we share it privately. Tell us who you are and what you&rsquo;re working on, and we&rsquo;ll email you a link.</p>
+        <div class="tc-field">
+          <label for="tcName">Name <span aria-hidden="true">*</span></label>
+          <input type="text" id="tcName" name="name" autocomplete="name" required>
         </div>
         <div class="tc-field">
-          <label for="tcEmail">Email</label>
-          <input type="email" id="tcEmail" name="email" placeholder="you@example.com" required>
+          <label for="tcEmail">Email <span aria-hidden="true">*</span></label>
+          <input type="email" id="tcEmail" name="email" autocomplete="email" required>
+        </div>
+        <div class="tc-field" id="tcOrgField" hidden>
+          <label for="tcOrg">Organisation <span class="tc-optional">(optional)</span></label>
+          <input type="text" id="tcOrg" name="organisation" autocomplete="organization">
         </div>
         <div class="tc-field">
-          <label for="tcMessage">Message</label>
-          <textarea id="tcMessage" name="message" rows="5" placeholder="Tell us a bit about what you're after..." required></textarea>
+          <label for="tcMessage">Message <span aria-hidden="true">*</span></label>
+          <textarea id="tcMessage" name="message" rows="5" required></textarea>
         </div>
-        <p class="tc-form-note" id="tcFormStatus">Your message goes straight to hello@pickandmixstudios.com &mdash; no email app required.</p>
-        <button type="submit" class="tc-btn" id="tcSubmitBtn">
-          <span id="tcSubmitLabel">Send Message</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+        <p class="tc-form-note" id="tcFormStatus" role="status" aria-live="polite">Your message goes straight to hello@pickandmixstudios.com.</p>
+        <button type="submit" class="tc-btn tc-btn-primary" id="tcSubmitBtn">
+          <span id="tcSubmitLabel">Send message</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
         </button>
       </form>
-    </div>
+    </section>
 
     <!-- LinkedIn -->
-    <div class="tc-contact-card">
-      <h2>Find Us on LinkedIn</h2>
+    <section class="tc-contact-card" aria-labelledby="tcLinkedInTitle">
+      <h2 id="tcLinkedInTitle">Find us on LinkedIn</h2>
       <div class="tc-social-grid">
         <a class="tc-social-card" href="https://www.linkedin.com/in/teamchorley/" target="_blank" rel="noopener">
-          <span class="tc-social-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.83v2.05h.05c.53-1 1.84-2.05 3.79-2.05C19.5 8 21 10.13 21 13.72V23h-4v-8.29c0-1.98-.04-4.52-2.75-4.52-2.75 0-3.17 2.15-3.17 4.37V23h-4V8z"/></svg>
-          </span>
+          <span class="tc-social-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.83v2.05h.05c.53-1 1.84-2.05 3.79-2.05C19.5 8 21 10.13 21 13.72V23h-4v-8.29c0-1.98-.04-4.52-2.75-4.52-2.75 0-3.17 2.15-3.17 4.37V23h-4V8z"/></svg></span>
           <span class="tc-social-text">
             <strong>Team Chorley</strong>
-            <span>Direct to Emily</span>
+            <span>Emily&rsquo;s profile</span>
           </span>
-          <svg class="tc-social-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          <svg class="tc-social-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          <span class="tc-sr"> (opens in a new tab)</span>
         </a>
         <a class="tc-social-card" href="https://www.linkedin.com/company/pick-and-mix-studios" target="_blank" rel="noopener">
-          <span class="tc-social-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.83v2.05h.05c.53-1 1.84-2.05 3.79-2.05C19.5 8 21 10.13 21 13.72V23h-4v-8.29c0-1.98-.04-4.52-2.75-4.52-2.75 0-3.17 2.15-3.17 4.37V23h-4V8z"/></svg>
-          </span>
+          <span class="tc-social-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.83v2.05h.05c.53-1 1.84-2.05 3.79-2.05C19.5 8 21 10.13 21 13.72V23h-4v-8.29c0-1.98-.04-4.52-2.75-4.52-2.75 0-3.17 2.15-3.17 4.37V23h-4V8z"/></svg></span>
           <span class="tc-social-text">
             <strong>Pick and Mix Studios</strong>
             <span>Company page</span>
           </span>
-          <svg class="tc-social-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          <svg class="tc-social-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          <span class="tc-sr"> (opens in a new tab)</span>
         </a>
       </div>
-    </div>
+    </section>
 
     <!-- Patreon -->
-    <div class="tc-contact-card">
-      <h2>Pick and Mix Arcade on Patreon</h2>
-      <p>Meet Emily, a self-taught Storyline wonder-woman who turns ordinary slides into a tiny game engine, crafting animated characters, mini-games and playful interactions using nothing but triggers and variables. Head over to Pick and Mix Arcade on Patreon for a stash of freebies to play with.</p>
-      <a class="tc-btn" href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">
-        Visit Patreon
-        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="15" cy="9.5" r="6.5"/><rect x="2" y="2" width="3.5" height="20"/></svg>
-      </a>
-
-      <div class="tc-series-header">
-        <div class="tc-series-icon"><img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/BWXMaLt0/assets/Unicorn.png" alt="Unicorn"></div>
-        <div class="tc-series-title">
-          <a href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">
-            Series 1: Unicorn
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+    <section class="tc-contact-card" aria-labelledby="tcPatreonTitle">
+      <h2 id="tcPatreonTitle">Pick and Mix Arcade on Patreon</h2>
+      <div class="tc-patreon-row">
+        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/BWXMaLt0/assets/Unicorn%20Drop.png" alt="" width="531" height="287" loading="lazy">
+        <div>
+          <p>Freebies, behind-the-scenes builds and step-by-step drops: animated characters, sprite sheets, mini-games and AI builds, alongside Storyline tips you can use straight away.</p>
+          <a class="tc-btn" href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">
+            Visit Patreon
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="15" cy="9.5" r="6.5"/><rect x="2" y="2" width="3.5" height="20"/></svg>
+            <span class="tc-sr"> (opens in a new tab)</span>
           </a>
-          <span>4 posts</span>
-        </div>
-        <div class="tc-series-nav">
-          <button type="button" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-          <button type="button" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
         </div>
       </div>
-
-      <div class="tc-post-grid">
-        <a class="tc-post-card" href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">
-          <div class="tc-post-thumb"><img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/BWXMaLt0/assets/Unicorn%20Drop.png" alt="Unicorn Part 1 animated GIF"></div>
-          <h4>Series: Unicorn [Part 1: Animated GIF]</h4>
-          <p>Here is the very first treat in the Unicorn series! This drop features a cute animated unicorn, built&hellip;</p>
-          <span class="tc-post-date">August 6</span>
-        </a>
-        <a class="tc-post-card" href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">
-          <div class="tc-post-thumb"><img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/BWXMaLt0/assets/Finished%20asset%20icon.png" alt="Unicorn animated GIF"></div>
-          <h4>Series: Unicorn [Animated GIF]</h4>
-          <p>Here's your ready-to-use animated unicorn GIF, the finished version from Part 1 of the Unicorn&hellip;</p>
-          <span class="tc-post-date">15 July</span>
-        </a>
-        <a class="tc-post-card" href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">
-          <div class="tc-post-thumb"><img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/BWXMaLt0/assets/Sprite%20icon.png" alt="Unicorn sprite sheet"></div>
-          <h4>Series: Unicorn [Sprite Sheet]</h4>
-          <p>Here's the original unicorn sprite sheet from Part 1 of the Unicorn series. Use it to customise colour&hellip;</p>
-          <span class="tc-post-date">15 July</span>
-        </a>
-      </div>
-    </div>
+    </section>
 
   </div>
 </div>
 </main>
 
-<div class="tc-footer">
-  <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="Pick and Mix Studios logo">
-  <p>&copy; Pick and Mix Studios. All rights reserved.</p>
-</div>
+<footer class="tc-footer">
+  <div class="tc-footer-inner">
+    <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="" width="512" height="512" loading="lazy">
+    <nav class="tc-footer-links" aria-label="Pick and Mix Studios elsewhere">
+      <a href="https://www.linkedin.com/company/pick-and-mix-studios" target="_blank" rel="noopener">LinkedIn<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="https://www.instagram.com/pickandmixstudios/" target="_blank" rel="noopener">Instagram<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="https://www.facebook.com/pickandmixstudios" target="_blank" rel="noopener">Facebook<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">Patreon<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="mailto:hello@pickandmixstudios.com">hello@pickandmixstudios.com</a>
+    </nav>
+    <p>&copy; 2021&ndash;2026 Pick and Mix Studios. All rights reserved.</p>
+  </div>
+</footer>
 
-<script src="assets/site.js?v=20261110"></script>
+<script src="assets/site.js?v=20261111"></script>
 </body>
 </html>

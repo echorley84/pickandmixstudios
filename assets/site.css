@@ -1147,3 +1147,303 @@ html, body { margin-top: 0 !important; top: 0 !important; }
   .tc-nav { order: 3; width: 100%; margin-left: 0; justify-content: center; }
   .tc-header { row-gap: 8px; }
 }
+
+/* ==========================================================================
+   Nov 2026 refresh: accessibility, mobile menu, text headings, home sections
+   ========================================================================== */
+
+:root { --focus: #ffbf47; --ok: #1e7b34; --err: #b3261e; --display-ink: #10233a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ok: #7fdc95; --err: #ffb4ab; } }
+:root[data-theme="dark"] { --ok: #7fdc95; --err: #ffb4ab; }
+
+/* Clear keyboard focus everywhere: a thick yellow ring with a dark edge shows on white cards and on the blue page */
+a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visible,
+.tc-btn:focus-visible, .tc-readmore-btn:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--display-ink);
+  border-radius: 6px;
+}
+.tc-btn:focus-visible { border-radius: 30px; }
+.tc-field input:focus-visible, .tc-field textarea:focus-visible, .tc-field select:focus-visible {
+  border-color: var(--c1);
+  box-shadow: 0 0 0 3px var(--focus);
+  outline: 2px solid transparent;
+}
+.tc-skip-link:focus { outline: 3px solid var(--focus); }
+
+/* Respect "reduce motion" */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .tc-nav a:hover, .tc-social-card:hover, .tc-post-card:hover .tc-post-thumb, .tc-feature-card:hover { transform: none !important; }
+}
+
+img[width][height] { height: auto; }
+
+/* Current page in the nav (replaces .is-active) */
+.tc-nav a[aria-current="page"] { font-weight: 700; }
+.tc-nav a[aria-current="page"]::after { width: 100%; left: 0%; }
+
+/* ---------- Mobile menu (only folds when scripts run; otherwise the full nav stays visible) ---------- */
+.tc-menu-btn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--soft);
+  color: var(--c1);
+  font: 700 0.9375rem 'Maven Pro', Arial, sans-serif;
+  cursor: pointer;
+}
+.tc-menu-btn[aria-expanded="true"] { background: var(--c1); color: var(--on-accent); }
+
+@media (max-width: 700px) {
+  .js-menu .tc-menu-btn { display: inline-flex; order: 2; margin-left: auto; }
+  .js-menu .tc-tools { order: 3; margin-left: 0; min-width: 0; }
+  .js-menu .tc-nav { display: none; order: 4; }
+  .js-menu .tc-nav.is-open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    padding: 6px 0 4px;
+  }
+  .js-menu .tc-nav.is-open a {
+    font-size: 1rem;
+    padding: 12px 8px;
+    border-top: 1px solid var(--line);
+    white-space: normal;
+  }
+  .js-menu .tc-nav.is-open a::after { display: none; }
+  .js-menu .tc-nav.is-open a[aria-current="page"] { color: var(--card-heading); background: var(--soft); border-radius: 8px; }
+  .js-menu .tc-header { row-gap: 0; }
+}
+
+/* ---------- Text page headings, styled like the logo (they now scale, translate and work in dark mode) ---------- */
+.tc-display {
+  font-family: 'Lilita One', 'Maven Pro', Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 7vw, 4.25rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  -webkit-text-stroke: 0.14em var(--display-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 0.08em 0 var(--display-ink);
+  text-align: center;
+  margin: 0 0 20px;
+}
+.tc-display .tc-display-small {
+  display: block;
+  font-size: 0.55em;
+  color: var(--accent-orange);
+  margin-bottom: 0.1em;
+}
+.tc-page-heading.tc-display { font-size: clamp(2.5rem, 7vw, 4.25rem); }
+
+/* ---------- Footer ---------- */
+.tc-footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.tc-footer img { margin-bottom: 0; }
+.tc-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 20px; }
+.tc-footer-links a { color: var(--c1); font-weight: 600; font-size: 0.875rem; text-decoration: none; padding: 8px 2px; }
+.tc-footer-links a:hover { text-decoration: underline; }
+
+/* ---------- Contact form status + topic ---------- */
+.tc-form-note { font-size: 0.875rem; }
+.tc-form-note.is-success { color: var(--ok); font-weight: 700; }
+.tc-form-note.is-error { color: var(--err); font-weight: 700; }
+.tc-field select {
+  width: 100%;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--input-text);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  min-height: 44px;
+}
+.tc-field label { font-size: 0.875rem; }
+.tc-field input, .tc-field textarea { font-size: 0.9375rem; }
+.tc-field .tc-optional { font-weight: 500; color: var(--muted); }
+.tc-access-note {
+  background: var(--soft);
+  border-left: 4px solid var(--accent-orange);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 0 0 16px;
+  color: var(--card-body);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.tc-access-note[hidden] { display: none; }
+
+/* ---------- Video dialog ---------- */
+.tc-modal-close {
+  top: -52px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.35);
+}
+body.tc-no-scroll { overflow: hidden; }
+
+/* ---------- Team cards ---------- */
+.tc-profile-card h2 { margin-bottom: 4px; }
+.tc-profile-role {
+  text-align: center !important;
+  color: var(--muted) !important;
+  font-weight: 600;
+  margin: 0 0 20px !important;
+}
+
+/* ---------- Patreon card on Contact ---------- */
+.tc-patreon-row { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.tc-patreon-row img { width: 160px; border-radius: 10px; border: 2px solid var(--line); flex-shrink: 0; }
+.tc-patreon-row div { flex: 1 1 240px; }
+
+/* ---------- Home page sections ---------- */
+.tc-hero .tc-eyebrow {
+  display: inline-block;
+  color: var(--text-heading);
+  background: rgba(0,0,0,0.18);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  margin: 0 0 14px;
+}
+.tc-hero h1.tc-display { font-size: clamp(2.25rem, 6vw, 3.75rem); }
+.tc-hero img.tc-hero-welcome-img { max-width: 260px; margin-bottom: 20px; }
+.tc-hero .tc-btn { min-height: 48px; }
+
+.tc-proof {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.tc-proof li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.16);
+  color: var(--text-heading);
+  border-radius: 999px;
+  padding: 8px 18px 8px 10px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.tc-proof li img { width: 30px; height: auto; }
+.tc-proof li .tc-proof-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent-orange); color: #262626;
+  display: grid; place-items: center; font-weight: 800; font-size: 0.8125rem;
+}
+
+.tc-section { padding: 48px 24px; }
+.tc-section-inner { max-width: 1100px; margin: 0 auto; }
+.tc-section-title {
+  color: var(--text-heading);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+.tc-section-intro {
+  color: var(--text-body);
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 32px;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+.tc-services {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tc-service {
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  padding: 24px;
+}
+.tc-service h3 { color: var(--card-heading); font-size: 1.1875rem; margin: 0 0 8px; }
+.tc-service p { color: var(--card-body); margin: 0; line-height: 1.55; }
+.tc-service-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: var(--soft); color: var(--c1);
+  display: grid; place-items: center; margin-bottom: 14px;
+}
+.tc-service-icon svg { width: 26px; height: 26px; }
+
+.tc-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+}
+.tc-feature-card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+.tc-feature-card:hover { transform: translateY(-4px); }
+.tc-feature-card > img:first-child { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.tc-feature-card .tc-award-img { top: 10px; left: 10px; width: 56px !important; }
+.tc-feature-body { padding: 18px 20px 22px; }
+.tc-feature-card h3 { margin: 0 0 6px; font-size: 1.1875rem; }
+.tc-feature-card h3 a { color: var(--card-heading); text-decoration: none; }
+.tc-feature-card h3 a::after { content: ""; position: absolute; inset: 0; }   /* whole card is clickable */
+.tc-feature-card h3 a:focus-visible { box-shadow: none; outline: none; }
+.tc-feature-card:focus-within { outline: 3px solid var(--focus); outline-offset: 3px; }
+.tc-feature-card p { color: var(--card-body); margin: 0; line-height: 1.5; }
+.tc-center { text-align: center; }
+
+.tc-panel-card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.tc-panel-card h2 { color: var(--card-heading); margin: 0 0 8px; font-size: 1.5rem; }
+.tc-panel-card p { color: var(--card-body); margin: 0 0 10px; line-height: 1.6; }
+.tc-panel-card p:last-child { margin-bottom: 0; }
+.tc-panel-card .tc-btn-group { justify-content: flex-end; }
+.tc-section + .tc-section { padding-top: 8px; }
+
+@media (max-width: 700px) {
+  .tc-section { padding: 36px 20px; }
+  .tc-section-title { font-size: 1.625rem; }
+  .tc-panel-card { grid-template-columns: 1fr; padding: 24px; }
+  .tc-panel-card .tc-btn-group { justify-content: flex-start; }
+}
+.tc-hero img.tc-hero-welcome-img { display: block; margin-left: auto; margin-right: auto; }
+.tc-service a, .tc-panel-card p a { color: var(--c1); font-weight: 600; }

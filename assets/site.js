@@ -4,28 +4,49 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  // --- Video lightbox modal (Showcase + Tutorials pages) ---
+  // --- Video lightbox: an accessible dialog (Showcase + Tutorials pages) ---
   var overlay = document.getElementById('tcVideoOverlay');
   if (overlay) {
     var frame = document.getElementById('tcVideoFrame');
     var closeBtn = document.getElementById('tcVideoClose');
-    var videoButtons = document.querySelectorAll('.tc-video-btn');
+    var dialog = overlay.querySelector('.tc-modal');
+    var lastTrigger = null;
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('aria-label', 'Video');
+    // focus guard: tabbing out of the video (which runs in its own frame) loops back to the close button
+    var guard = document.createElement('span');
+    guard.tabIndex = 0;
+    guard.className = 'tc-sr';
+    guard.addEventListener('focus', function () { closeBtn.focus(); });
+    dialog.appendChild(guard);
 
-    function openModal(url) {
+    function openModal(url, title, trigger) {
+      lastTrigger = trigger || null;
       frame.src = url;
+      frame.title = title ? title + ' video' : 'Video player';
+      dialog.setAttribute('aria-label', title ? title + ' video' : 'Video');
       overlay.classList.add('is-open');
+      document.body.classList.add('tc-no-scroll');
+      closeBtn.focus();
     }
 
     function closeModal() {
+      if (!overlay.classList.contains('is-open')) return;
       overlay.classList.remove('is-open');
+      document.body.classList.remove('tc-no-scroll');
       frame.src = '';
+      if (lastTrigger) lastTrigger.focus();
     }
 
-    videoButtons.forEach(function (btn) {
+    document.querySelectorAll('.tc-video-btn').forEach(function (btn) {
+      btn.setAttribute('aria-haspopup', 'dialog');
       btn.addEventListener('click', function () {
         var url = btn.getAttribute('data-video');
         if (!url || url === '#') return;
-        openModal(url);
+        var card = btn.closest('.tc-card, .tc-bss-card');
+        var h = card ? card.querySelector('h2') : null;
+        openModal(url, h ? h.textContent.trim() : '', btn);
       });
     });
 
@@ -34,7 +55,15 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.target === overlay) closeModal();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeModal();
+      if (!overlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') { closeModal(); return; }
+      if (e.key === 'Tab') {
+        // keep keyboard focus inside the dialog: close button <-> video
+        var items = [closeBtn, frame];
+        var i = items.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); frame.focus(); }
+        else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); closeBtn.focus(); }
+      }
     });
   }
 
@@ -44,15 +73,46 @@ document.addEventListener('DOMContentLoaded', function () {
     var statusEl = document.getElementById('tcFormStatus');
     var btn = document.getElementById('tcSubmitBtn');
     var btnLabel = document.getElementById('tcSubmitLabel');
+    var topic = document.getElementById('tcTopic');
+    var subject = form.querySelector('input[name="subject"]');
+    var accessNote = document.getElementById('tcAccessNote');
+    var orgField = document.getElementById('tcOrgField');
     var defaultStatus = statusEl.textContent;
+    var subjects = {
+      general: 'Website enquiry from Pick and Mix Studios contact page',
+      project: 'New project enquiry (Pick and Mix Studios website)',
+      'client-work': 'Client work access request (Pick and Mix Studios website)',
+      shop: 'Shop / templates question (Pick and Mix Studios website)',
+      other: 'Website enquiry from Pick and Mix Studios contact page'
+    };
+
+    function syncTopic() {
+      if (!topic) return;
+      var v = topic.value;
+      subject.value = subjects[v] || subjects.general;
+      var isAccess = v === 'client-work';
+      if (accessNote) accessNote.hidden = !isAccess;
+      if (orgField) orgField.hidden = !(isAccess || v === 'project');
+    }
+    if (topic) {
+      var wanted = new URLSearchParams(location.search).get('topic');
+      if (wanted && topic.querySelector('option[value="' + wanted + '"]')) topic.value = wanted;
+      topic.addEventListener('change', syncTopic);
+      syncTopic();
+    }
+
+    function setStatus(text, kind) {
+      statusEl.textContent = text;
+      statusEl.classList.remove('is-success', 'is-error');
+      if (kind) statusEl.classList.add('is-' + kind);
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       btn.setAttribute('disabled', 'true');
       btnLabel.textContent = 'Sending...';
-      statusEl.textContent = defaultStatus;
-      statusEl.style.color = '';
+      setStatus('Sending your message...');
 
       var formData = new FormData(form);
       var payload = Object.fromEntries(formData.entries());
@@ -66,21 +126,19 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function (data) {
           if (data.success) {
             form.reset();
-            statusEl.textContent = 'Thanks! Your message has been sent.';
-            statusEl.style.color = '#c8f5d0';
-            btnLabel.textContent = 'Send Message';
+            syncTopic();
+            setStatus(payload.topic === 'client-work'
+              ? 'Thanks! Your request has been sent. We’ll email you a link to our client work.'
+              : 'Thanks! Your message has been sent. We’ll get back to you soon.', 'success');
           } else {
-            statusEl.textContent = 'Something went wrong: ' + (data.message || 'please try again.');
-            statusEl.style.color = '#ffd0d0';
-            btnLabel.textContent = 'Send Message';
+            setStatus('Sorry, that didn’t send: ' + (data.message || 'please try again.') + ' You can also email hello@pickandmixstudios.com.', 'error');
           }
         })
         .catch(function () {
-          statusEl.textContent = 'Something went wrong sending your message. Please try again.';
-          statusEl.style.color = '#ffd0d0';
-          btnLabel.textContent = 'Send Message';
+          setStatus('Sorry, something went wrong sending your message. Please try again, or email hello@pickandmixstudios.com.', 'error');
         })
         .finally(function () {
+          btnLabel.textContent = 'Send message';
           btn.removeAttribute('disabled');
         });
     });
@@ -217,5 +275,24 @@ document.addEventListener('DOMContentLoaded', function () {
     var path = location.pathname, hash = location.hash;
     if (langSel.value === 'en') { location.href = 'https://pickandmixstudios.com' + path + hash; return; }
     location.href = 'https://pickandmixstudios-com.translate.goog' + path + '?_x_tr_sl=en&_x_tr_tl=' + encodeURIComponent(langSel.value) + '&_x_tr_hl=en' + hash;
+  });
+})();
+
+// ==========================================================================
+// Mobile menu: on narrow screens the nav folds behind a Menu button.
+// Without the script the full nav simply stays visible.
+// ==========================================================================
+(function () {
+  var btn = document.getElementById('tcMenuBtn');
+  var nav = document.getElementById('tcNav');
+  if (!btn || !nav) return;
+  document.documentElement.classList.add('js-menu');
+  function set(open) {
+    nav.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+  }
+  btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { set(false); btn.focus(); }
   });
 })();

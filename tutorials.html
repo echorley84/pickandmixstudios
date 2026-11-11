@@ -11,47 +11,49 @@
 <meta property="og:description" content="Free bite-size Storyline tutorials and livestream recaps from Team Chorley, covering interactive design tricks, Illustrator techniques and gamified eLearning.">
 <meta property="og:image" content="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png">
 <meta property="og:url" content="https://pickandmixstudios.com/tutorials.html">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Free Tutorials | Pick and Mix Studios">
 <meta name="twitter:description" content="Free bite-size Storyline tutorials and livestream recaps from Team Chorley, covering interactive design tricks, Illustrator techniques and gamified eLearning.">
 <meta name="twitter:image" content="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png">
 <link rel="icon" href="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=20261110">
-<script>try{var t=localStorage.getItem("bs-theme"),s=localStorage.getItem("bs-size");if(t&&t!=="auto")document.documentElement.dataset.theme=t;if(s&&s!=="0")document.documentElement.classList.add("size-"+s)}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Maven+Pro:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=20261111">
+<script>document.documentElement.classList.add("js-menu");try{var t=localStorage.getItem("bs-theme"),s=localStorage.getItem("bs-size");if(t&&t!=="auto")document.documentElement.dataset.theme=t;if(s&&s!=="0")document.documentElement.classList.add("size-"+s)}catch(e){}</script>
 </head>
 <body>
 
 <a class="tc-skip-link" href="#main-content">Skip to main content</a>
 
-<div class="tc-header-wrap">
+<header class="tc-header-wrap">
   <div class="tc-header">
     <a href="index.html" class="tc-logo">
-      <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="Pick and Mix Studios logo">
+      <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="Pick and Mix Studios home" width="512" height="512">
     </a>
 
-    <nav class="tc-nav">
+    <button type="button" class="tc-menu-btn" id="tcMenuBtn" aria-expanded="false" aria-controls="tcNav">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <span>Menu</span>
+    </button>
+
+    <nav class="tc-nav" id="tcNav" aria-label="Main">
       <a href="index.html">Home</a>
       <a href="team-chorley.html">Team Chorley</a>
       <a href="showcase.html">Showcase</a>
-      <a href="tutorials.html" class="is-active">Free Tutorials</a>
-      <a href="popup-shop.html">Pop up Shop</a>
+      <a href="tutorials.html" aria-current="page">Free Tutorials</a>
+      <a href="popup-shop.html">Pop-up Shop</a>
       <a href="tinybytes/">Tiny Bytes</a>
       <a href="contact.html">Get in Touch</a>
     </nav>
 
     <div class="tc-tools" id="tcTools"></div>
   </div>
-</div>
-
+</header>
 <main id="main-content">
 <div class="tc-bss-wrap">
-  <h1 class="tc-page-heading">
-    <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/free.png" alt="Free Tutorials">
-  </h1>
-  <p class="tc-page-intro">Creativity shines brightest when shared! Dive into these tutorials and give them a go yourself, we hope you'll enjoy every step of the journey.</p>
+  <h1 class="tc-display">Free Tutorials</h1>
+  <p class="tc-page-intro">Creativity shines brightest when shared! These recorded live streams walk through real builds step by step, so you can follow along and try them yourself.</p>
 
   <div class="tc-bss-grid">
 
@@ -59,7 +61,7 @@
     <div class="tc-bss-card">
       <h2>Overwatch</h2>
       <div class="tc-bss-image">
-        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/yLS6jZYX/assets/Overwatch.png" alt="Overwatch live stream">
+        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/yLS6jZYX/assets/Overwatch.png" alt="Overwatch live stream" width="2560" height="1475">
       </div>
       <p>Join Emily as she builds a D.Va-inspired interactive button live in Illustrator and Storyline, tracing game art, layering hover states, and adding sound to bring the Overwatch UI to life.</p>
       <div class="tc-btn-group">
@@ -67,18 +69,14 @@
           Video
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
         </button>
-        <a class="tc-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">
-          Resources
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 17.6 9H18a4 4 0 0 1 0 8H7z"/><path d="M12 12v6"/><path d="M9.5 15.5L12 18l2.5-2.5"/></svg>
-        </a>
       </div>
     </div>
 
     <!-- Card 2: Pokemon -->
     <div class="tc-bss-card">
-      <h2>Pokemon</h2>
+      <h2>Pok&eacute;mon</h2>
       <div class="tc-bss-image">
-        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/yLS6jZYX/assets/Pokemon.png" alt="Pokemon live stream">
+        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/yLS6jZYX/assets/Pokemon.png" alt="Pok&eacute;mon live stream" width="2560" height="1475" loading="lazy">
       </div>
       <p>Watch an interactive Pok&eacute;mon card come to life: click it and watch the Pok&eacute;mon evolve right before your eyes, plus a handful of other tips and tricks along the way.</p>
       <div class="tc-btn-group">
@@ -86,10 +84,6 @@
           Video
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
         </button>
-        <a class="tc-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">
-          Resources
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 17.6 9H18a4 4 0 0 1 0 8H7z"/><path d="M12 12v6"/><path d="M9.5 15.5L12 18l2.5-2.5"/></svg>
-        </a>
       </div>
     </div>
 
@@ -97,7 +91,7 @@
     <div class="tc-bss-card">
       <h2>Easter</h2>
       <div class="tc-bss-image">
-        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/yLS6jZYX/assets/Easter.png" alt="Easter live stream">
+        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/yLS6jZYX/assets/Easter.png" alt="Easter live stream" width="2560" height="1475" loading="lazy">
       </div>
       <p>Learn how to work with layers to build a bunny silhouette filled with beautiful flower effects, a festive little design exercise perfect for Easter.</p>
       <div class="tc-btn-group">
@@ -105,21 +99,17 @@
           Video
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
         </button>
-        <a class="tc-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">
-          Resources
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 17.6 9H18a4 4 0 0 1 0 8H7z"/><path d="M12 12v6"/><path d="M9.5 15.5L12 18l2.5-2.5"/></svg>
-        </a>
       </div>
     </div>
 
 
-    <!-- Card 1: Instructional Design Tips -->
+    <!-- Card 4: Instructional Design Tips -->
     <div class="tc-bss-card">
       <h2>Instructional Design Tips</h2>
       <div class="tc-bss-image">
-        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/PfcdGrJN/assets/IDTX.png" alt="Instructional Design Tips live stream">
+        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/PfcdGrJN/assets/IDTX.png" alt="Instructional Design Tips live stream" width="1765" height="738" loading="lazy">
       </div>
-      <p>Emily will be showing how Storyline can go far beyond an interactive slide deck, building highly engaging scenes using Storyline, Adobe Illustrator and EZGIF.</p>
+      <p>Emily shows how Storyline can go far beyond an interactive slide deck, building highly engaging scenes using Storyline, Adobe Illustrator and EZGIF.</p>
       <div class="tc-btn-group">
         <button type="button" class="tc-btn tc-video-btn" data-video="https://www.youtube.com/embed/GzfxIU57nm0">
           Video
@@ -128,26 +118,22 @@
         <a class="tc-btn" href="https://drive.google.com/file/d/1AKX7bocoYbJ9P_lJ9fCZP3g1lfZdDLtP/view" target="_blank" rel="noopener">
           Resources
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 17.6 9H18a4 4 0 0 1 0 8H7z"/><path d="M12 12v6"/><path d="M9.5 15.5L12 18l2.5-2.5"/></svg>
-        </a>
+        <span class="tc-sr"> (opens in a new tab)</span></a>
       </div>
     </div>
 
-    <!-- Card 2: Cath Ellis -->
+    <!-- Card 5: Cath Ellis -->
     <div class="tc-bss-card">
       <h2>Cath Ellis</h2>
       <div class="tc-bss-image">
-        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/PfcdGrJN/assets/Cath-chat.jpg" alt="Cath Ellis live stream">
+        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/PfcdGrJN/assets/Cath-chat.jpg" alt="Cath Ellis live stream" width="1280" height="720" loading="lazy">
       </div>
-      <p>Emily will be chatting with Cath Ellis about how to create custom Storyline games, where they both find their inspiration, and just how far you can push Storyline.</p>
+      <p>Emily chats with Cath Ellis about how to create custom Storyline games, where they both find their inspiration, and just how far you can push Storyline.</p>
       <div class="tc-btn-group">
         <button type="button" class="tc-btn tc-video-btn" data-video="https://www.youtube.com/embed/nC1nNmj1Euo">
           Video
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
         </button>
-        <a class="tc-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">
-          Resources
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 17.6 9H18a4 4 0 0 1 0 8H7z"/><path d="M12 12v6"/><path d="M9.5 15.5L12 18l2.5-2.5"/></svg>
-        </a>
       </div>
     </div>
 
@@ -166,11 +152,20 @@
 
 </main>
 
-<div class="tc-footer">
-  <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="Pick and Mix Studios logo">
-  <p>&copy; Pick and Mix Studios. All rights reserved.</p>
-</div>
+<footer class="tc-footer">
+  <div class="tc-footer-inner">
+    <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png" alt="" width="512" height="512" loading="lazy">
+    <nav class="tc-footer-links" aria-label="Pick and Mix Studios elsewhere">
+      <a href="https://www.linkedin.com/company/pick-and-mix-studios" target="_blank" rel="noopener">LinkedIn<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="https://www.instagram.com/pickandmixstudios/" target="_blank" rel="noopener">Instagram<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="https://www.facebook.com/pickandmixstudios" target="_blank" rel="noopener">Facebook<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="https://www.patreon.com/cw/pickandmixarcade" target="_blank" rel="noopener">Patreon<span class="tc-sr"> (opens in a new tab)</span></a>
+      <a href="mailto:hello@pickandmixstudios.com">hello@pickandmixstudios.com</a>
+    </nav>
+    <p>&copy; 2021&ndash;2026 Pick and Mix Studios. All rights reserved.</p>
+  </div>
+</footer>
 
-<script src="assets/site.js?v=20261110"></script>
+<script src="assets/site.js?v=20261111"></script>
 </body>
 </html>
