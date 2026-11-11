@@ -359,14 +359,16 @@ document.addEventListener('DOMContentLoaded', function () {
     card.id = card.id || ('tcLevelCard' + (i + 1));
     card.setAttribute('role', 'tabpanel');
     var b = document.createElement('button');
-    b.type = 'button'; b.className = 'tc-node'; b.id = 'tcLevel' + (i + 1);
+    b.type = 'button'; b.className = 'tc-node' + (award ? ' is-award' : ''); b.id = 'tcLevel' + (i + 1);
     b.setAttribute('role', 'tab');
     b.setAttribute('aria-controls', card.id);
     b.setAttribute('aria-label', 'Level ' + (i + 1) + ': ' + name.trim() + (award ? ', Platinum award winner' : ''));
     card.setAttribute('aria-labelledby', b.id);
     b.innerHTML = (thumb ? '<img class="tc-node-thumb" alt="" src="' + thumb.getAttribute('src') + '">' : '') +
       '<span class="tc-node-num" aria-hidden="true">' + (i + 1) + '</span>' +
-      (award ? '<span class="tc-node-star" aria-hidden="true"><img alt="" src="assets/img/award-platinum.webp"></span>' : '') +
+      (award ? '<span class="tc-node-aura" aria-hidden="true"></span>' +
+        '<span class="tc-node-star" aria-hidden="true"><img alt="" src="assets/img/award-platinum.webp"></span>' +
+        [1, 2, 3].map(function (k) { return '<span class="tc-spark s' + k + '" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0c.8 6.4 4.8 10.6 12 12-7.2 1.4-11.2 5.6-12 12-.8-6.4-4.8-10.6-12-12 7.2-1.4 11.2-5.6 12-12z"/></svg></span>'; }).join('') : '') +
       '<span class="tc-node-name" aria-hidden="true">' + name.trim() + '</span>';
     wrap.appendChild(b);
     return b;

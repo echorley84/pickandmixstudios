@@ -2496,6 +2496,77 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 
 .tc-node-name { width: max-content; }
 
+/* Floor is Goo: let the level tag sit over the corner instead of being clipped */
+.tc-card-image.goo { overflow: visible; }
+
+/* Platinum magic: shimmering silver ring, twinkling sparkles, big obvious badge */
+@keyframes tcSpin { to { transform: rotate(360deg); } }
+@keyframes tcTwinkle { 0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
+@keyframes tcSheen { 0% { background-position: 160% 0; } 55%, 100% { background-position: -60% 0; } }
+
+.tc-spark { position: absolute; width: 16px; height: 16px; z-index: 6; pointer-events: none; animation: tcTwinkle 2.2s ease-in-out infinite; }
+.tc-spark svg { width: 100%; height: 100%; fill: #ffffff; filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 6px #B9D4EE); }
+
+/* map stops */
+.tc-node.is-award { border-color: #E6EDF4; }
+.tc-node-aura {
+  position: absolute; inset: -11px; border-radius: 50%; z-index: -1;
+  background: conic-gradient(from 0deg, #ffffff, #B8C6D3, #F4F8FB, #8FA3B6, #ffffff, #CBD7E2, #ffffff);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+  animation: tcSpin 4s linear infinite;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.55);
+}
+.tc-node.is-award .tc-node-star { width: 42px; height: 42px; right: -16px; top: -16px; box-shadow: 0 0 0 1.5px #10324F, 0 0 12px rgba(255, 255, 255, 0.8); }
+.tc-node.is-award .tc-node-star img { width: 24px; }
+.tc-node .tc-spark.s1 { top: -14px; left: -6px; animation-delay: 0s; }
+.tc-node .tc-spark.s2 { bottom: 6px; right: -16px; width: 12px; height: 12px; animation-delay: 0.7s; }
+.tc-node .tc-spark.s3 { top: 30%; left: -18px; width: 11px; height: 11px; animation-delay: 1.4s; }
+
+/* demo cards */
+.tc-card-image .tc-award-seal {
+  position: absolute; top: -22px; right: -14px; z-index: 4;
+  width: 76px; height: 76px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #E3EAF1 60%, #B9C7D4);
+  border: 2px solid #10324F;
+  box-shadow: 3px 4px 0 #10324F, 0 0 18px rgba(255, 255, 255, 0.85);
+  display: grid; place-items: center;
+}
+.tc-award-seal img { width: 40px; height: auto; transform: rotate(-6deg); }
+.tc-award-seal .tc-spark.s1 { top: -12px; left: -8px; }
+.tc-award-seal .tc-spark.s2 { bottom: -6px; left: -14px; width: 12px; height: 12px; animation-delay: 0.8s; }
+.tc-award-seal .tc-spark.s3 { top: 6px; right: -14px; width: 13px; height: 13px; animation-delay: 1.5s; }
+.tc-award-seal .tc-spark svg { fill: #ffffff; filter: drop-shadow(0 0 2px #10324F) drop-shadow(0 0 5px #B9D4EE); }
+.tc-card[data-award="true"] .tc-card-image::after {
+  content: ""; position: absolute; inset: 1.6%; border-radius: 12px; pointer-events: none; z-index: 2;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.55) 48%, rgba(255, 255, 255, 0.15) 55%, transparent 65%) no-repeat;
+  background-size: 250% 100%;
+  animation: tcSheen 3.5s ease-in-out infinite;
+}
+.tc-card[data-award="true"] { box-shadow: 3px 4px 0 var(--card-edge), 0 0 0 4px rgba(255, 255, 255, 0.65), 0 0 26px rgba(255, 255, 255, 0.45); }
+.tc-award-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.75rem; font-weight: 700; color: #16314D;
+  padding: 3px 10px 3px 6px; border-radius: 999px;
+  background: linear-gradient(135deg, #F6F9FC, #CBD7E2 50%, #F6F9FC);
+  border: 1.5px solid #10324F;
+  margin-right: 4px;
+}
+.tc-award-chip img { width: 14px; height: auto; }
+@media (max-width: 640px) {
+  .tc-card-image .tc-award-seal { width: 62px; height: 62px; top: -18px; right: -8px; }
+  .tc-award-seal img { width: 32px; }
+  .tc-node-aura { inset: -9px; }
+  .tc-node.is-award .tc-node-star { width: 34px; height: 34px; right: -12px; top: -12px; }
+  .tc-node.is-award .tc-node-star img { width: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tc-node-aura, .tc-spark, .tc-card[data-award="true"] .tc-card-image::after { animation: none; }
+  .tc-spark { opacity: 1; transform: none; }
+}
+
+.tc-map-nodes { z-index: 0; }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
