@@ -1349,8 +1349,8 @@ body.tc-no-scroll { overflow: hidden; }
   margin: 0;
 }
 .tc-service {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
   border-radius: 14px;
   padding: 22px;
 }
@@ -1403,8 +1403,8 @@ body.tc-no-scroll { overflow: hidden; }
   gap: 22px;
 }
 .tc-panel-card {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
   border-radius: 16px;
   padding: 26px;
   display: flex;
@@ -1419,3 +1419,48 @@ body.tc-no-scroll { overflow: hidden; }
   .tc-section { padding: 36px 20px; }
   .tc-section-title { font-size: 1.625rem; }
 }
+
+
+/* ==========================================================================
+   No white boxes: every content card sits on the brand blue with a soft tint.
+   Card colours are re-pointed locally, so buttons, inputs and the header panels are untouched.
+   ========================================================================== */
+:root { --glass: rgba(8, 30, 56, 0.20); --glass-line: rgba(255, 255, 255, 0.16); }
+
+.tc-card, .tc-profile-card, .tc-bss-card, .tc-product-card, .tc-contact-card {
+  --card-bg: var(--glass);
+  --card-bg-light: var(--glass);
+  --card-heading: var(--text-heading);
+  --card-body: var(--text-body);
+  --c1: var(--text-heading);
+  --line: rgba(255, 255, 255, 0.22);
+  --muted: var(--text-body);
+  --ok: #b6f2c3;
+  --err: #ffd2cc;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  box-shadow: none;
+}
+.tc-access-note { background: rgba(255, 255, 255, 0.10); border-left-color: var(--text-heading); }
+.tc-readmore-btn:hover { color: var(--text-heading); opacity: 0.85; }
+.tc-social-card:hover { border-color: var(--text-heading); }
+
+/* Showcase demo cards: artwork leads, like the home page */
+.tc-card { padding: 22px; gap: 28px; }
+.tc-card-image > img:not(.tc-award-img) {
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.30);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.tc-card-image.goo { border: 0; border-radius: 12px; }
+.tc-card:nth-child(even) { flex-direction: row-reverse; }
+.tc-card h2 { font-size: 1.5rem; margin-bottom: 10px; }
+.tc-card p { margin-bottom: 18px; }
+@media (max-width: 700px) {
+  .tc-card, .tc-card:nth-child(even) { flex-direction: column; }
+}
+
+/* Team photos and tutorial thumbnails match */
+.tc-profile-image { box-shadow: 0 10px 24px rgba(0, 0, 0, 0.30); }
+.tc-bss-image, .tc-product-main-image { border: 0; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.30); }
