@@ -328,3 +328,27 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   select(tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0], false);
 })();
+
+// ==========================================================================
+// Showcase: "Select a level" filter (All / Playable / Award winners).
+// The filter bar stays hidden without the script, and every demo shows.
+// ==========================================================================
+(function () {
+  var bar = document.getElementById('tcFilter');
+  if (!bar) return;
+  var status = document.getElementById('tcFilterStatus');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.tc-card[data-playable]'));
+  var btns = Array.prototype.slice.call(bar.querySelectorAll('[data-filter]'));
+  bar.hidden = false;
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-filter'), shown = 0;
+      btns.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      cards.forEach(function (c) {
+        var ok = f === 'all' || (f === 'playable' && c.dataset.playable === 'true') || (f === 'award' && c.dataset.award === 'true');
+        c.hidden = !ok; if (ok) shown++;
+      });
+      if (status) status.textContent = 'Showing ' + shown + (shown === 1 ? ' demo' : ' demos');
+    });
+  });
+})();

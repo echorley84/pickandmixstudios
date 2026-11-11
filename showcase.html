@@ -56,16 +56,26 @@
     <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/showcase-header.png" alt="Team Chorley Showcase" width="1289" height="351">
   </h1>
   <p class="tc-page-intro">Step into our creative world, where we craft fun, purposefully quirky demos using Articulate Storyline and Adobe Illustrator to showcase our skills and keep the flow of innovation alive.</p>
+  <p class="tc-cyp-pill tc-level-pill">Select a level</p>
+  <div class="tc-filter" id="tcFilter" role="group" aria-label="Filter demos" hidden>
+    <button type="button" class="tc-filter-btn" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" class="tc-filter-btn" data-filter="playable" aria-pressed="false">Playable</button>
+    <button type="button" class="tc-filter-btn" data-filter="award" aria-pressed="false">Award winners</button>
+  </div>
+  <p class="tc-sr" id="tcFilterStatus" aria-live="polite"></p>
+
 
   <div class="tc-showcase-grid">
 
     <!-- Card 1: Overwatch -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="true" data-award="false">
       <div class="tc-card-image overwatch">
+        <span class="tc-level" aria-hidden="true">Level 1</span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/unGIyxkk/assets/Overwatch-thumb.png" alt="Overwatch eLearning demo thumbnail" width="1680" height="883">
       </div>
       <div class="tc-card-content">
         <h2>Overwatch</h2>
+        <p class="tc-status"><span class="tc-status-chip is-play">Playable</span></p>
         <p>Inspired by Overwatch 2, this interactive eLearning demo offers a fun, immersive learning experience. With elements of creativity, strategy, and quick thinking, it brings game-like excitement to the learning process!</p>
         <div class="tc-btn-group">
           <a class="tc-btn" href="https://articulateusercontent.com/review/items/ZaItWD3QSGtU6jU4/story.html" target="_blank" rel="noopener">
@@ -81,12 +91,14 @@
     </div>
 
     <!-- Card 2: Arcane -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="true" data-award="false">
       <div class="tc-card-image arcane">
+        <span class="tc-level" aria-hidden="true">Level 2</span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/unGIyxkk/assets/Arcane-thumb.png" alt="Arcane eLearning demo thumbnail" width="538" height="281" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Arcane</h2>
+        <p class="tc-status"><span class="tc-status-chip is-play">Playable</span></p>
         <p>This demo captures the magic and stunning artistry of the series, bringing its breathtaking world to life in an immersive, hands-on experience. From the smallest details to the intricate design, step into Arcane like never before.</p>
         <div class="tc-btn-group">
           <a class="tc-btn" href="https://articulateusercontent.com/review/items/U8qaEFZSJlAdtytc/story.html" target="_blank" rel="noopener">
@@ -102,12 +114,14 @@
     </div>
 
     <!-- Card 3: Floor is Goo -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="false" data-award="false">
       <div class="tc-card-image goo">
+        <span class="tc-level" aria-hidden="true">Level 3</span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/unGIyxkk/assets/Floor-is-goo-thumb.png" alt="Floor is Goo game thumbnail" width="537" height="285" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Floor is Goo</h2>
+        <p class="tc-status"><span class="tc-status-chip">Video only</span></p>
         <p>A thrilling puzzle game where strategy is key! Use tools to collect items, navigate tricky obstacles, and plan your moves carefully to make it to the other side&hellip; but can you do it without falling into the goo?</p>
         <div class="tc-btn-group">
           <button type="button" class="tc-btn tc-video-btn" data-video="https://www.youtube.com/embed/6Cn7W2j0csQ">
@@ -120,12 +134,14 @@
 
 
     <!-- Card 1: Creepy Crypt -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="false" data-award="false">
       <div class="tc-card-image">
+        <span class="tc-level" aria-hidden="true">Level 4</span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/dFNefC6R/assets/Crypt-thumb%402x.png" alt="Creepy Crypt thumbnail" width="602" height="318" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Creepy Crypt</h2>
+        <p class="tc-status"><span class="tc-status-chip">Video only</span></p>
         <p>Embark on a spooky Halloween puzzle adventure where you must guide all the creatures into the crypt. But beware&mdash;leaving certain ones alone together could unleash terrifying consequences!</p>
         <div class="tc-btn-group">
           <button type="button" class="tc-btn tc-video-btn" data-video="https://www.youtube.com/embed/bpcO2FnF4HA">
@@ -137,12 +153,14 @@
     </div>
 
     <!-- Card 2: Chain Game -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="true" data-award="false">
       <div class="tc-card-image">
+        <span class="tc-level" aria-hidden="true">Level 5</span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/dFNefC6R/assets/halloween%402x.png" alt="Chain Game thumbnail" width="905" height="470" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Chain Game</h2>
+        <p class="tc-status"><span class="tc-status-chip is-play">Playable</span></p>
         <p>How sharp is your memory? When day turns to night and the monsters emerge, will you be clever enough to remember what you've seen? Solve the puzzles to bring back the daylight&mdash;if you can!</p>
         <div class="tc-btn-group">
           <a class="tc-btn" href="https://articulateusercontent.com/review/items/obTaqNyfq3KHkaz_/story.html" target="_blank" rel="noopener">
@@ -158,13 +176,15 @@
     </div>
 
     <!-- Card 3: Battlefield -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="false" data-award="true">
       <div class="tc-card-image">
+        <span class="tc-level" aria-hidden="true">Level 6</span>
+        <span class="tc-highscore"><img src="assets/img/award-platinum.webp" alt="" width="150" height="200">High score<span class="tc-sr">: Platinum award winner, LearnX LIVE! Awards</span></span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/dFNefC6R/assets/Battlefield-thumb%402x-1.png" alt="Battlefield thumbnail" width="602" height="318" loading="lazy">
-        <img class="tc-award-img" src="assets/img/award-platinum.webp" width="150" height="200" alt="Platinum award winner, LearnX LIVE! Awards" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Battlefield</h2>
+        <p class="tc-status"><span class="tc-status-chip">Video only</span></p>
         <p>Drawing inspiration from the dynamic gameplay of Battlefield, this stunning eLearning demo focuses on attention to detail as you explore maps, pilot planes, and search through ammo boxes.</p>
         <div class="tc-btn-group">
           <button type="button" class="tc-btn tc-video-btn" data-video="https://www.youtube.com/embed/rwXR5TkUTU4">
@@ -177,13 +197,15 @@
 
 
     <!-- Card 1: Mage and Dragon -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="false" data-award="true">
       <div class="tc-card-image">
+        <span class="tc-level" aria-hidden="true">Level 7</span>
+        <span class="tc-highscore"><img src="assets/img/award-platinum.webp" alt="" width="150" height="200">High score<span class="tc-sr">: Platinum award winner, LearnX LIVE! Awards</span></span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/HI-grar7/assets/Mage-thumb%402x-1.png" alt="Mage and Dragon thumbnail" width="602" height="318" loading="lazy">
-        <img class="tc-award-img" src="assets/img/award-platinum.webp" width="150" height="200" alt="Platinum award winner, LearnX LIVE! Awards" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Mage and Dragon</h2>
+        <p class="tc-status"><span class="tc-status-chip">Video only</span></p>
         <p>This exciting demo built in Articulate Storyline showcases the platform's full potential. Defeat the dragon using a variety of powerful spells, but beware&mdash;this fierce foe strikes back! Use your shield wisely, or you may not survive its deadly attacks!</p>
         <div class="tc-btn-group">
           <button type="button" class="tc-btn tc-video-btn" data-video="https://www.youtube.com/embed/XUC2xY8tXfg">
@@ -195,12 +217,14 @@
     </div>
 
     <!-- Card 2: Plants vs Zombies -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="false" data-award="false">
       <div class="tc-card-image">
+        <span class="tc-level" aria-hidden="true">Level 8</span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/HI-grar7/assets/PvZ-thumb%402x-1.png" alt="Plants vs. Zombies demo thumbnail" width="602" height="318" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Plants vs. Zombies</h2>
+        <p class="tc-status"><span class="tc-status-chip">Video only</span></p>
         <p>A recreation of the classic Plants vs. Zombies game, built in Storyline as a mini-game inside EA Games&rsquo; eLearning modules.</p>
         <div class="tc-btn-group">
           <button type="button" class="tc-btn tc-video-btn" data-video="https://www.youtube.com/embed/g5QROkm1Iog">
@@ -212,12 +236,14 @@
     </div>
 
     <!-- Card 3: Cap'n Red Brow -->
-    <div class="tc-card">
+    <div class="tc-card" data-playable="false" data-award="false">
       <div class="tc-card-image">
+        <span class="tc-level" aria-hidden="true">Level 9</span>
         <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/HI-grar7/assets/Redbrtow-Nasa%402x.png" alt="Cap'n Red Brow thumbnail" width="905" height="470" loading="lazy">
       </div>
       <div class="tc-card-content">
         <h2>Cap'n Red Brow</h2>
+        <p class="tc-status"><span class="tc-status-chip">Video only</span></p>
         <p>A fun educational treasure hunt designed to help break the boredom of the COVID lockdown.</p>
         <div class="tc-btn-group">
         </div>

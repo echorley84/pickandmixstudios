@@ -2345,6 +2345,52 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
   text-transform: uppercase;
 }
 
+/* Showcase: Select a level */
+.tc-level-pill { margin: 0 auto 14px; }
+.tc-filter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 auto 34px; }
+.tc-filter[hidden] { display: none; }
+.tc-filter-btn {
+  font: 700 0.875rem 'Maven Pro', Arial, sans-serif;
+  color: #ffffff;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  min-height: 36px;
+}
+.tc-filter-btn:hover { background: rgba(255, 255, 255, 0.15); }
+.tc-filter-btn[aria-pressed="true"] { background: #ffffff; color: #16314D; border-color: #0E1A26; box-shadow: 2px 2px 0 #0E1A26; transform: rotate(-2deg); }
+.tc-card[hidden] { display: none; }
+.tc-card-image { position: relative; }
+.tc-level {
+  position: absolute; top: -12px; left: -8px; z-index: 3;
+  background: #1A64A8; color: #ffffff;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 8px;
+  border: 1.5px solid #0E1A26; box-shadow: 2px 2px 0 #0E1A26;
+  transform: rotate(-4deg);
+}
+.tc-highscore {
+  position: absolute; top: -12px; right: -8px; z-index: 3;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #ffffff; color: #16314D;
+  font-size: 0.8125rem; font-weight: 700;
+  padding: 4px 9px 4px 6px; border-radius: 9px;
+  border: 1.5px solid #0E1A26; box-shadow: 2px 2px 0 #0E1A26;
+  transform: rotate(5deg); white-space: nowrap;
+}
+.tc-highscore img { width: 15px; height: auto; }
+.tc-status { margin: -4px 0 12px !important; }
+.tc-status-chip {
+  display: inline-block;
+  font-size: 0.75rem; font-weight: 700;
+  padding: 3px 10px; border-radius: 999px;
+  color: var(--c1); border: 1.5px solid var(--c1);
+}
+.tc-status-chip.is-play { background: #1A64A8; border-color: #1A64A8; color: #ffffff; }
+@media (prefers-reduced-motion: reduce) { .tc-level, .tc-highscore, .tc-filter-btn[aria-pressed="true"] { transform: none; } }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
