@@ -18,7 +18,7 @@
 <link rel="icon" href="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/cropped-Icon%402x.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500;600;700&family=Poppins:wght@900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css?v=20261111">
 <script>document.documentElement.classList.add("js-menu");try{var t=localStorage.getItem("bs-theme"),s=localStorage.getItem("bs-size");if(t&&t!=="auto")document.documentElement.dataset.theme=t;if(s&&s!=="0")document.documentElement.classList.add("size-"+s)}catch(e){}</script>
 </head>
@@ -56,40 +56,53 @@
     <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/TimoLd1X/assets/meet-team-chorley.png" alt="Meet Team Chorley" width="1387" height="456">
   </h1>
   <p class="tc-page-intro">We&rsquo;re Emily and Craig, a husband-and-wife team who make learning feel like play. Emily leads the learning design and builds; Craig brings the gamer&rsquo;s eye for hidden details.</p>
-  <div class="tc-team-grid tc-team-v2">
+  <h2 class="tc-cyp-title"><span class="tc-sr">Choose your player</span><svg viewBox="-12 -2 784 120" aria-hidden="true" focusable="false"><defs><text id="tcCYP" x="380" y="88" text-anchor="middle" font-size="84" font-weight="900" letter-spacing="-2" style="font-family: Poppins, 'Arial Black', system-ui, sans-serif">choose your player</text></defs><use href="#tcCYP" class="l-edge" x="0.00" y="0"/><use href="#tcCYP" class="l-edge" x="0.45" y="1"/><use href="#tcCYP" class="l-edge" x="0.90" y="2"/><use href="#tcCYP" class="l-edge" x="1.35" y="3"/><use href="#tcCYP" class="l-edge" x="1.80" y="4"/><use href="#tcCYP" class="l-edge" x="2.25" y="5"/><use href="#tcCYP" class="l-edge" x="2.70" y="6"/><use href="#tcCYP" class="l-edge" x="3.15" y="7"/><use href="#tcCYP" class="l-edge" x="3.60" y="8"/><use href="#tcCYP" class="l-depth" x="0.45" y="1"/><use href="#tcCYP" class="l-depth" x="0.90" y="2"/><use href="#tcCYP" class="l-depth" x="1.35" y="3"/><use href="#tcCYP" class="l-depth" x="1.80" y="4"/><use href="#tcCYP" class="l-depth" x="2.25" y="5"/><use href="#tcCYP" class="l-depth" x="2.70" y="6"/><use href="#tcCYP" class="l-depth" x="3.15" y="7"/><use href="#tcCYP" class="l-depth" x="3.60" y="8"/><use href="#tcCYP" class="l-face"/></svg></h2>
 
-    <!-- Emily -->
-    <article class="tc-person" aria-labelledby="tcEmily">
-      <div class="tc-person-photo">
-        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/Kz8JsOQU/assets/Emmy-profile-wide.png" alt="Emily Chorley" width="1115" height="982">
-        <span class="tc-person-badge"><img src="assets/img/award-platinum.webp" alt="" width="150" height="200">2&times; Platinum</span>
-      </div>
-      <p class="tc-label">The Mrs</p>
-      <h2 id="tcEmily">Emily Chorley</h2>
-      <p class="tc-person-role">Learning designer and eLearning developer</p>
-      <p>Designing and building digital learning since 2010, with two Platinum wins at the LearnX LIVE! Awards 2020 for interactive scenario and game design.</p>
-      <p>She works end to end, from script to finished SCORM package, often in regulated, high-stakes settings, for clients including the WHO Academy, EA Games, Porsche and Nissan. A graphic design degree means the look of a course gets as much care as the learning.</p>
-      <ul class="tc-person-skills" aria-label="Emily's specialities">
-        <li>Articulate Storyline</li><li>Gamified scenarios</li><li>Simulations</li><li>Mini-games</li><li>AI learning tools</li>
-      </ul>
-    </article>
-
-    <!-- Craig -->
-    <article class="tc-person" aria-labelledby="tcCraig">
-      <div class="tc-person-photo">
-        <img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/Kz8JsOQU/assets/Pookie.png" alt="Craig Chorley" width="698" height="698">
-      </div>
-      <p class="tc-label tc-label-pink">The Mr</p>
-      <h2 id="tcCraig">Craig Chorley</h2>
-      <p class="tc-person-role">Game elements and detail</p>
-      <p>The newer half of Team Chorley and our resident gamer, Craig brings close attention to detail to every build.</p>
-      <p>He specialises in hidden game elements: the Easter eggs, secrets and small surprises that reward curious learners and keep them exploring right to the end.</p>
-      <ul class="tc-person-skills" aria-label="Craig's specialities">
-        <li>Hidden game elements</li><li>Easter eggs</li><li>Attention to detail</li>
-      </ul>
-    </article>
-
+  <div class="tc-select" role="tablist" aria-label="Choose your player">
+    <button type="button" class="tc-player" role="tab" id="tcTabEmily" aria-selected="true" aria-controls="tcPanelEmily">
+      <span class="tc-player-sel" aria-hidden="true">Player 1</span>
+      <span class="tc-player-photo"><img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/Kz8JsOQU/assets/Emmy-profile-wide.png" alt="" width="1115" height="982"></span>
+      <span class="tc-player-name">Emily</span>
+      <span class="tc-player-class">Class: Learning designer</span>
+      <span class="tc-player-moves-title">Special moves</span>
+      <span class="tc-player-moves"><span>Storyline</span><span>Scenarios</span><span>AI tools</span></span>
+    </button>
+    <button type="button" class="tc-player" role="tab" id="tcTabCraig" aria-selected="false" aria-controls="tcPanelCraig">
+      <span class="tc-player-sel" aria-hidden="true">Player 2</span>
+      <span class="tc-player-photo"><img src="https://articulateusercontent.com/review/uploads/ugUqJFrIpYsqEMSrorVDC6SvTa5wPIBZ/Kz8JsOQU/assets/Pookie.png" alt="" width="698" height="698"></span>
+      <span class="tc-player-name">Craig</span>
+      <span class="tc-player-class">Class: Game elements</span>
+      <span class="tc-player-moves-title">Special moves</span>
+      <span class="tc-player-moves"><span>Easter eggs</span><span>Detail</span><span>Gaming</span></span>
+    </button>
   </div>
+
+  <section class="tc-player-panel" role="tabpanel" id="tcPanelEmily" aria-labelledby="tcTabEmily">
+    <div class="tc-player-panel-head">
+      <p class="tc-label">The Mrs</p>
+      <h3>Emily Chorley</h3>
+      <p class="tc-person-role">Learning designer and eLearning developer</p>
+      <span class="tc-person-badge"><img src="assets/img/award-platinum.webp" alt="" width="150" height="200">2&times; Platinum</span>
+    </div>
+    <p>Designing and building digital learning since 2010, with two Platinum wins at the LearnX LIVE! Awards 2020 for interactive scenario and game design.</p>
+    <p>She works end to end, from script to finished SCORM package, often in regulated, high-stakes settings, for clients including the WHO Academy, EA Games, Porsche and Nissan. A graphic design degree means the look of a course gets as much care as the learning.</p>
+    <ul class="tc-person-skills" aria-label="Emily's specialities">
+      <li>Articulate Storyline</li><li>Gamified scenarios</li><li>Simulations</li><li>Mini-games</li><li>AI learning tools</li>
+    </ul>
+  </section>
+
+  <section class="tc-player-panel" role="tabpanel" id="tcPanelCraig" aria-labelledby="tcTabCraig">
+    <div class="tc-player-panel-head">
+      <p class="tc-label tc-label-pink">The Mr</p>
+      <h3>Craig Chorley</h3>
+      <p class="tc-person-role">Game elements and detail</p>
+    </div>
+    <p>The newer half of Team Chorley and our resident gamer, Craig brings close attention to detail to every build.</p>
+    <p>He specialises in hidden game elements: the Easter eggs, secrets and small surprises that reward curious learners and keep them exploring right to the end.</p>
+    <ul class="tc-person-skills" aria-label="Craig's specialities">
+      <li>Hidden game elements</li><li>Easter eggs</li><li>Attention to detail</li>
+    </ul>
+  </section>
 </div>
 </main>
 
