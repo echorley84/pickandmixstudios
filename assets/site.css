@@ -2174,8 +2174,41 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .tc-panel-card p.tc-label, .tc-label { color: #ffffff; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-panel-card p.tc-label { color: #07090C; } }
 :root[data-theme="dark"] .tc-panel-card p.tc-label { color: #07090C; }
-/* PALETTE START: 6 soft grey and blue */
-:root { --page-top: #F3F4F6; --page-bot: #EEF0F3; --text-heading: #16314D; --text-body: #4B5563; --footer-band: #16314D; --footer-edge: #0B1A2B; }
-.tc-header-wrap { border-bottom-color: #E5E7EB; }
-.tc-hero p.tc-meta { background: #16314D; color: #ffffff; }
+/* PALETTE START */
+:root {
+  --page-top: #1C6CA3; --page-bot: #2479B3;
+  --text-heading: #ffffff; --text-body: #e7f4fb;
+  --card-fill: #ffffff; --card-edge: #10324F;
+  --footer-band: #16314D; --footer-edge: #0B1A2B;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-header-wrap { border-bottom-color: transparent; } }
+:root[data-theme="light"] .tc-header-wrap { border-bottom-color: transparent; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-hero p.tc-meta { background: #ffffff; color: #1A64A8; } }
+:root[data-theme="light"] .tc-hero p.tc-meta { background: #ffffff; color: #1A64A8; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-card, :root:not([data-theme="dark"]) .tc-profile-card, :root:not([data-theme="dark"]) .tc-bss-card, :root:not([data-theme="dark"]) .tc-product-card, :root:not([data-theme="dark"]) .tc-contact-card, :root:not([data-theme="dark"]) .tc-tb-inner, :root:not([data-theme="dark"]) .tc-client-panel {
+  --card-heading: #16314D; --card-body: #3E556B; --muted: #4A5F75; --c1: #1c6fba; --line: #D3E3F0;
+  --text-heading: #16314D; --text-body: #3E556B; color: #3E556B;
+  --ok: #1e7b34; --err: #b3261e;
+} }
+:root[data-theme="light"] .tc-card, :root[data-theme="light"] .tc-profile-card, :root[data-theme="light"] .tc-bss-card, :root[data-theme="light"] .tc-product-card, :root[data-theme="light"] .tc-contact-card, :root[data-theme="light"] .tc-tb-inner, :root[data-theme="light"] .tc-client-panel {
+  --card-heading: #16314D; --card-body: #3E556B; --muted: #4A5F75; --c1: #1c6fba; --line: #D3E3F0;
+  --text-heading: #16314D; --text-body: #3E556B; color: #3E556B;
+  --ok: #1e7b34; --err: #b3261e;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-tb-head, :root:not([data-theme="dark"]) .tc-client-panel h2, :root:not([data-theme="dark"]) .tc-profile-card h2 { color: #16314D; } }
+:root[data-theme="light"] .tc-tb-head, :root[data-theme="light"] .tc-client-panel h2, :root[data-theme="light"] .tc-profile-card h2 { color: #16314D; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-tb-tag, :root:not([data-theme="dark"]) .tc-client-panel p:not(.tc-label), :root:not([data-theme="dark"]) .tc-profile-card p { color: #3E556B; } }
+:root[data-theme="light"] .tc-tb-tag, :root[data-theme="light"] .tc-client-panel p:not(.tc-label), :root[data-theme="light"] .tc-profile-card p { color: #3E556B; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-tb-copy .tc-meta { background: #1A64A8; color: #ffffff; } }
+:root[data-theme="light"] .tc-tb-copy .tc-meta { background: #1A64A8; color: #ffffff; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-btn-ghost { color: #1c6fba; border-color: #1c6fba; } }
+:root[data-theme="light"] .tc-btn-ghost { color: #1c6fba; border-color: #1c6fba; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-access-note { background: #EEF5FB; } }
+:root[data-theme="light"] .tc-access-note { background: #EEF5FB; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-card a:focus-visible, :root:not([data-theme="dark"]) .tc-card button:focus-visible, :root:not([data-theme="dark"]) .tc-tb-inner a:focus-visible, :root:not([data-theme="dark"]) .tc-client-panel a:focus-visible, :root:not([data-theme="dark"]) .tc-contact-card a:focus-visible, :root:not([data-theme="dark"]) .tc-contact-card button:focus-visible, :root:not([data-theme="dark"]) .tc-bss-card a:focus-visible, :root:not([data-theme="dark"]) .tc-bss-card button:focus-visible, :root:not([data-theme="dark"]) .tc-product-card a:focus-visible, :root:not([data-theme="dark"]) .tc-product-card button:focus-visible { outline: 3px solid #16314D; box-shadow: 0 0 0 6px #ffffff; } }
+:root[data-theme="light"] .tc-card a:focus-visible, :root[data-theme="light"] .tc-card button:focus-visible, :root[data-theme="light"] .tc-tb-inner a:focus-visible, :root[data-theme="light"] .tc-client-panel a:focus-visible, :root[data-theme="light"] .tc-contact-card a:focus-visible, :root[data-theme="light"] .tc-contact-card button:focus-visible, :root[data-theme="light"] .tc-bss-card a:focus-visible, :root[data-theme="light"] .tc-bss-card button:focus-visible, :root[data-theme="light"] .tc-product-card a:focus-visible, :root[data-theme="light"] .tc-product-card button:focus-visible { outline: 3px solid #16314D; box-shadow: 0 0 0 6px #ffffff; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) a:focus-visible, :root:not([data-theme="dark"]) button:focus-visible, :root:not([data-theme="dark"]) .tc-btn:focus-visible { outline: 3px solid #ffffff; box-shadow: 0 0 0 6px #16314D; } }
+:root[data-theme="light"] a:focus-visible, :root[data-theme="light"] button:focus-visible, :root[data-theme="light"] .tc-btn:focus-visible { outline: 3px solid #ffffff; box-shadow: 0 0 0 6px #16314D; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tc-header a:focus-visible, :root:not([data-theme="dark"]) .tc-header button:focus-visible { outline-color: #0E1A26; box-shadow: 0 0 0 6px #ffffff; } }
+:root[data-theme="light"] .tc-header a:focus-visible, :root[data-theme="light"] .tc-header button:focus-visible { outline-color: #0E1A26; box-shadow: 0 0 0 6px #ffffff; }
 /* PALETTE END */
