@@ -329,26 +329,123 @@ document.addEventListener('DOMContentLoaded', function () {
   select(tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0], false);
 })();
 
+
+
 // ==========================================================================
-// Showcase: "Select a level" filter (All / Playable / Award winners).
-// The filter bar stays hidden without the script, and every demo shows.
+// Showcase: "Select a level" world map. Builds round level stops from the
+// demo cards, draws a winding dotted path through them, and shows the chosen
+// demo's card underneath. Without the script the map stays hidden and every
+// demo card shows as a normal list.
 // ==========================================================================
 (function () {
-  var bar = document.getElementById('tcFilter');
-  if (!bar) return;
-  var status = document.getElementById('tcFilterStatus');
+  var map = document.getElementById('tcMap');
+  if (!map) return;
+  var wrap = map.querySelector('.tc-map-nodes');
+  var path = map.querySelector('.tc-map-path path');
+  var svg = map.querySelector('.tc-map-path');
+  var grid = document.querySelector('.tc-showcase-grid');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.tc-card[data-playable]'));
-  var btns = Array.prototype.slice.call(bar.querySelectorAll('[data-filter]'));
-  bar.hidden = false;
-  btns.forEach(function (b) {
-    b.addEventListener('click', function () {
-      var f = b.getAttribute('data-filter'), shown = 0;
-      btns.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-      cards.forEach(function (c) {
-        var ok = f === 'all' || (f === 'playable' && c.dataset.playable === 'true') || (f === 'award' && c.dataset.award === 'true');
-        c.hidden = !ok; if (ok) shown++;
-      });
-      if (status) status.textContent = 'Showing ' + shown + (shown === 1 ? ' demo' : ' demos');
+  if (!cards.length) return;
+  var logo = document.querySelector('.tc-logo img');
+  var token = document.createElement('img');
+  token.className = 'tc-map-token'; token.alt = ''; token.setAttribute('aria-hidden', 'true');
+  if (logo) token.src = logo.src;
+  map.appendChild(token);
+
+  var nodes = cards.map(function (card, i) {
+    var name = (card.querySelector('h2') || {}).textContent || ('Level ' + (i + 1));
+    var thumb = card.querySelector('.tc-card-image > img:not(.tc-award-img)');
+    var award = card.dataset.award === 'true';
+    card.id = card.id || ('tcLevelCard' + (i + 1));
+    card.setAttribute('role', 'tabpanel');
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'tc-node'; b.id = 'tcLevel' + (i + 1);
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-controls', card.id);
+    b.setAttribute('aria-label', 'Level ' + (i + 1) + ': ' + name.trim() + (award ? ', Platinum award winner' : ''));
+    card.setAttribute('aria-labelledby', b.id);
+    b.innerHTML = (thumb ? '<img class="tc-node-thumb" alt="" src="' + thumb.getAttribute('src') + '">' : '') +
+      '<span class="tc-node-num" aria-hidden="true">' + (i + 1) + '</span>' +
+      (award ? '<span class="tc-node-star" aria-hidden="true"><img alt="" src="assets/img/award-platinum.webp"></span>' : '') +
+      '<span class="tc-node-name" aria-hidden="true">' + name.trim() + '</span>';
+    wrap.appendChild(b);
+    return b;
+  });
+
+  var current = 0;
+  function cols() { return parseInt(getComputedStyle(wrap).getPropertyValue('--cols'), 10) || 5; }
+
+  // Snake the stops: left to right, then right to left on the next row
+  function place() {
+    var c = cols();
+    nodes.forEach(function (n, i) {
+      var row = Math.floor(i / c), col = i % c;
+      if (row % 2) col = c - 1 - col;
+      n.style.gridRow = String(row + 1);
+      n.style.gridColumn = String(col + 1);
+      n.style.marginTop = (col % 2 ? 30 : 0) + 'px';
+    });
+  }
+
+  function centre(el) {
+    var m = map.getBoundingClientRect(), r = el.getBoundingClientRect();
+    return { x: r.left - m.left + r.width / 2, y: r.top - m.top + r.height / 2, w: r.width };
+  }
+
+  // Smooth curve through the stop centres (Catmull-Rom to Bezier)
+  function draw() {
+    var pts = nodes.map(centre);
+    svg.setAttribute('viewBox', '0 0 ' + map.clientWidth + ' ' + map.clientHeight);
+    var d = 'M' + pts[0].x + ' ' + pts[0].y;
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      var t = 0.22;
+      d += ' C' + (p1.x + (p2.x - p0.x) * t) + ' ' + (p1.y + (p2.y - p0.y) * t) + ' ' +
+        (p2.x - (p3.x - p1.x) * t) + ' ' + (p2.y - (p3.y - p1.y) * t) + ' ' + p2.x + ' ' + p2.y;
+    }
+    path.setAttribute('d', d);
+    moveToken();
+  }
+
+  function moveToken() {
+    var p = centre(nodes[current]);
+    token.style.left = (p.x - token.offsetWidth / 2) + 'px';
+    token.style.top = (p.y - p.w / 2 - token.offsetHeight + 4) + 'px';
+  }
+
+  function select(i, focus) {
+    current = i;
+    nodes.forEach(function (n, j) {
+      var on = j === i;
+      n.setAttribute('aria-selected', String(on));
+      n.tabIndex = on ? 0 : -1;
+      cards[j].hidden = !on;
+    });
+    if (focus) nodes[i].focus();
+    moveToken();
+  }
+
+  nodes.forEach(function (n, i) {
+    n.addEventListener('click', function () { select(i, false); });
+    n.addEventListener('keydown', function (e) {
+      var k = e.key, t = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') t = (i + 1) % nodes.length;
+      if (k === 'ArrowLeft' || k === 'ArrowUp') t = (i - 1 + nodes.length) % nodes.length;
+      if (k === 'Home') t = 0;
+      if (k === 'End') t = nodes.length - 1;
+      if (t !== null) { e.preventDefault(); select(t, true); }
     });
   });
+
+  map.hidden = false;
+  if (grid) grid.classList.add('is-map');
+  place();
+  select(0, false);
+  draw();
+  var raf;
+  function redraw() { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { place(); draw(); }); }
+  window.addEventListener('resize', redraw);
+  if (window.ResizeObserver) new ResizeObserver(redraw).observe(map);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+  window.addEventListener('load', redraw);
 })();
