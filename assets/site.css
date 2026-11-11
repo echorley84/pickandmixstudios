@@ -2107,3 +2107,11 @@ body.tc-no-scroll { overflow: hidden; }
   --muted: #D7E3EE;
 }
 .tc-team-grid { gap: 28px; }
+
+/* Cards: tinted glass (Emily's pick), footer keeps a solid deep blue band */
+:root { --navy-card: rgba(10, 40, 75, 0.28); --navy-edge: rgba(10, 30, 55, 0.55); --footer-band: #1D4E7C; --footer-edge: #10324F; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --navy-card: #161C24; --navy-edge: #2A3542; --footer-band: #161C24; --footer-edge: #2A3542; } }
+:root[data-theme="dark"] { --navy-card: #161C24; --navy-edge: #2A3542; --footer-band: #161C24; --footer-edge: #2A3542; }
+.tc-footer { background: var(--footer-band); border-top-color: var(--footer-edge); }
+.tc-card, .tc-tb-inner, .tc-client-panel, .tc-profile-card { --card-body: #E3EEF7; }
+.tc-tb-tag, .tc-client-panel p:not(.tc-label), .tc-profile-card p { color: #E3EEF7; }
