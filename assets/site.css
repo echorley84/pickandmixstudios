@@ -2084,3 +2084,10 @@ body.tc-no-scroll { overflow: hidden; }
   .tc-sticker svg { width: 14px; height: 14px; }
 }
 @media (max-width: 350px) { .tc-stickers { flex-wrap: wrap; } }
+
+/* Tiny Bytes card and client work card: same width at every size */
+.tc-tb-feature, .tc-tb-feature + .tc-section { padding-left: 24px; padding-right: 24px; }
+.tc-tb-inner, .tc-client-panel { max-width: 1100px; box-sizing: border-box; }
+@media (max-width: 820px) {
+  .tc-tb-feature, .tc-tb-feature + .tc-section { padding-left: 16px; padding-right: 16px; }
+}
