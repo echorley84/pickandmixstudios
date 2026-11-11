@@ -512,3 +512,90 @@ document.addEventListener('DOMContentLoaded', function () {
   if (grid) grid.classList.add('is-shelf');
   select(0, false);
 })();
+
+// ==========================================================================
+// Pop-up Shop: "Item shop" vending machine. Each product is a slot (A1, A2…);
+// pressing its key drops it into the tray and shows its card below.
+// Without the script the machine stays hidden and every product card shows.
+// ==========================================================================
+(function () {
+  var vend = document.getElementById('tcVend');
+  if (!vend) return;
+  var slots = vend.querySelector('.tc-vend-slots');
+  var keys = vend.querySelector('.tc-vend-keys');
+  var lcd = document.getElementById('tcVendLcd');
+  var tray = document.getElementById('tcVendTray');
+  var grid = document.querySelector('.tc-shop-grid');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.tc-product-card'));
+  if (!cards.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var codes = ['A1', 'A2', 'B1', 'B2'];
+  var slotEls = [];
+  var btns = cards.map(function (card, i) {
+    var name = ((card.querySelector('h2') || {}).textContent || ('Product ' + (i + 1))).trim();
+    var img = card.querySelector('.tc-product-main-image img');
+    card.id = card.id || ('tcProduct' + (i + 1));
+    card.setAttribute('role', 'tabpanel');
+    var s = document.createElement('div');
+    s.className = 'tc-vend-slot';
+    s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = '<div class="tc-vend-item">' + (img ? '<img alt="" src="' + img.getAttribute('src') + '">' : '') + '</div>' +
+      '<span class="tc-vend-code">' + codes[i] + '</span><span class="tc-vend-coil"></span>';
+    slots.appendChild(s); slotEls.push(s);
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'tc-vend-key'; b.id = 'tcKey' + codes[i];
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-controls', card.id);
+    b.setAttribute('aria-label', codes[i] + ': ' + name);
+    b.textContent = codes[i];
+    card.setAttribute('aria-labelledby', b.id);
+    b.dataset.name = name; b.dataset.img = img ? img.getAttribute('src') : '';
+    keys.appendChild(b);
+    return b;
+  });
+  // fill the rest of the window with "coming soon" slots
+  for (var k = cards.length; k < 4; k++) {
+    var s = document.createElement('div');
+    s.className = 'tc-vend-slot is-soon'; s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = '<div class="tc-vend-item"><span>Coming<br>soon</span></div><span class="tc-vend-code">' + codes[k] + '</span><span class="tc-vend-coil"></span>';
+    slots.appendChild(s);
+  }
+  var timer;
+  function select(i, focus, animate) {
+    btns.forEach(function (b, j) {
+      var on = j === i;
+      b.setAttribute('aria-selected', String(on));
+      b.tabIndex = on ? 0 : -1;
+      cards[j].hidden = !on;
+    });
+    lcd.textContent = btns[i].textContent + ' ✓';
+    if (btns[i].dataset.img) { tray.src = btns[i].dataset.img; }
+    tray.hidden = false;
+    if (animate && !reduce) {
+      var s = slotEls[i];
+      clearTimeout(timer);
+      slotEls.forEach(function (x) { x.classList.remove('is-drop'); });
+      tray.classList.remove('is-in');
+      void s.offsetWidth;
+      s.classList.add('is-drop');
+      timer = setTimeout(function () { tray.classList.add('is-in'); s.classList.remove('is-drop'); }, 650);
+    } else {
+      tray.classList.add('is-in');
+    }
+    if (focus) btns[i].focus();
+  }
+  btns.forEach(function (b, i) {
+    b.addEventListener('click', function () { select(i, false, true); });
+    b.addEventListener('keydown', function (e) {
+      var key = e.key, t = null;
+      if (key === 'ArrowRight' || key === 'ArrowDown') t = (i + 1) % btns.length;
+      if (key === 'ArrowLeft' || key === 'ArrowUp') t = (i - 1 + btns.length) % btns.length;
+      if (key === 'Home') t = 0;
+      if (key === 'End') t = btns.length - 1;
+      if (t !== null) { e.preventDefault(); select(t, true, true); }
+    });
+  });
+  vend.hidden = false;
+  if (grid) grid.classList.add('is-vend');
+  select(0, false, false);
+})();
