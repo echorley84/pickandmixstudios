@@ -3121,6 +3121,44 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .tc-con-ab .b { background: #1A64A8; margin-top: 22px; }
 .tc-con-ab button:active { transform: translateY(3px); box-shadow: 0 1px 0 #0B1622; }
 
+/* Home: achievement badges (restyled 11 Nov) */
+.tc-stats-wrap .tc-stickers {
+  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;
+  max-width: 620px; margin: 0 auto; padding: 0;
+}
+.tc-stickers li { display: flex; }
+.tc-stickers .tc-flip { width: 100%; transform: none !important; }
+.tc-stickers .tc-flip-in { width: 100%; height: 100%; }
+.tc-stickers .tc-flip-f, .tc-stickers .tc-flip-b {
+  flex-direction: column; gap: 8px; white-space: normal; text-align: center;
+  padding: 16px 8px 14px; border-radius: 16px;
+  box-shadow: 2px 3px 0 #0E1A26; line-height: 1.2;
+}
+.tc-stickers .tc-flip-f { background: #ffffff; border-top: 6px solid var(--ach, #1A64A8); }
+.tc-stickers .tc-flip.s-pink { --ach: #C01F62; }
+.tc-stickers .tc-flip.s-blue { --ach: #1A64A8; }
+.tc-stickers .tc-flip.s-orange { --ach: #B4520F; }
+.tc-ach-ic {
+  width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ach, #1A64A8); color: #ffffff;
+  border: 1.5px solid #0E1A26; box-shadow: 0 0 0 3px #ffffff, 0 0 0 4.5px var(--ach, #1A64A8);
+}
+.tc-stickers .tc-ach-ic svg { width: 24px; height: 24px; color: #ffffff !important; }
+.tc-ach-t { display: flex; flex-direction: column; gap: 2px; font-size: .75rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #3E556B; }
+.tc-ach-t b { font-size: 1.125rem; letter-spacing: 0; text-transform: none; color: #16314D; }
+.tc-stickers .tc-flip-b { background: var(--ach, #1A64A8); }
+.tc-stickers .tc-flip-b .tc-ach-t, .tc-stickers .tc-flip-b .tc-ach-t b { color: #ffffff; }
+.tc-stickers .tc-flip:hover .tc-flip-in { translate: 0 -3px; }
+.tc-stickers .tc-flip:hover .tc-flip-f { box-shadow: 0 0 0 2px var(--ach), 2px 3px 0 2px #0E1A26; }
+@media (max-width: 480px) {
+  .tc-stats-wrap .tc-stickers { gap: 8px; }
+  .tc-stickers .tc-flip-f, .tc-stickers .tc-flip-b { padding: 12px 4px 10px; gap: 6px; font-size: inherit; box-shadow: 2px 2px 0 #0E1A26; }
+  .tc-ach-ic { width: 38px; height: 38px; }
+  .tc-stickers .tc-ach-ic svg { width: 20px; height: 20px; }
+  .tc-ach-t { font-size: .625rem; letter-spacing: .06em; }
+  .tc-ach-t b { font-size: .9375rem; }
+}
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
