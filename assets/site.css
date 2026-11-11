@@ -3049,6 +3049,78 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
   .tc-start-txt, .tc-ts .tc-mainmenu.is-in li { animation: none; }
 }
 
+/* Home: title screen option B, handheld console */
+.tc-ts.tc-ts--console {
+  max-width: 380px;
+  padding: 18px 18px 24px;
+  background: linear-gradient(170deg, #1E3E60, #16314D 60%);
+  border: 1.5px solid #0E1A26;
+  border-radius: 26px 26px 64px 26px;
+  box-shadow: 3px 4px 0 #0E1A26, inset 0 2px 0 rgba(255,255,255,.12);
+}
+.tc-ts--console > .tc-spark { display: none; }
+.tc-con-screen {
+  position: relative;
+  min-height: 330px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 14px;
+  border-radius: 12px;
+  border: 3px solid #ffffff;
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.14) 1.2px, transparent 1.6px) 0 0 / 14px 14px,
+    linear-gradient(160deg, #2C8BCB, #1A64A8 70%);
+  box-shadow: 0 0 0 8px #0E2236, 0 0 0 9.5px #0B1622;
+  margin: 10px 10px 0;
+}
+.tc-ts--console .tc-start-knob { display: none; }
+.tc-ts--console .tc-start-txt { font-size: 1.375rem; letter-spacing: .16em; white-space: nowrap; }
+.tc-con-brand { margin: 22px 0 0 !important; color: #ffffff !important; font: italic 900 1rem 'Maven Pro', Arial, sans-serif; letter-spacing: .04em; }
+.tc-con-brand span { font-style: normal; font-weight: 700; font-size: .6875rem; letter-spacing: .18em; text-transform: uppercase; color: #FF8DBC; margin-left: 6px; }
+.tc-ts--console .tc-mm-title { margin-bottom: 10px !important; padding: 3px 12px; font-size: .75rem !important; }
+.tc-ts--console .tc-mainmenu ul { grid-template-columns: 1fr; gap: 6px; }
+.tc-ts.tc-ts--console .tc-mainmenu a {
+  flex-direction: row; gap: 10px; padding: 6px 10px 6px 8px;
+  background: rgba(255, 255, 255, 0.12); color: #ffffff;
+  border: 1.5px solid transparent; box-shadow: none; border-radius: 10px;
+  text-align: left;
+}
+.tc-ts--console .tc-mm-t { flex: 1; flex-direction: row; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tc-ts--console .tc-mm-t b { font-size: .9688rem; }
+.tc-ts.tc-ts--console .tc-mainmenu small { color: #CFE3F5; font-size: .75rem; white-space: nowrap; }
+.tc-ts--console .tc-mm-ic { width: 30px; height: 30px; flex-shrink: 0; border-width: 1.5px; border-color: #ffffff; }
+.tc-ts--console .tc-mm-ic svg { width: 16px; height: 16px; }
+.tc-ts.tc-ts--console .tc-mainmenu a:hover, .tc-ts.tc-ts--console .tc-mainmenu a:focus-visible, .tc-ts.tc-ts--console .tc-mainmenu a.is-sel {
+  background: #ffffff; color: #16314D; border-color: #10324F;
+  transform: translateX(4px); box-shadow: 2px 2px 0 #10324F;
+}
+.tc-ts.tc-ts--console .tc-mainmenu a:hover small, .tc-ts.tc-ts--console .tc-mainmenu a:focus-visible small, .tc-ts.tc-ts--console .tc-mainmenu a.is-sel small { color: #C01F62; }
+.tc-ts--console .tc-mainmenu a:focus-visible { outline: 3px solid #FF8DBC; outline-offset: 2px; }
+.tc-con-ctrl { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin: 16px 6px 0; }
+.tc-con-ctrl[hidden] { display: none; }
+.tc-con-ctrl button { cursor: pointer; font: inherit; }
+.tc-dpad { position: relative; width: 92px; height: 92px; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); }
+.tc-dpad > * { background: #0B1622; border: 0; padding: 0; }
+.tc-dpad .u { grid-area: 1 / 2; border-radius: 6px 6px 0 0; }
+.tc-dpad .l { grid-area: 2 / 1; border-radius: 6px 0 0 6px; }
+.tc-dpad .c { grid-area: 2 / 2; }
+.tc-dpad .r { grid-area: 2 / 3; border-radius: 0 6px 6px 0; }
+.tc-dpad .d { grid-area: 3 / 2; border-radius: 0 0 6px 6px; }
+.tc-dpad button:active { background: #1A64A8; }
+.tc-con-mid button {
+  background: #0B1622; color: #CFE3F5; border: 0; border-radius: 999px;
+  padding: 5px 14px; font-size: .6875rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  transform: rotate(-20deg);
+}
+.tc-con-mid button:active { background: #C01F62; color: #fff; }
+.tc-con-ab { justify-self: end; display: flex; gap: 10px; align-items: center; transform: rotate(-20deg); }
+.tc-con-ab button {
+  width: 44px; height: 44px; border-radius: 50%; color: #ffffff; font-weight: 900; font-size: 1rem;
+  border: 1.5px solid #0B1622; box-shadow: 0 4px 0 #0B1622;
+}
+.tc-con-ab .a { background: #C01F62; margin-top: -22px; }
+.tc-con-ab .b { background: #1A64A8; margin-top: 22px; }
+.tc-con-ab button:active { transform: translateY(3px); box-shadow: 0 1px 0 #0B1622; }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
