@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" role="img" aria-label="Platinum award">
+<defs>
+<linearGradient id="pm-silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#D5DEE7"/><stop offset=".55" stop-color="#F4F7FA"/><stop offset=".8" stop-color="#AEBDCB"/><stop offset="1" stop-color="#E4EAF0"/></linearGradient>
+<radialGradient id="pm-face" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#E3E9EF"/><stop offset="1" stop-color="#B8C6D3"/></radialGradient>
+</defs>
+<path d="M40 88 L28 134 L40 126 L50 136 L58 94 Z" fill="#1A64A8" stroke="#10324F" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M80 88 L92 134 L80 126 L70 136 L62 94 Z" fill="#C01F62" stroke="#10324F" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="60.0,7.0 65.6,11.4 72.2,8.6 76.5,14.3 83.5,13.3 86.2,19.9 93.2,20.8 94.1,27.8 100.7,30.5 99.7,37.5 105.4,41.8 102.6,48.4 107.0,54.0 102.6,59.6 105.4,66.2 99.7,70.5 100.7,77.5 94.1,80.2 93.2,87.2 86.2,88.1 83.5,94.7 76.5,93.7 72.2,99.4 65.6,96.6 60.0,101.0 54.4,96.6 47.8,99.4 43.5,93.7 36.5,94.7 33.8,88.1 26.8,87.2 25.9,80.2 19.3,77.5 20.3,70.5 14.6,66.2 17.4,59.6 13.0,54.0 17.4,48.4 14.6,41.8 20.3,37.5 19.3,30.5 25.9,27.8 26.8,20.8 33.8,19.9 36.5,13.3 43.5,14.3 47.8,8.6 54.4,11.4" fill="url(#pm-silver)" stroke="#10324F" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="60" cy="54" r="34" fill="url(#pm-face)" stroke="#8FA3B6" stroke-width="1.5"/>
+<circle cx="60" cy="54" r="29" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="1.5 3" opacity=".9"/>
+<polygon points="60.0,27.0 62.4,32.8 68.6,33.2 63.8,37.2 65.3,43.3 60.0,40.0 54.7,43.3 56.2,37.2 51.4,33.2 57.6,32.8" fill="#FFFFFF" stroke="#8FA3B6" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M14 50 H106 L100 58 L106 66 H14 L20 58 Z" fill="#16314D" stroke="#10324F" stroke-width="1"/>
+<text x="60" y="62.5" text-anchor="middle" font-family="'Maven Pro', Arial, Helvetica, sans-serif" font-weight="700" font-size="12.5" letter-spacing="1.6" fill="#FFFFFF">PLATINUM</text>
+<text x="60" y="80" text-anchor="middle" font-family="'Maven Pro', Arial, Helvetica, sans-serif" font-weight="700" font-size="8" letter-spacing="1" fill="#16314D">AWARD</text>
+<ellipse cx="44" cy="28" rx="12" ry="5" fill="#FFFFFF" opacity=".55" transform="rotate(-30 44 28)"/>
+</svg>

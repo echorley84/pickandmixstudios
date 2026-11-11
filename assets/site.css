@@ -2567,6 +2567,32 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 
 .tc-map-nodes { z-index: 0; }
 
+/* New Platinum medal (assets/img/platinum-medal.svg), lighter edges */
+.tc-node-medal {
+  position: absolute; right: -18px; bottom: -22px; z-index: 4;
+  width: 40px; height: auto;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+  transform: rotate(8deg);
+}
+.tc-card-image .tc-award-seal {
+  width: 74px; height: auto;
+  top: -24px; right: -12px;
+  background: none; border: 0; border-radius: 0; box-shadow: none;
+  display: block;
+}
+.tc-award-seal img { width: 100%; height: auto; transform: rotate(6deg); filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.28)); }
+.tc-award-seal .tc-spark svg { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 2px #10324F); }
+.tc-award-seal .tc-spark.s1 { top: -8px; left: -10px; }
+.tc-award-seal .tc-spark.s2 { bottom: 26px; left: -16px; }
+.tc-award-seal .tc-spark.s3 { top: 10px; right: -14px; }
+.tc-card[data-award="true"] { box-shadow: 3px 4px 0 var(--card-edge), 0 0 24px rgba(255, 255, 255, 0.35); }
+.tc-award-chip img { width: 13px; }
+.tc-person-badge img { width: 14px; }
+@media (max-width: 640px) {
+  .tc-node-medal { width: 32px; right: -14px; bottom: -18px; }
+  .tc-card-image .tc-award-seal { width: 60px; height: auto; top: -18px; right: -6px; }
+}
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;

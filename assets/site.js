@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function () {
     b.innerHTML = (thumb ? '<img class="tc-node-thumb" alt="" src="' + thumb.getAttribute('src') + '">' : '') +
       '<span class="tc-node-num" aria-hidden="true">' + (i + 1) + '</span>' +
       (award ? '<span class="tc-node-aura" aria-hidden="true"></span>' +
-        '<span class="tc-node-star" aria-hidden="true"><img alt="" src="assets/img/award-platinum.webp"></span>' +
+        '<img class="tc-node-medal" aria-hidden="true" alt="" src="assets/img/platinum-medal.svg">' +
         [1, 2, 3].map(function (k) { return '<span class="tc-spark s' + k + '" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0c.8 6.4 4.8 10.6 12 12-7.2 1.4-11.2 5.6-12 12-.8-6.4-4.8-10.6-12-12 7.2-1.4 11.2-5.6 12-12z"/></svg></span>'; }).join('') : '') +
       '<span class="tc-node-name" aria-hidden="true">' + name.trim() + '</span>';
     wrap.appendChild(b);
