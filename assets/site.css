@@ -2856,6 +2856,113 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 
 .tc-chest-loot img { border-width: 1.5px; border-radius: 8px; box-shadow: 0 0 0 1px #10324F, 0 8px 14px rgba(0, 0, 0, 0.28); }
 
+/* Home: title screen */
+@keyframes tcBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes tcBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0.55; } }
+@keyframes tcMenuIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+.tc-hero img.tc-hero-welcome-img { animation: tcBob 3.2s ease-in-out infinite; }
+.tc-start {
+  margin: 22px auto 0;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #ffffff; color: #C01F62;
+  font: 700 1rem 'Maven Pro', Arial, sans-serif; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 10px 22px; border-radius: 999px;
+  border: 1.5px solid #10324F; box-shadow: 2px 3px 0 #10324F;
+  cursor: pointer;
+  animation: tcBlink 1.2s infinite;
+}
+.tc-start::before { content: "\25B6"; font-size: 0.75em; }
+.tc-start:hover { animation: none; transform: translateY(-2px); }
+.tc-start[hidden] { display: none; }
+.tc-mainmenu {
+  max-width: 440px;
+  margin: 22px auto 0;
+  background: #16314D;
+  border: 1.5px solid #0E1A26;
+  border-radius: 18px;
+  box-shadow: 3px 4px 0 #0E1A26;
+  padding: 10px;
+  text-align: left;
+}
+.tc-mainmenu[hidden] { display: none; }
+.tc-mainmenu.is-in { animation: tcMenuIn 0.35s ease-out; }
+.tc-mainmenu ul { list-style: none; margin: 0; padding: 0; }
+.tc-mainmenu a {
+  display: flex; align-items: center; gap: 10px;
+  color: #D7E3EE; text-decoration: none;
+  font: 700 1.0625rem 'Maven Pro', Arial, sans-serif;
+  padding: 10px 12px; border-radius: 10px;
+}
+.tc-mainmenu small { margin-left: auto; font-size: 0.8125rem; font-weight: 600; color: #8FB3D6; }
+.tc-mm-cur { width: 14px; color: #FF8DBC; font-size: 0.8em; visibility: hidden; }
+.tc-mainmenu a:hover, .tc-mainmenu a:focus-visible { background: rgba(255, 255, 255, 0.1); color: #ffffff; outline: none; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.5); }
+.tc-mainmenu a:hover .tc-mm-cur, .tc-mainmenu a:focus-visible .tc-mm-cur { visibility: visible; }
+.tc-mainmenu a:hover small, .tc-mainmenu a:focus-visible small { color: #D7E3EE; }
+
+/* Home: flip-over achievement stickers */
+.tc-stickers li { list-style: none; }
+.tc-flip { background: none; border: 0; padding: 0; cursor: pointer; perspective: 700px; font: inherit; }
+.tc-stickers li:nth-child(1) .tc-flip { transform: rotate(-2deg); }
+.tc-stickers li:nth-child(2) .tc-flip { transform: rotate(1.5deg); }
+.tc-stickers li:nth-child(3) .tc-flip { transform: rotate(-1deg); }
+.tc-flip-in { display: grid; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(.4, 1.4, .5, 1); }
+.tc-flip-f, .tc-flip-b {
+  grid-area: 1 / 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border: 1.5px solid #0E1A26; box-shadow: 3px 3px 0 #0E1A26; border-radius: 12px;
+  padding: 8px 14px;
+  font-weight: 700; font-size: 1rem; white-space: nowrap;
+}
+.tc-flip-f { background: #ffffff; color: #16314D; }
+.tc-flip-b { background: #16314D; color: #ffffff; transform: rotateY(180deg); }
+.tc-flip-f svg { width: 20px; height: 20px; flex-shrink: 0; }
+.tc-flip.s-pink .tc-flip-f svg { color: #C01F62; }
+.tc-flip.s-blue .tc-flip-f svg { color: #1A64A8; }
+.tc-flip.s-orange .tc-flip-f svg { color: #B4520F; }
+.tc-flip.s-pink .tc-flip-b { background: #C01F62; }
+.tc-flip.s-blue .tc-flip-b { background: #1A64A8; }
+.tc-flip.s-orange .tc-flip-b { background: #B4520F; }
+.tc-flip[aria-pressed="true"] .tc-flip-in { transform: rotateY(180deg); }
+.tc-flip:hover .tc-flip-in { translate: 0 -2px; }
+.tc-flip:focus-visible { outline: 3px solid #ffffff; outline-offset: 4px; border-radius: 12px; box-shadow: 0 0 0 6px #16314D; }
+@media (max-width: 480px) {
+  .tc-flip-f, .tc-flip-b { font-size: 0.75rem; padding: 6px 8px; gap: 4px; box-shadow: 2px 2px 0 #0E1A26; }
+  .tc-flip-f svg { width: 14px; height: 14px; }
+  .tc-mainmenu a { font-size: 1rem; padding: 9px 10px; }
+}
+
+/* Home: client work padlock */
+.tc-unlock { display: grid !important; grid-template-columns: auto minmax(0, 1fr); gap: 22px; align-items: center; }
+.tc-unlock-copy h2 { margin-top: 2px; }
+.tc-padlock { background: none; border: 0; padding: 4px; cursor: pointer; width: 92px; }
+.tc-padlock[hidden] { display: none; }
+.tc-padlock-svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(2px 3px 0 rgba(16, 50, 79, 0.9)); }
+.tc-pad-shackle { transform-box: fill-box; transform-origin: 100% 100%; transition: transform 0.45s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes tcJiggle { 0%, 86%, 100% { transform: rotate(0); } 89% { transform: rotate(-8deg); } 92% { transform: rotate(7deg); } 95% { transform: rotate(-4deg); } }
+.tc-unlock:not(.is-open) .tc-padlock { animation: tcJiggle 3.5s ease-in-out infinite; transform-origin: 50% 20%; }
+.tc-padlock:hover .tc-pad-shackle { transform: translateY(-3px); }
+.tc-unlock.is-open .tc-pad-shackle { transform: translateY(-16px) rotate(30deg); }
+.tc-unlock-hint { font-weight: 700; color: #1A64A8 !important; margin: 0 0 4px !important; }
+.tc-unlock-action[hidden] { display: none; }
+.tc-unlock.is-open .tc-unlock-action { animation: tcMenuIn 0.35s ease-out; }
+.tc-unlock-action .tc-btn { background: #1A64A8; border-color: #1A64A8; color: #ffffff; }
+.tc-unlock-action .tc-btn:hover { background: #C01F62; border-color: #C01F62; }
+.tc-unlock-action .tc-btn svg { width: 18px; height: 18px; }
+.tc-padlock:focus-visible { outline: 3px solid #16314D; outline-offset: 3px; border-radius: 14px; }
+@media (max-width: 640px) {
+  .tc-unlock { grid-template-columns: 1fr; justify-items: start; gap: 8px; }
+  .tc-padlock { width: 74px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tc-hero img.tc-hero-welcome-img, .tc-start, .tc-unlock:not(.is-open) .tc-padlock { animation: none; }
+  .tc-flip-in, .tc-pad-shackle { transition: none; }
+  .tc-mainmenu.is-in, .tc-unlock.is-open .tc-unlock-action { animation: none; }
+}
+
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-unlock-hint { color: #8FC1F0 !important; } }
+:root[data-theme="dark"] .tc-unlock-hint { color: #8FC1F0 !important; }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;

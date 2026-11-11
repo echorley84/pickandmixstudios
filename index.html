@@ -57,15 +57,32 @@
     <p class="tc-meta">Award-winning, game-inspired eLearning</p>
     <h1 id="tcHomeTitle">Learning that plays like a game</h1>
     <p>We design and build interactive eLearning, playable demos and AI-powered learning tools that people actually enjoy, from the first idea to the finished course.</p>
+    <button type="button" class="tc-start" id="tcStart" aria-expanded="true" aria-controls="tcMainMenu" hidden>Press start</button>
+    <nav class="tc-mainmenu" id="tcMainMenu" aria-label="Main menu">
+      <ul>
+        <li><a href="showcase.html"><span class="tc-mm-cur" aria-hidden="true">&#9654;</span>Select a level<small>Showcase</small></a></li>
+        <li><a href="team-chorley.html"><span class="tc-mm-cur" aria-hidden="true">&#9654;</span>Choose your player<small>Team</small></a></li>
+        <li><a href="tutorials.html"><span class="tc-mm-cur" aria-hidden="true">&#9654;</span>Training mode<small>Tutorials</small></a></li>
+        <li><a href="popup-shop.html"><span class="tc-mm-cur" aria-hidden="true">&#9654;</span>Item shop<small>Pop-up Shop</small></a></li>
+        <li><a href="tinybytes/"><span class="tc-mm-cur" aria-hidden="true">&#9654;</span>Bonus level<small>Tiny Bytes</small></a></li>
+        <li><a href="contact.html"><span class="tc-mm-cur" aria-hidden="true">&#9654;</span>Player 2, join in<small>Get in touch</small></a></li>
+      </ul>
+    </nav>
 
   </div>
 </section>
 
 <div class="tc-stats-wrap">
-  <ul class="tc-stickers" aria-label="Highlights">
-    <li class="tc-sticker s-pink"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg><span>2&times; Platinum<span class="tc-sr"> award winners, LearnX LIVE! Awards 2020</span></span></li>
-    <li class="tc-sticker s-blue"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>16 years<span class="tc-sr"> in eLearning</span></span></li>
-    <li class="tc-sticker s-orange"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span>Worldwide clients</span></li>
+  <ul class="tc-stickers" aria-label="Achievements: tap to flip">
+    <li><button type="button" class="tc-flip s-pink" aria-pressed="false" aria-label="2 Platinum awards at the LearnX LIVE! Awards 2020, for interactive scenario and game design">
+      <span class="tc-flip-in" aria-hidden="true"><span class="tc-flip-f"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg>2&times; Platinum</span><span class="tc-flip-b">LearnX 2020</span></span>
+    </button></li>
+    <li><button type="button" class="tc-flip s-blue" aria-pressed="false" aria-label="16 years designing and building digital learning, since 2010">
+      <span class="tc-flip-in" aria-hidden="true"><span class="tc-flip-f"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>16 years</span><span class="tc-flip-b">Since 2010</span></span>
+    </button></li>
+    <li><button type="button" class="tc-flip s-orange" aria-pressed="false" aria-label="Worldwide clients, including the UK, USA and Australia">
+      <span class="tc-flip-in" aria-hidden="true"><span class="tc-flip-f"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>Worldwide clients</span><span class="tc-flip-b">UK &middot; US &middot; AU +</span></span>
+    </button></li>
   </ul>
 </div>
 
@@ -87,13 +104,19 @@
 </section>
 
 <section class="tc-section" aria-labelledby="tcClientTitle">
-  <div class="tc-panel-card tc-client-panel">
-    <div>
+  <div class="tc-panel-card tc-client-panel tc-unlock" id="tcUnlock">
+    <button type="button" class="tc-padlock" id="tcPadlock" aria-expanded="true" aria-controls="tcUnlockAction" hidden>
+      <svg class="tc-padlock-svg" viewBox="0 0 64 76" aria-hidden="true" focusable="false"><defs><linearGradient id="tcPadGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".45" stop-color="#F4C24C"/><stop offset="1" stop-color="#C2871C"/></linearGradient><linearGradient id="tcPadSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9FB0C0"/><stop offset=".5" stop-color="#F0F4F8"/><stop offset="1" stop-color="#8FA3B6"/></linearGradient></defs><g class="tc-pad-shackle"><path d="M17 36 V22 Q17 8 32 8 Q47 8 47 22 V36" fill="none" stroke="#3A2A0A" stroke-width="10" stroke-linecap="round"/><path d="M17 36 V22 Q17 8 32 8 Q47 8 47 22 V36" fill="none" stroke="url(#tcPadSteel)" stroke-width="6.5" stroke-linecap="round"/></g><rect x="7" y="32" width="50" height="40" rx="9" fill="url(#tcPadGold)" stroke="#5A3A06" stroke-width="2.5"/><path d="M14 40 h12" stroke="#FFF7D1" stroke-width="3" stroke-linecap="round" opacity=".8"/><circle cx="32" cy="49" r="5.5" fill="#3A1A06"/><path d="M29.5 51 L28 62 H36 L34.5 51 Z" fill="#3A1A06"/></svg><span class="tc-sr">Unlock our client work</span>
+    </button>
+    <div class="tc-unlock-copy">
       <p class="tc-label">Private portfolio</p>
-      <h2 id="tcClientTitle">Want to see our client work?</h2>
+      <h2 id="tcClientTitle">Unlock our client work</h2>
       <p>Our work includes courses for EA Games, Porsche, Nissan, the WHO Academy and NSW Rural Fire Service. Most of it is under NDA, so we share our client portfolio privately. Tell us a little about yourself and we&rsquo;ll email you a link.</p>
+      <p class="tc-unlock-hint" id="tcUnlockHint" aria-live="polite" hidden>Tap the padlock to unlock.</p>
+      <div class="tc-unlock-action" id="tcUnlockAction">
+        <a class="tc-btn" href="contact.html?topic=client-work"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M17 6l3 3M14.5 8.5l2.5 2.5"/></svg> Request access</a>
+      </div>
     </div>
-    <a class="tc-btn" href="contact.html?topic=client-work">Request access</a>
   </div>
 </section>
 </main>

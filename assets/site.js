@@ -574,3 +574,61 @@ document.addEventListener('DOMContentLoaded', function () {
   if (grid) grid.classList.add('is-loot');
   select(0, false);
 })();
+
+// ==========================================================================
+// Home: title screen (Press start + main menu), flip-over achievement
+// stickers, and the client work padlock. Without the script the menu and
+// the Request access button simply show, and the stickers stay front-side up.
+// ==========================================================================
+(function () {
+  // Press start
+  var start = document.getElementById('tcStart');
+  var menu = document.getElementById('tcMainMenu');
+  if (start && menu) {
+    var links = Array.prototype.slice.call(menu.querySelectorAll('a'));
+    start.hidden = false;
+    menu.hidden = true;
+    start.setAttribute('aria-expanded', 'false');
+    start.addEventListener('click', function () {
+      menu.hidden = false;
+      menu.classList.add('is-in');
+      start.setAttribute('aria-expanded', 'true');
+      start.hidden = true;
+      if (links[0]) links[0].focus();
+    });
+    links.forEach(function (a, i) {
+      a.addEventListener('keydown', function (e) {
+        var t = null;
+        if (e.key === 'ArrowDown') t = links[(i + 1) % links.length];
+        if (e.key === 'ArrowUp') t = links[(i - 1 + links.length) % links.length];
+        if (t) { e.preventDefault(); t.focus(); }
+      });
+    });
+  }
+
+  // Achievement stickers flip over
+  document.querySelectorAll('.tc-flip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+    });
+  });
+
+  // Client work padlock
+  var pad = document.getElementById('tcPadlock');
+  var card = document.getElementById('tcUnlock');
+  var action = document.getElementById('tcUnlockAction');
+  var hint = document.getElementById('tcUnlockHint');
+  if (pad && card && action) {
+    pad.hidden = false;
+    pad.setAttribute('aria-expanded', 'false');
+    action.hidden = true;
+    if (hint) hint.hidden = false;
+    pad.addEventListener('click', function () {
+      if (card.classList.contains('is-open')) { var b = action.querySelector('a'); if (b) b.focus(); return; }
+      card.classList.add('is-open');
+      pad.setAttribute('aria-expanded', 'true');
+      action.hidden = false;
+      if (hint) hint.textContent = 'Unlocked! Request access below.';
+    });
+  }
+})();
