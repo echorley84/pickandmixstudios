@@ -633,3 +633,81 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 })();
+
+// ==========================================================================
+// Contact: "Choose your quest" tiles (they drive the topic dropdown, which
+// stays in place without JavaScript), an XP bar that fills as the required
+// fields are done, and an "Achievement unlocked" pop-up when a message sends.
+// ==========================================================================
+(function () {
+  var form = document.getElementById('tcContactForm');
+  var topic = document.getElementById('tcTopic');
+  if (!form || !topic) return;
+  var ICONS = {
+    general: '<path d="M4 5h16v11H9l-5 4V5z"/><path d="M12 13v.01M10 8.5a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6 1"/>',
+    project: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
+    'client-work': '<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M17 6l3 3M14.5 8.5l2.5 2.5"/>',
+    shop: '<path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+    other: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'
+  };
+  var NAMES = { general: 'Ask a question', project: 'Start a project', 'client-work': 'Unlock client work', shop: 'Templates & shop', other: 'Something else' };
+  var COLS = { general: 'c-blue', project: 'c-pink', 'client-work': 'c-orange', shop: 'c-teal', other: 'c-navy' };
+  var field = topic.closest('.tc-field');
+  var fs = document.createElement('fieldset');
+  fs.className = 'tc-quests';
+  var html = '<legend>Choose your quest</legend><div class="tc-quest-grid">';
+  Array.prototype.forEach.call(topic.options, function (o) {
+    var v = o.value;
+    html += '<label class="tc-quest"><input type="radio" name="tcQuest" form="tcNoForm" value="' + v + '"' + (topic.value === v ? ' checked' : '') + '>' +
+      '<span class="tc-quest-in"><span class="tc-mm-ic ' + (COLS[v] || 'c-blue') + '" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[v] || ICONS.other) + '</svg></span>' +
+      '<span class="tc-quest-name">' + (NAMES[v] || o.textContent) + '</span></span></label>';
+  });
+  fs.innerHTML = html + '</div>';
+  field.parentNode.insertBefore(fs, field);
+  field.hidden = true;
+  function syncQuest() { var r = fs.querySelector('input[value="' + topic.value + '"]'); if (r) r.checked = true; }
+  topic.addEventListener('change', syncQuest);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncQuest); else setTimeout(syncQuest, 0);
+  fs.addEventListener('change', function (e) {
+    if (e.target.name !== 'tcQuest') return;
+    topic.value = e.target.value;
+    topic.dispatchEvent(new Event('change'));
+  });
+  form.addEventListener('reset', function () {
+    setTimeout(function () {
+      var r = fs.querySelector('input[value="' + topic.value + '"]'); if (r) r.checked = true;
+      xp();
+    }, 0);
+  });
+
+  // XP bar
+  var bar = document.getElementById('tcXP');
+  var txt = document.getElementById('tcXPTxt');
+  var req = ['tcName', 'tcEmail', 'tcMessage'].map(function (id) { return document.getElementById(id); });
+  function xp() {
+    if (!bar) return;
+    var n = req.filter(function (el) { return el && el.value.trim() && el.checkValidity(); }).length;
+    Array.prototype.forEach.call(bar.querySelectorAll('.tc-xp-bar span'), function (s, i) { s.classList.toggle('on', i < n); });
+    bar.classList.toggle('is-full', n === req.length);
+    txt.textContent = n === req.length ? 'Ready, player 2!' : n + '/' + req.length;
+  }
+  if (bar) { bar.hidden = false; form.addEventListener('input', xp); xp(); }
+
+  // Achievement pop-up
+  var status = document.getElementById('tcFormStatus');
+  var toast = document.getElementById('tcAchToast');
+  var achName = document.getElementById('tcAchName');
+  var lastTopic = topic.value;
+  form.addEventListener('submit', function () { lastTopic = topic.value; }, true);
+  if (status && toast) {
+    var timer;
+    new MutationObserver(function () {
+      if (!status.classList.contains('is-success')) return;
+      achName.textContent = lastTopic === 'client-work' ? 'Access requested!' : 'Message sent!';
+      toast.hidden = false;
+      toast.classList.remove('is-in'); void toast.offsetWidth; toast.classList.add('is-in');
+      clearTimeout(timer);
+      timer = setTimeout(function () { toast.hidden = true; }, 5000);
+    }).observe(status, { attributes: true, attributeFilter: ['class'] });
+  }
+})();
