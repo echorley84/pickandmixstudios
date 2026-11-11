@@ -1767,3 +1767,30 @@ body.tc-no-scroll { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .tc-nav a[aria-current="page"] { transform: none; }
 }
+
+/* Menu hover: a soft white pill that lifts and tilts, previewing the sticker */
+.tc-nav a { transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
+.tc-nav a:hover,
+.tc-nav a:focus-visible {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: translateY(-2px) rotate(-2deg);
+}
+.tc-nav a[aria-current="page"]:hover,
+.tc-nav a[aria-current="page"]:focus-visible {
+  background: #ffffff;
+  border-color: #0E1A26;
+  transform: translateY(-2px) rotate(-3deg);
+  box-shadow: 4px 5px 0 #0E1A26;
+}
+.tc-nav a:active { transform: translateY(0) rotate(-2deg); }
+
+@media (max-width: 700px) {
+  .js-menu .tc-nav.is-open a:hover,
+  .js-menu .tc-nav.is-open a:focus-visible { border-radius: 10px; border-bottom-color: rgba(255, 255, 255, 0.65); transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tc-nav a:hover, .tc-nav a:focus-visible,
+  .tc-nav a[aria-current="page"]:hover, .tc-nav a:active { transform: none; }
+}
