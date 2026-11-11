@@ -1178,7 +1178,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
   .tc-nav a:hover, .tc-social-card:hover, .tc-post-card:hover .tc-post-thumb, .tc-feature-card:hover { transform: none !important; }
 }
 
-img[width][height] { height: auto; }
+:where(img[width][height]) { height: auto; }
 
 /* Current page in the nav (replaces .is-active) */
 .tc-nav a[aria-current="page"] { font-weight: 700; }
