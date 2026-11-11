@@ -1695,3 +1695,75 @@ body.tc-no-scroll { overflow: hidden; }
 .tc-section + .tc-section { padding-top: 16px; }
 .tc-stats-wrap + .tc-section { padding-top: 48px; }
 .tc-features { margin-bottom: 22px; }
+
+/* ==========================================================================
+   Menu style B: header blends into the blue; current page is a tilted white sticker
+   ========================================================================== */
+.tc-header-wrap { background: transparent; }
+.tc-header { padding-top: 16px; padding-bottom: 10px; }
+
+.tc-logo img {
+  height: 46px;
+  width: 46px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
+}
+
+.tc-nav { gap: 6px; }
+.tc-nav a {
+  color: #ffffff;
+  padding: 7px 11px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.tc-nav a::after { display: none; }
+.tc-nav a:hover { transform: none; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+.tc-nav a[aria-current="page"] {
+  background: #ffffff;
+  color: #16314D;
+  border-color: #0E1A26;
+  box-shadow: 3px 3px 0 #0E1A26;
+  transform: rotate(-2deg);
+  text-decoration: none;
+}
+
+/* Globe, Aa and Menu buttons: white circles/pills like Tiny Bytes */
+.tc-tool-btn, .tc-menu-btn {
+  background: #ffffff;
+  color: #1c6fba;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.tc-tool-btn:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), inset 0 0 0 2px #1c6fba; }
+.tc-tool-btn[aria-expanded="true"], .tc-menu-btn[aria-expanded="true"] { background: #16314D; color: #ffffff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-tool-btn, :root:not([data-theme="light"]) .tc-menu-btn { background: #161C24; color: #6DB8F0; } }
+:root[data-theme="dark"] .tc-tool-btn, :root[data-theme="dark"] .tc-menu-btn { background: #161C24; color: #6DB8F0; }
+
+@media (max-width: 1100px) and (min-width: 701px) {
+  .tc-nav { gap: 4px; }
+}
+
+/* Phones: the opened menu sits on the blue, current page keeps its sticker */
+@media (max-width: 700px) {
+  .tc-logo img { height: 40px; width: 40px; }
+  .js-menu .tc-nav.is-open { padding: 10px 0 6px; gap: 4px; }
+  .js-menu .tc-nav.is-open a {
+    border-top: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 0;
+    color: #ffffff;
+  }
+  .js-menu .tc-nav.is-open a[aria-current="page"] {
+    background: #ffffff;
+    color: #16314D;
+    border: 2px solid #0E1A26;
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 #0E1A26;
+    transform: rotate(-1deg);
+    margin: 4px 6px 6px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tc-nav a[aria-current="page"] { transform: none; }
+}
