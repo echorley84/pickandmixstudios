@@ -2055,3 +2055,32 @@ body.tc-no-scroll { overflow: hidden; }
   .tc-trophy-badge img { width: 44px; }
 }
 .tc-tb-copy .tc-meta { margin-bottom: 26px; } .tc-stats-wrap + .tc-tb-feature { padding-top: 40px; }
+
+/* Stats option 1K: one tidy row of white stickers under the intro */
+.tc-stats-wrap { padding: 0 16px; margin-top: -8px; }
+.tc-stickers { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; }
+.tc-sticker {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #ffffff; color: #16314D;
+  border: 1.5px solid #0E1A26; box-shadow: 3px 3px 0 #0E1A26; border-radius: 12px;
+  padding: 8px 14px; font-weight: 700; font-size: 1rem;
+  transform: rotate(-2deg); white-space: nowrap;
+}
+.tc-sticker:nth-child(2) { transform: rotate(1.5deg); }
+.tc-sticker:nth-child(3) { transform: rotate(-1deg); }
+.tc-sticker svg { width: 20px; height: 20px; flex-shrink: 0; }
+.tc-sticker.s-pink svg { color: #C01F62; }
+.tc-sticker.s-blue svg { color: #1A64A8; }
+.tc-sticker.s-orange svg { color: #B4520F; }
+@media (max-width: 480px) {
+  .tc-stickers { gap: 8px; }
+  .tc-sticker { font-size: 0.8125rem; padding: 6px 9px; gap: 5px; border-radius: 10px; }
+  .tc-sticker svg { width: 15px; height: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .tc-sticker { transform: none !important; } }
+@media (max-width: 480px) {
+  .tc-stickers { flex-wrap: nowrap; gap: 6px; }
+  .tc-sticker { font-size: 0.75rem; padding: 6px 8px; gap: 4px; box-shadow: 2px 2px 0 #0E1A26; }
+  .tc-sticker svg { width: 14px; height: 14px; }
+}
+@media (max-width: 350px) { .tc-stickers { flex-wrap: wrap; } }
