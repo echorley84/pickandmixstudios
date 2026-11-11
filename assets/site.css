@@ -2854,6 +2854,8 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .tc-chest[aria-selected="true"] .tc-chest-loot { transform: translate(-50%, -96%) rotate(-4deg) scale(1); }
 .tc-loot { padding-top: 84px; }
 
+.tc-chest-loot img { border-width: 1.5px; border-radius: 8px; box-shadow: 0 0 0 1px #10324F, 0 8px 14px rgba(0, 0, 0, 0.28); }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
