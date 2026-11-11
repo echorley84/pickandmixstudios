@@ -594,13 +594,14 @@ document.addEventListener('DOMContentLoaded', function () {
       menu.classList.add('is-in');
       start.setAttribute('aria-expanded', 'true');
       start.hidden = true;
+      var ts = document.getElementById('tcTS'); if (ts) ts.classList.add('is-on');
       if (links[0]) links[0].focus();
     });
     links.forEach(function (a, i) {
       a.addEventListener('keydown', function (e) {
         var t = null;
-        if (e.key === 'ArrowDown') t = links[(i + 1) % links.length];
-        if (e.key === 'ArrowUp') t = links[(i - 1 + links.length) % links.length];
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') t = links[(i + 1) % links.length];
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') t = links[(i - 1 + links.length) % links.length];
         if (t) { e.preventDefault(); t.focus(); }
       });
     });
