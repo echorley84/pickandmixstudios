@@ -633,33 +633,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 })();
-
-// Home: handheld console controls (mouse/touch helpers; keyboard users use
-// the real Press start button and menu links)
-(function () {
-  var ctrl = document.getElementById('tcConCtrl');
-  var start = document.getElementById('tcStart');
-  var menu = document.getElementById('tcMainMenu');
-  if (!ctrl || !start || !menu) return;
-  var links = Array.prototype.slice.call(menu.querySelectorAll('a'));
-  var sel = 0;
-  function mark(n) {
-    sel = (n + links.length) % links.length;
-    links.forEach(function (a, i) { a.classList.toggle('is-sel', i === sel); });
-  }
-  links.forEach(function (a, i) {
-    a.addEventListener('focus', function () { mark(i); });
-    a.addEventListener('mouseenter', function () { mark(i); });
-  });
-  ctrl.hidden = false;
-  ctrl.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-con]'); if (!b) return;
-    var k = b.getAttribute('data-con');
-    if (menu.hidden) { if (k === 'start' || k === 'a') start.click(); mark(0); return; }
-    if (k === 'up') { mark(sel - 1); links[sel].focus(); }
-    else if (k === 'down') { mark(sel + 1); links[sel].focus(); }
-    else if (k === 'a' || k === 'start') { links[sel].click(); }
-    else if (k === 'back') { menu.hidden = true; start.hidden = false; start.setAttribute('aria-expanded', 'false'); start.focus(); }
-  });
-  start.addEventListener('click', function () { mark(0); });
-})();
