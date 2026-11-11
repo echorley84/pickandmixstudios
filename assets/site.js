@@ -451,3 +451,64 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
   window.addEventListener('load', redraw);
 })();
+
+// ==========================================================================
+// Tutorials: "Training mode" cartridge shelf. Each tutorial is a game
+// cartridge; picking one pops it up and shows that tutorial's card below.
+// Without the script the shelf stays hidden and every tutorial card shows.
+// ==========================================================================
+(function () {
+  var shelf = document.getElementById('tcShelf');
+  if (!shelf) return;
+  var row = shelf.querySelector('.tc-shelf-carts');
+  var grid = document.querySelector('.tc-bss-grid');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.tc-bss-card'));
+  if (!cards.length) return;
+  var colours = ['c-blue', 'c-pink', 'c-orange', 'c-navy', 'c-teal'];
+  var carts = cards.map(function (card, i) {
+    var name = ((card.querySelector('h2') || {}).textContent || ('Tutorial ' + (i + 1))).trim();
+    var img = card.querySelector('.tc-bss-image img');
+    card.id = card.id || ('tcTutorial' + (i + 1));
+    card.setAttribute('role', 'tabpanel');
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tc-cart ' + colours[i % colours.length];
+    b.id = 'tcCart' + (i + 1);
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-controls', card.id);
+    b.setAttribute('aria-label', 'Tutorial ' + (i + 1) + ': ' + name);
+    card.setAttribute('aria-labelledby', b.id);
+    b.innerHTML = '<span class="tc-cart-ridge" aria-hidden="true"></span>' +
+      '<span class="tc-cart-label" aria-hidden="true">' + (img ? '<img alt="" src="' + img.getAttribute('src') + '">' : '') + '</span>' +
+      '<span class="tc-cart-num" aria-hidden="true">' + (i + 1) + '</span>' +
+      '<span class="tc-cart-grip" aria-hidden="true"></span>';
+    b.dataset.name = name;
+    row.appendChild(b);
+    return b;
+  });
+  function select(i, focus) {
+    carts.forEach(function (c, j) {
+      var on = j === i;
+      c.setAttribute('aria-selected', String(on));
+      c.tabIndex = on ? 0 : -1;
+      cards[j].hidden = !on;
+    });
+    var now = document.getElementById('tcShelfNow');
+    if (now) now.textContent = carts[i].dataset.name;
+    if (focus) carts[i].focus();
+  }
+  carts.forEach(function (c, i) {
+    c.addEventListener('click', function () { select(i, false); });
+    c.addEventListener('keydown', function (e) {
+      var k = e.key, t = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') t = (i + 1) % carts.length;
+      if (k === 'ArrowLeft' || k === 'ArrowUp') t = (i - 1 + carts.length) % carts.length;
+      if (k === 'Home') t = 0;
+      if (k === 'End') t = carts.length - 1;
+      if (t !== null) { e.preventDefault(); select(t, true); }
+    });
+  });
+  shelf.hidden = false;
+  if (grid) grid.classList.add('is-shelf');
+  select(0, false);
+})();
