@@ -2115,3 +2115,59 @@ body.tc-no-scroll { overflow: hidden; }
 .tc-footer { background: var(--footer-band); border-top-color: var(--footer-edge); }
 .tc-card, .tc-tb-inner, .tc-client-panel, .tc-profile-card { --card-body: #E3EEF7; }
 .tc-tb-tag, .tc-client-panel p:not(.tc-label), .tc-profile-card p { color: #E3EEF7; }
+
+/* ==========================================================================
+   Pale blue page, Tiny Bytes blue cards (Emily's pick, 11 Nov 2026)
+   Light theme only: the dark theme keeps its own colours (higher-specificity blocks above).
+   ========================================================================== */
+:root {
+  --page-top: #EEF6FC;
+  --page-bot: #E2EEF8;
+  --text-heading: #16314D;
+  --text-body: #3E556B;
+  --card-fill: linear-gradient(180deg, #1C6CA3, #2479B3);
+  --card-edge: #10324F;
+  --footer-band: #1C6CA3;
+  --footer-edge: #10324F;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --card-fill: #161C24; --card-edge: #2A3542; --footer-band: #161C24; --footer-edge: #2A3542; } }
+:root[data-theme="dark"] { --card-fill: #161C24; --card-edge: #2A3542; --footer-band: #161C24; --footer-edge: #2A3542; }
+
+.tc-header-wrap { border-bottom: 1px solid #D3E3F0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-header-wrap { border-bottom-color: #2A3542; } }
+:root[data-theme="dark"] .tc-header-wrap { border-bottom-color: #2A3542; }
+
+/* every content card is a blue card with white text */
+.tc-card, .tc-profile-card, .tc-bss-card, .tc-product-card, .tc-contact-card, .tc-tb-inner, .tc-client-panel {
+  background: var(--card-fill);
+  border: 1.5px solid var(--card-edge);
+  box-shadow: 3px 4px 0 var(--card-edge);
+  border-radius: 22px;
+  --card-heading: #ffffff;
+  --card-body: #EEF5FB;
+  --muted: #EEF5FB;
+  --c1: #ffffff;
+  --line: rgba(255, 255, 255, 0.35);
+  --text-heading: #ffffff;
+  --text-body: #EEF5FB;
+  color: #EEF5FB;
+}
+.tc-tb-tag, .tc-client-panel p:not(.tc-label), .tc-profile-card p { color: #EEF5FB; }
+.tc-access-note { background: rgba(255, 255, 255, 0.14); }
+
+/* on the pale page: the hero pill turns blue, the footer is a solid Tiny Bytes blue band */
+.tc-hero p.tc-meta { background: #1A64A8; color: #ffffff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-hero p.tc-meta { background: var(--header-bg); color: var(--c1); } }
+:root[data-theme="dark"] .tc-hero p.tc-meta { background: var(--header-bg); color: var(--c1); }
+.tc-footer { background: var(--footer-band); border-top: 3px solid var(--footer-edge); }
+.tc-footer p { color: #ffffff; }
+
+/* focus ring that shows on the pale page as well as on the blue cards */
+a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px solid #16314D; box-shadow: 0 0 0 6px #ffffff; }
+.tc-card a:focus-visible, .tc-card button:focus-visible,
+.tc-tb-inner a:focus-visible, .tc-client-panel a:focus-visible, .tc-contact-card a:focus-visible, .tc-contact-card button:focus-visible,
+.tc-bss-card a:focus-visible, .tc-bss-card button:focus-visible, .tc-product-card a:focus-visible, .tc-product-card button:focus-visible,
+.tc-footer a:focus-visible { outline: 3px solid #ffffff; box-shadow: 0 0 0 6px #10324F; }
+.tc-tb-copy .tc-meta { background: #ffffff; color: #1A64A8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-tb-copy .tc-meta { background: #EAF2FA; color: #16314D; } }
+:root[data-theme="dark"] .tc-tb-copy .tc-meta { background: #EAF2FA; color: #16314D; }
