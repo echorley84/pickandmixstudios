@@ -2333,6 +2333,18 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 
 .tc-player-sel { white-space: nowrap; }
 
+.tc-cyp-pill {
+  display: table;
+  margin: 4px auto 30px;
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1A64A8;
+  font: 700 0.875rem 'Maven Pro', Arial, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
