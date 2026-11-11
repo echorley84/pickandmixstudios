@@ -2171,3 +2171,11 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .tc-tb-copy .tc-meta { background: #ffffff; color: #1A64A8; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-tb-copy .tc-meta { background: #EAF2FA; color: #16314D; } }
 :root[data-theme="dark"] .tc-tb-copy .tc-meta { background: #EAF2FA; color: #16314D; }
+/* PALETTE START: 2 sweet shop cream */
+:root { --page-top: #FFF7EC; --page-bot: #FFF3E3; --text-heading: #16314D; --text-body: #5B4A3E; --footer-band: #16314D; --footer-edge: #0B1A2B; }
+.tc-header-wrap { border-bottom-color: #F0E4D2; }
+.tc-nav a[aria-current="page"], .tc-nav a[aria-current="page"]:hover, .tc-nav a[aria-current="page"]:focus-visible { background: #C01F62; }
+.js-menu .tc-nav.is-open a[aria-current="page"] { background: #C01F62; }
+.tc-hero p.tc-meta { background: #C01F62; color: #ffffff; }
+.tc-nav a:hover, .tc-nav a:focus-visible { background: #FCE8EF; border-color: #C01F62; color: #A3184F; }
+/* PALETTE END */
