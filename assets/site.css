@@ -1639,3 +1639,48 @@ body.tc-no-scroll { overflow: hidden; }
   .tc-side-avatar { width: 96px; height: 96px; border-width: 4px; }
   .tc-client-panel { flex-direction: column; align-items: flex-start; }
 }
+
+/* ==========================================================================
+   Demo cards: navy "sticker" cards (Tiny Bytes style), thumbnails cropped
+   to hide the thin white frame baked into the artwork
+   ========================================================================== */
+:root { --navy-card: #16314D; --navy-edge: #0E1A26; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --navy-card: #161C24; --navy-edge: #2A3542; } }
+:root[data-theme="dark"] { --navy-card: #161C24; --navy-edge: #2A3542; }
+
+/* Home: featured demos */
+.tc-feature-card {
+  background: var(--navy-card);
+  border: 2px solid var(--navy-edge);
+  border-radius: 20px;
+  padding: 12px 12px 20px;
+  box-shadow: 5px 6px 0 var(--navy-edge);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tc-feature-card:hover { transform: translate(-2px, -3px); box-shadow: 7px 9px 0 var(--navy-edge); }
+.tc-feature-card:hover .tc-feature-thumb { transform: none; box-shadow: none; }
+.tc-feature-thumb { box-shadow: none; border-radius: 12px; }
+.tc-feature-thumb > img:first-child { transform: scale(1.06); }
+.tc-feature-body { padding: 16px 8px 0; display: flex; flex-direction: column; align-items: flex-start; }
+.tc-feature-card h3 a, .tc-feature-card p:not(.tc-label) { color: #ffffff; }
+.tc-feature-card p:not(.tc-label) { color: #D7E3EE; }
+.tc-feature-card:focus-within .tc-feature-thumb { outline: none; }
+.tc-feature-card:focus-within { outline: 3px solid var(--focus); outline-offset: 4px; }
+
+/* Showcase: same navy cards */
+.tc-card {
+  --card-heading: #ffffff;
+  --card-body: #D7E3EE;
+  background: var(--navy-card);
+  border: 2px solid var(--navy-edge);
+  border-radius: 20px;
+  box-shadow: 6px 7px 0 var(--navy-edge);
+}
+.tc-card-image > img:not(.tc-award-img) {
+  clip-path: inset(1.6% round 12px);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tc-feature-card:hover { transform: none; }
+}
