@@ -514,88 +514,63 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 
 // ==========================================================================
-// Pop-up Shop: "Item shop" vending machine. Each product is a slot (A1, A2…);
-// pressing its key drops it into the tray and shows its card below.
-// Without the script the machine stays hidden and every product card shows.
+// Pop-up Shop: "Item shop" loot chests. Each product is a treasure chest;
+// opening one pops the product out with a glow and shows its card below.
+// Without the script the chests stay hidden and every product card shows.
 // ==========================================================================
 (function () {
-  var vend = document.getElementById('tcVend');
-  if (!vend) return;
-  var slots = vend.querySelector('.tc-vend-slots');
-  var keys = vend.querySelector('.tc-vend-keys');
-  var lcd = document.getElementById('tcVendLcd');
-  var tray = document.getElementById('tcVendTray');
+  var loot = document.getElementById('tcLoot');
+  if (!loot) return;
+  var row = loot.querySelector('.tc-loot-row');
   var grid = document.querySelector('.tc-shop-grid');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.tc-product-card'));
   if (!cards.length) return;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var codes = ['A1', 'A2', 'B1', 'B2'];
-  var slotEls = [];
-  var btns = cards.map(function (card, i) {
+  var spark = '<span class="tc-spark s1" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0c.8 6.4 4.8 10.6 12 12-7.2 1.4-11.2 5.6-12 12-.8-6.4-4.8-10.6-12-12 7.2-1.4 11.2-5.6 12-12z"/></svg></span><span class="tc-spark s2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0c.8 6.4 4.8 10.6 12 12-7.2 1.4-11.2 5.6-12 12-.8-6.4-4.8-10.6-12-12 7.2-1.4 11.2-5.6 12-12z"/></svg></span><span class="tc-spark s3" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0c.8 6.4 4.8 10.6 12 12-7.2 1.4-11.2 5.6-12 12-.8-6.4-4.8-10.6-12-12 7.2-1.4 11.2-5.6 12-12z"/></svg></span>';
+  var chests = cards.map(function (card, i) {
     var name = ((card.querySelector('h2') || {}).textContent || ('Product ' + (i + 1))).trim();
     var img = card.querySelector('.tc-product-main-image img');
     card.id = card.id || ('tcProduct' + (i + 1));
     card.setAttribute('role', 'tabpanel');
-    var s = document.createElement('div');
-    s.className = 'tc-vend-slot';
-    s.setAttribute('aria-hidden', 'true');
-    s.innerHTML = '<div class="tc-vend-item">' + (img ? '<img alt="" src="' + img.getAttribute('src') + '">' : '') + '</div>' +
-      '<span class="tc-vend-code">' + codes[i] + '</span><span class="tc-vend-coil"></span>';
-    slots.appendChild(s); slotEls.push(s);
     var b = document.createElement('button');
-    b.type = 'button'; b.className = 'tc-vend-key'; b.id = 'tcKey' + codes[i];
+    b.type = 'button'; b.className = 'tc-chest'; b.id = 'tcChest' + (i + 1);
     b.setAttribute('role', 'tab');
     b.setAttribute('aria-controls', card.id);
-    b.setAttribute('aria-label', codes[i] + ': ' + name);
-    b.textContent = codes[i];
+    b.setAttribute('aria-label', 'Open chest: ' + name);
     card.setAttribute('aria-labelledby', b.id);
-    b.dataset.name = name; b.dataset.img = img ? img.getAttribute('src') : '';
-    keys.appendChild(b);
+    b.innerHTML =
+      '<span class="tc-chest-stage" aria-hidden="true">' +
+        '<span class="tc-chest-glow"></span>' +
+        '<span class="tc-chest-loot">' + (img ? '<img alt="" src="' + img.getAttribute('src') + '">' : '') + '</span>' +
+        spark +
+        '<span class="tc-chest-mouth"></span>' +
+        '<span class="tc-chest-lid"><span class="tc-chest-band"></span><span class="tc-chest-band b2"></span></span>' +
+        '<span class="tc-chest-box"><span class="tc-chest-band"></span><span class="tc-chest-band b2"></span><span class="tc-chest-lock"></span></span>' +
+      '</span>' +
+      '<span class="tc-chest-name" aria-hidden="true">' + name + '</span>';
+    row.appendChild(b);
     return b;
   });
-  // fill the rest of the window with "coming soon" slots
-  for (var k = cards.length; k < 4; k++) {
-    var s = document.createElement('div');
-    s.className = 'tc-vend-slot is-soon'; s.setAttribute('aria-hidden', 'true');
-    s.innerHTML = '<div class="tc-vend-item"><span>Coming<br>soon</span></div><span class="tc-vend-code">' + codes[k] + '</span><span class="tc-vend-coil"></span>';
-    slots.appendChild(s);
-  }
-  var timer;
-  function select(i, focus, animate) {
-    btns.forEach(function (b, j) {
+  function select(i, focus) {
+    chests.forEach(function (c, j) {
       var on = j === i;
-      b.setAttribute('aria-selected', String(on));
-      b.tabIndex = on ? 0 : -1;
+      c.setAttribute('aria-selected', String(on));
+      c.tabIndex = on ? 0 : -1;
       cards[j].hidden = !on;
     });
-    lcd.textContent = btns[i].textContent + ' ✓';
-    if (btns[i].dataset.img) { tray.src = btns[i].dataset.img; }
-    tray.hidden = false;
-    if (animate && !reduce) {
-      var s = slotEls[i];
-      clearTimeout(timer);
-      slotEls.forEach(function (x) { x.classList.remove('is-drop'); });
-      tray.classList.remove('is-in');
-      void s.offsetWidth;
-      s.classList.add('is-drop');
-      timer = setTimeout(function () { tray.classList.add('is-in'); s.classList.remove('is-drop'); }, 650);
-    } else {
-      tray.classList.add('is-in');
-    }
-    if (focus) btns[i].focus();
+    if (focus) chests[i].focus();
   }
-  btns.forEach(function (b, i) {
-    b.addEventListener('click', function () { select(i, false, true); });
-    b.addEventListener('keydown', function (e) {
-      var key = e.key, t = null;
-      if (key === 'ArrowRight' || key === 'ArrowDown') t = (i + 1) % btns.length;
-      if (key === 'ArrowLeft' || key === 'ArrowUp') t = (i - 1 + btns.length) % btns.length;
-      if (key === 'Home') t = 0;
-      if (key === 'End') t = btns.length - 1;
-      if (t !== null) { e.preventDefault(); select(t, true, true); }
+  chests.forEach(function (c, i) {
+    c.addEventListener('click', function () { select(i, false); });
+    c.addEventListener('keydown', function (e) {
+      var k = e.key, t = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') t = (i + 1) % chests.length;
+      if (k === 'ArrowLeft' || k === 'ArrowUp') t = (i - 1 + chests.length) % chests.length;
+      if (k === 'Home') t = 0;
+      if (k === 'End') t = chests.length - 1;
+      if (t !== null) { e.preventDefault(); select(t, true); }
     });
   });
-  vend.hidden = false;
-  if (grid) grid.classList.add('is-vend');
-  select(0, false, false);
+  loot.hidden = false;
+  if (grid) grid.classList.add('is-loot');
+  select(0, false);
 })();
