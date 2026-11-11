@@ -2831,6 +2831,29 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .tc-chest[aria-selected="true"] .tc-chest-rays { transform: scale(1); }
 .tc-chest[aria-selected="true"] .tc-cs-lid { transform: translate(-6%, -40%) rotate(-16deg); }
 
+/* Chest v3: back layer (standing lid + opening), product, front layer (body + closed lid) */
+.tc-chest-back, .tc-chest-front { display: block; width: 100%; height: auto; overflow: visible; }
+.tc-chest-back { position: absolute; inset: 0; z-index: 1; }
+.tc-chest-front { position: relative; z-index: 3; }
+.tc-chest-svg { display: none; }
+.tc-cs-open { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(0); transition: transform 0.35s 0.18s cubic-bezier(.3, 1.6, .5, 1); }
+.tc-cs-mouth { opacity: 0; transition: opacity 0.2s 0.12s ease; }
+.tc-chest-front .tc-cs-lid { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.22s ease-in, opacity 0.1s 0.15s; }
+.tc-chest:hover .tc-chest-front .tc-cs-lid { transform: translateY(-5px) rotate(-2deg); }
+.tc-chest[aria-selected="true"] .tc-chest-front .tc-cs-lid { transform: scaleY(0.05) translateY(-60%); opacity: 0; }
+.tc-chest[aria-selected="true"] .tc-cs-open { transform: scaleY(1); }
+.tc-chest[aria-selected="true"] .tc-cs-mouth { opacity: 1; }
+.tc-chest-loot { z-index: 2; top: 32%; transform: translate(-50%, 30%) scale(0.55); transition: transform 0.6s 0.3s cubic-bezier(.3, 1.5, .5, 1), opacity 0.2s 0.3s ease; }
+.tc-chest[aria-selected="true"] .tc-chest-loot { z-index: 2; transform: translate(-50%, -88%) rotate(-4deg) scale(1); }
+@media (prefers-reduced-motion: reduce) { .tc-cs-open, .tc-cs-mouth, .tc-chest-front .tc-cs-lid { transition: none; } }
+
+.tc-chest-loot { width: 54%; left: 53%; top: 38%; }
+.tc-chest[aria-selected="true"] .tc-chest-loot { transform: translate(-50%, -70%) rotate(-4deg) scale(1); }
+.tc-loot { padding-top: 70px; }
+
+.tc-chest[aria-selected="true"] .tc-chest-loot { transform: translate(-50%, -96%) rotate(-4deg) scale(1); }
+.tc-loot { padding-top: 84px; }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
