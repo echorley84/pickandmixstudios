@@ -1464,3 +1464,54 @@ body.tc-no-scroll { overflow: hidden; }
 /* Team photos and tutorial thumbnails match */
 .tc-profile-image { box-shadow: 0 10px 24px rgba(0, 0, 0, 0.30); }
 .tc-bss-image, .tc-product-main-image { border: 0; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.30); }
+
+/* Highlights: a tinted stats strip with three equal columns */
+.tc-stats-wrap { padding: 0 24px; }
+.tc-stats {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 16px;
+}
+.tc-stats li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 22px 16px;
+  color: var(--text-body);
+}
+.tc-stats li + li { border-left: 1px solid var(--glass-line); }
+.tc-stats li img {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: auto;
+}
+.tc-stat-num {
+  color: var(--text-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.tc-stat-label { font-size: 0.9375rem; line-height: 1.4; max-width: 220px; }
+.tc-hero-wrap { padding-bottom: 48px; }
+.tc-stats-wrap + .tc-section { padding-top: 56px; }
+
+@media (max-width: 600px) {
+  .tc-stats-wrap { padding: 0 16px; }
+  .tc-stats li { padding: 16px 8px; }
+  .tc-stats li img { top: 8px; right: 6px; width: 20px; }
+  .tc-stat-num { font-size: 1.875rem; margin-bottom: 6px; }
+  .tc-stat-label { font-size: 0.8125rem; }
+  .tc-hero-wrap { padding-bottom: 36px; }
+  .tc-stats-wrap + .tc-section { padding-top: 40px; }
+}
