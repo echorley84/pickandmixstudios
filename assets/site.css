@@ -2171,6 +2171,9 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .tc-tb-copy .tc-meta { background: #ffffff; color: #1A64A8; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-tb-copy .tc-meta { background: #EAF2FA; color: #16314D; } }
 :root[data-theme="dark"] .tc-tb-copy .tc-meta { background: #EAF2FA; color: #16314D; }
+.tc-panel-card p.tc-label, .tc-label { color: #ffffff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-panel-card p.tc-label { color: #07090C; } }
+:root[data-theme="dark"] .tc-panel-card p.tc-label { color: #07090C; }
 /* PALETTE START: 6 soft grey and blue */
 :root { --page-top: #F3F4F6; --page-bot: #EEF0F3; --text-heading: #16314D; --text-body: #4B5563; --footer-band: #16314D; --footer-edge: #0B1A2B; }
 .tc-header-wrap { border-bottom-color: #E5E7EB; }
