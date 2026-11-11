@@ -1684,3 +1684,14 @@ body.tc-no-scroll { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .tc-feature-card:hover { transform: none; }
 }
+
+/* ==========================================================================
+   Let the Tiny Bytes blue show through: no tinted fills, just a fine edge
+   ========================================================================== */
+:root { --glass: transparent; --glass-line: rgba(255, 255, 255, 0.30); }
+.tc-side-card:not(.tc-side-feature) { padding: 18px 20px; }
+.tc-side-card:not(.tc-side-feature) .tc-btn { padding: 8px 18px; }
+.tc-section { padding: 40px 24px; }
+.tc-section + .tc-section { padding-top: 16px; }
+.tc-stats-wrap + .tc-section { padding-top: 48px; }
+.tc-features { margin-bottom: 22px; }
