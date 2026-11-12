@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function loadEasyFont() {
     if (document.getElementById('tcEasyFont')) return;
     var l = document.createElement('link'); l.id = 'tcEasyFont'; l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap';
+    var css = document.querySelector('link[href*="site.css"]'); l.href = css ? css.href.replace(/site\.css.*$/, 'fonts/atkinson.css') : '/assets/fonts/atkinson.css';
     document.head.appendChild(l);
   }
   function setPref(k, v, save) {

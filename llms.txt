@@ -10,6 +10,9 @@
 - [Pop-up Shop](https://pickandmixstudios.com/popup-shop.html): Storyline templates and game kits to buy
 - [Get in Touch](https://pickandmixstudios.com/contact.html): start a project, ask a question or request access to private client work
 
+- [Accessibility](https://pickandmixstudios.com/accessibility.html): reading options, what's supported and how to report a problem
+- [Privacy notice](https://pickandmixstudios.com/privacy.html): what we collect and your rights
+
 ## Tiny Bytes
 - [Tiny Bytes archive](https://pickandmixstudios.com/tinybytes/): a free newsletter showing non-technical people things they didn't know AI could do, each from one quick prompt on their phone, with any AI app
 - [Subscribe](https://tinybytes.beehiiv.com/subscribe)
