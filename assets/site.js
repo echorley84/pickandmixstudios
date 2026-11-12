@@ -635,79 +635,133 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 
 // ==========================================================================
-// Contact: "Choose your quest" tiles (they drive the topic dropdown, which
-// stays in place without JavaScript), an XP bar that fills as the required
-// fields are done, and an "Achievement unlocked" pop-up when a message sends.
+// Contact: Pick & Mix Bot asks one question at a time, RPG dialogue style.
+// The real form is unchanged underneath; without JavaScript it shows as a
+// normal form.
 // ==========================================================================
 (function () {
-  var form = document.getElementById('tcContactForm');
-  var topic = document.getElementById('tcTopic');
-  if (!form || !topic) return;
-  var ICONS = {
-    general: '<path d="M4 5h16v11H9l-5 4V5z"/><path d="M12 13v.01M10 8.5a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6 1"/>',
-    project: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
-    'client-work': '<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M17 6l3 3M14.5 8.5l2.5 2.5"/>',
-    shop: '<path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
-    other: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'
-  };
-  var NAMES = { general: 'Ask a question', project: 'Start a project', 'client-work': 'Unlock client work', shop: 'Templates & shop', other: 'Something else' };
-  var COLS = { general: 'c-blue', project: 'c-pink', 'client-work': 'c-orange', shop: 'c-teal', other: 'c-navy' };
-  var field = topic.closest('.tc-field');
-  var fs = document.createElement('fieldset');
-  fs.className = 'tc-quests';
-  var html = '<legend>Choose your quest</legend><div class="tc-quest-grid">';
+  function $(id) { return document.getElementById(id); }
+  var npc = $('tcNPC'), form = $('tcContactForm'), topic = $('tcTopic');
+  if (!npc || !form || !topic) return;
+  var name = $('tcName'), email = $('tcEmail'), org = $('tcOrg'), msg = $('tcMessage');
+  var fTopic = topic.closest('.tc-field'), fName = name.closest('.tc-field'), fEmail = email.closest('.tc-field');
+  var fOrg = $('tcOrgField'), fMsg = msg.closest('.tc-field'), note = $('tcAccessNote');
+  var status = $('tcFormStatus'), submit = $('tcSubmitBtn');
+  var nav = $('tcNPCNav'), back = $('tcNPCBack'), next = $('tcNPCNext'), again = $('tcNPCAgain');
+  var typeEl = $('tcNPCtype'), sr = $('tcNPCsr'), pips = npc.querySelector('.tc-npc-pips');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var LINES = { general: 'A question', project: 'Start a project with you', 'client-work': 'Unlock your client work', shop: 'Your templates and shop', other: 'Something else' };
+
+  // Topic choices, RPG style
+  var choices = document.createElement('div');
+  choices.className = 'tc-npc-choices';
+  choices.setAttribute('role', 'group');
+  choices.setAttribute('aria-label', 'What brings you here?');
   Array.prototype.forEach.call(topic.options, function (o) {
-    var v = o.value;
-    html += '<label class="tc-quest"><input type="radio" name="tcQuest" form="tcNoForm" value="' + v + '"' + (topic.value === v ? ' checked' : '') + '>' +
-      '<span class="tc-quest-in"><span class="tc-mm-ic ' + (COLS[v] || 'c-blue') + '" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[v] || ICONS.other) + '</svg></span>' +
-      '<span class="tc-quest-name">' + (NAMES[v] || o.textContent) + '</span></span></label>';
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'tc-npc-opt'; b.setAttribute('data-v', o.value);
+    b.textContent = LINES[o.value] || o.textContent;
+    choices.appendChild(b);
   });
-  fs.innerHTML = html + '</div>';
-  field.parentNode.insertBefore(fs, field);
-  field.hidden = true;
-  function syncQuest() { var r = fs.querySelector('input[value="' + topic.value + '"]'); if (r) r.checked = true; }
-  topic.addEventListener('change', syncQuest);
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncQuest); else setTimeout(syncQuest, 0);
-  fs.addEventListener('change', function (e) {
-    if (e.target.name !== 'tcQuest') return;
-    topic.value = e.target.value;
+  fTopic.parentNode.insertBefore(choices, fTopic);
+  function markChoice() {
+    Array.prototype.forEach.call(choices.children, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === topic.value)); });
+  }
+  choices.addEventListener('click', function (e) {
+    var b = e.target.closest('.tc-npc-opt'); if (!b) return;
+    topic.value = b.getAttribute('data-v');
     topic.dispatchEvent(new Event('change'));
-  });
-  form.addEventListener('reset', function () {
-    setTimeout(function () {
-      var r = fs.querySelector('input[value="' + topic.value + '"]'); if (r) r.checked = true;
-      xp();
-    }, 0);
+    markChoice();
+    go(1);
   });
 
-  // XP bar
-  var bar = document.getElementById('tcXP');
-  var txt = document.getElementById('tcXPTxt');
-  var req = ['tcName', 'tcEmail', 'tcMessage'].map(function (id) { return document.getElementById(id); });
-  function xp() {
-    if (!bar) return;
-    var n = req.filter(function (el) { return el && el.value.trim() && el.checkValidity(); }).length;
-    Array.prototype.forEach.call(bar.querySelectorAll('.tc-xp-bar span'), function (s, i) { s.classList.toggle('on', i < n); });
-    bar.classList.toggle('is-full', n === req.length);
-    txt.textContent = n === req.length ? 'Ready, player 2!' : n + '/' + req.length;
-  }
-  if (bar) { bar.hidden = false; form.addEventListener('input', xp); xp(); }
+  function first() { return (name.value.trim().split(/\s+/)[0]) || 'Player 2'; }
+  var steps = [
+    { say: function () { return 'Hi Player 2! I’m the Pick & Mix Bot. What’s your name?'; }, show: [fName], field: name },
+    { say: function () { return 'Nice to meet you, ' + first() + '! What brings you here today?'; }, show: [choices], choice: true },
+    { say: function () { return topic.value === 'client-work' ? 'Ooh, a secret level! Which organisation are you with? You can skip this one.' : 'Exciting! Who are you working with? You can skip this one.'; },
+      show: function () { return topic.value === 'client-work' ? [note, fOrg] : [fOrg]; }, field: org,
+      when: function () { return topic.value === 'client-work' || topic.value === 'project'; } },
+    { say: function () { return 'What’s your email, so we can reply?'; }, show: [fEmail], field: email },
+    { say: function () { return 'Last one! Tell us all about it.'; }, show: [fMsg], field: msg, last: true }
+  ];
+  var managed = [fTopic, fName, fEmail, fOrg, fMsg, choices, note];
+  var cur = 0, timer = null, full = '';
 
-  // Achievement pop-up
-  var status = document.getElementById('tcFormStatus');
-  var toast = document.getElementById('tcAchToast');
-  var achName = document.getElementById('tcAchName');
-  var lastTopic = topic.value;
-  form.addEventListener('submit', function () { lastTopic = topic.value; }, true);
-  if (status && toast) {
-    var timer;
-    new MutationObserver(function () {
-      if (!status.classList.contains('is-success')) return;
-      achName.textContent = lastTopic === 'client-work' ? 'Access requested!' : 'Message sent!';
-      toast.hidden = false;
-      toast.classList.remove('is-in'); void toast.offsetWidth; toast.classList.add('is-in');
-      clearTimeout(timer);
-      timer = setTimeout(function () { toast.hidden = true; }, 5000);
-    }).observe(status, { attributes: true, attributeFilter: ['class'] });
+  function talk(text, silent) {
+    clearInterval(timer);
+    full = text;
+    if (!silent) sr.textContent = text;
+    npc.classList.add('is-talking');
+    if (reduce) { typeEl.textContent = text; npc.classList.remove('is-talking'); return; }
+    var n = 0; typeEl.textContent = '';
+    timer = setInterval(function () {
+      n += 2; typeEl.textContent = text.slice(0, n);
+      if (n >= text.length) { clearInterval(timer); npc.classList.remove('is-talking'); }
+    }, 22);
   }
+  npc.addEventListener('click', function () { clearInterval(timer); typeEl.textContent = full; npc.classList.remove('is-talking'); });
+
+  function ok(i) { return !steps[i].when || steps[i].when(); }
+  function render(i, noFocus) {
+    cur = i;
+    var s = steps[i];
+    managed.forEach(function (el) { if (el) el.hidden = true; });
+    var show = typeof s.show === 'function' ? s.show() : s.show;
+    show.forEach(function (el) { if (el) el.hidden = false; });
+    nav.hidden = false; again.hidden = true;
+    var firstOk = 0; while (!ok(firstOk)) firstOk++;
+    back.hidden = i === firstOk;
+    next.hidden = !!s.last;
+    submit.hidden = !s.last;
+    var shown = steps.filter(function (x, k) { return ok(k); }), pos = shown.indexOf(s);
+    pips.innerHTML = shown.map(function (x, k) { return '<span class="' + (k < pos ? 'done' : k === pos ? 'on' : '') + '"></span>'; }).join('');
+    talk(s.say());
+    if (s.choice) markChoice();
+    if (!noFocus) {
+      var f = s.choice ? (choices.querySelector('[aria-pressed="true"]') || choices.firstChild) : s.field;
+      if (f) f.focus({ preventScroll: true });
+    }
+  }
+  function go(dir) {
+    var s = steps[cur];
+    if (dir > 0 && s.field && !s.field.reportValidity()) return;
+    var i = cur + dir;
+    while (i >= 0 && i < steps.length && !ok(i)) i += dir;
+    if (i >= 0 && i < steps.length) render(i);
+  }
+  next.addEventListener('click', function () { go(1); });
+  back.addEventListener('click', function () { go(-1); });
+  document.addEventListener('submit', function (e) {
+    if (e.target !== form || steps[cur].last) return;
+    e.preventDefault(); e.stopImmediatePropagation(); go(1);
+  }, true);
+  form.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT' && !steps[cur].last) { e.preventDefault(); go(1); }
+  });
+
+  // React to sending
+  var sentTopic = topic.value;
+  form.addEventListener('submit', function () { if (steps[cur].last) { sentTopic = topic.value; talk('Beep boop… sending your message!', true); } });
+  new MutationObserver(function () {
+    if (status.classList.contains('is-success')) {
+      talk(sentTopic === 'client-work'
+        ? 'Access request received! Achievement unlocked. We’ll email you a link to our client work soon.'
+        : 'Message received! Achievement unlocked. We’ll get back to you soon, Player 2.', true);
+      npc.classList.add('is-win');
+      managed.forEach(function (el) { if (el) el.hidden = true; });
+      back.hidden = true; next.hidden = true; submit.hidden = true; again.hidden = false;
+      pips.innerHTML = '';
+    } else if (status.classList.contains('is-error')) {
+      talk('Uh-oh, that didn’t send. Have another go?', true);
+    }
+  }).observe(status, { attributes: true, attributeFilter: ['class'] });
+  again.addEventListener('click', function () { npc.classList.remove('is-win'); status.classList.remove('is-success'); render(0); });
+
+  nav.appendChild(submit);
+  var intro = npc.previousElementSibling;
+  if (intro && intro.tagName === 'P') intro.textContent = 'Our bot will ask you a few quick questions, and your answers come straight to our inbox.';
+  npc.hidden = false;
+  form.classList.add('is-npc');
+  render(0, true);
 })();
