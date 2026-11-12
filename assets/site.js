@@ -1262,4 +1262,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ctx.globalAlpha = 1;
   }
   window.pmOpenSweetCatch = openGame;
+  // ?game=play opens Sweet catch straight away
+  if (/[?&]game=play\b/.test(location.search)) openGame();
 })();
