@@ -809,58 +809,66 @@ document.addEventListener('DOMContentLoaded', function () {
   card.classList.add('has-chain');
   function build() {
     Array.prototype.forEach.call(bar.querySelectorAll('svg.tc-chain'), function (s) { s.remove(); });
-    var W = card.offsetWidth, Y0 = 36, SAG = 26, step = 19;
+    var W = card.offsetWidth, H = 180, Y1 = 30, Y2 = 142, PITCH = 21;
     var off = bar.getBoundingClientRect().left - card.getBoundingClientRect().left;
-    var BAR = '<rect x="-13" y="-3.6" width="26" height="7.2" rx="3.6" fill="url(#tcSteel)" stroke="#2C3A47" stroke-width="1.8"/>';
-    var RING = '<ellipse rx="14" ry="9" fill="none" stroke="#2C3A47" stroke-width="9"/><ellipse rx="14" ry="9" fill="none" stroke="url(#tcSteel)" stroke-width="5.4"/><path d="M-8 -5.5 Q0 -8.5 8 -5.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>';
-    var CAP = '<ellipse rx="4.5" ry="11" fill="none" stroke="#2C3A47" stroke-width="7"/><ellipse rx="4.5" ry="11" fill="none" stroke="url(#tcSteel)" stroke-width="3.8"/>';
-    function mk(cls, front) {
+    var DEFS = '<defs>' +
+      '<linearGradient id="tcStR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#C9D4DE"/><stop offset=".75" stop-color="#7F90A0"/><stop offset="1" stop-color="#4A5A6A"/></linearGradient>' +
+      '<linearGradient id="tcStB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9EFF4"/><stop offset=".45" stop-color="#AEBDCB"/><stop offset="1" stop-color="#55667A"/></linearGradient>' +
+      '</defs>';
+    var RING = '<ellipse rx="15" ry="9.5" fill="none" stroke="#1F2B36" stroke-width="10"/>' +
+      '<ellipse rx="15" ry="9.5" fill="none" stroke="url(#tcStR)" stroke-width="6.2"/>' +
+      '<ellipse rx="11.2" ry="5.9" fill="none" stroke="rgba(16,30,45,.35)" stroke-width="1.2"/>' +
+      '<path d="M-11 -6.5 Q-2 -11 9 -8" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity=".9"/>';
+    var BAR = '<rect x="-16" y="-4.2" width="32" height="8.4" rx="4.2" fill="url(#tcStB)" stroke="#1F2B36" stroke-width="1.8"/>' +
+      '<line x1="-9" y1="0.4" x2="9" y2="0.4" stroke="rgba(16,30,45,.55)" stroke-width="1.4" stroke-linecap="round"/>' +
+      '<line x1="-12" y1="-2.1" x2="12" y2="-2.1" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round" opacity=".85"/>';
+    var CAP = '<ellipse rx="5" ry="12" fill="none" stroke="#1F2B36" stroke-width="8"/><ellipse rx="5" ry="12" fill="none" stroke="url(#tcStR)" stroke-width="4.4"/>';
+    function mk(front) {
       var svg = document.createElementNS(NS, 'svg');
       svg.setAttribute('class', 'tc-chain' + (front ? ' tc-chain-front' : '')); svg.setAttribute('aria-hidden', 'true');
-      svg.setAttribute('width', W); svg.setAttribute('height', 110); svg.setAttribute('viewBox', '0 0 ' + W + ' 110');
+      svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
       svg.style.left = -off + 'px';
-      svg.innerHTML = '<defs><linearGradient id="tcSteel' + (front ? 'F' : '') + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F7FA"/><stop offset=".5" stop-color="#A9B8C6"/><stop offset="1" stop-color="#6B7C8C"/></linearGradient></defs>';
+      svg.innerHTML = DEFS;
       return svg;
     }
-    var svg = mk(), front = mk('', true);
-    var L = document.createElementNS(NS, 'g'), R = document.createElementNS(NS, 'g'), C = document.createElementNS(NS, 'g');
-    L.setAttribute('class', 'tc-chain-l'); R.setAttribute('class', 'tc-chain-r'); C.setAttribute('class', 'tc-chain-c');
-    L.style.transformOrigin = '0px ' + Y0 + 'px'; R.style.transformOrigin = W + 'px ' + Y0 + 'px';
-    // curve from edge to edge, sampled by length, links placed outwards from the centre
-    var x0 = 6, x1 = W - 6;
-    function pt(t) { var u = 1 - t; return [x0 + (x1 - x0) * t, u * u * Y0 + 2 * u * t * (Y0 + SAG * 2) + t * t * Y0]; }
-    var tab = [[0, pt(0)]], S = 0, prev = pt(0);
-    for (var k = 1; k <= 800; k++) { var p = pt(k / 800); S += Math.hypot(p[0] - prev[0], p[1] - prev[1]); tab.push([S, p]); prev = p; }
-    function at(s) {
-      for (var j = 1; j < tab.length; j++) if (tab[j][0] >= s) {
-        var a = tab[j - 1][1], b = tab[j][1];
-        return [b, Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI];
+    function G(cls) { var g = document.createElementNS(NS, 'g'); if (cls) g.setAttribute('class', cls); return g; }
+    function place(parent, x, y, ang, html) {
+      var g = G(); g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + ang.toFixed(1) + ')');
+      g.innerHTML = html; parent.appendChild(g);
+    }
+    var svg = mk(false), front = mk(true), C = G('tc-chain-c');
+    var cx = W / 2, cy = (Y1 + Y2) / 2 + 3;
+    // two chains in an X, pulled down a little at the middle by the padlock
+    [[[2, Y1], [W - 2, Y2], 'tc-chain-l', 'tc-chain-r'], [[2, Y2], [W - 2, Y1], 'tc-chain-l tc-chain-2', 'tc-chain-r tc-chain-2']].forEach(function (ch, idx) {
+      var A = ch[0], B = ch[1];
+      var ctl = [2 * cx - (A[0] + B[0]) / 2, 2 * cy - (A[1] + B[1]) / 2];
+      function pt(t) { var u = 1 - t; return [u * u * A[0] + 2 * u * t * ctl[0] + t * t * B[0], u * u * A[1] + 2 * u * t * ctl[1] + t * t * B[1]]; }
+      var tab = [[0, pt(0)]], S = 0, prev = pt(0);
+      for (var k = 1; k <= 900; k++) { var p = pt(k / 900); S += Math.hypot(p[0] - prev[0], p[1] - prev[1]); tab.push([S, p]); prev = p; }
+      function at(s) {
+        for (var j = 1; j < tab.length; j++) if (tab[j][0] >= s) { var a = tab[j - 1][1], b = tab[j][1]; return [b, Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI]; }
+        return [tab[tab.length - 1][1], 0];
       }
-      return [tab[tab.length - 1][1], 0];
-    }
-    var n = Math.max(2, Math.round((S / 2 - 5) / step)), centre;
-    step = (S / 2 - 5) / n;
-    for (var i = -n; i <= n; i++) {
-      var q = at(S / 2 + i * step), g = document.createElementNS(NS, 'g');
-      g.setAttribute('transform', 'translate(' + q[0][0].toFixed(1) + ' ' + q[0][1].toFixed(1) + ') rotate(' + q[1].toFixed(1) + ')');
-      g.innerHTML = (i % 2 ? RING : BAR);
-      if (i === 0) { centre = q; C.appendChild(g); }
-      else (i < 0 ? L : R).appendChild(g);
-    }
-    // the chain disappears round the card's sides
-    [[1.5, L], [W - 1.5, R]].forEach(function (e) {
-      var g = document.createElementNS(NS, 'g');
-      g.setAttribute('transform', 'translate(' + e[0] + ' ' + (Y0 + 1) + ')');
-      g.innerHTML = CAP; e[1].appendChild(g);
+      var n = Math.max(2, Math.round((S / 2 - 6) / PITCH)), step = (S / 2 - 6) / n;
+      var L = G(ch[2]), R = G(ch[3]);
+      L.style.transformOrigin = A[0] + 'px ' + A[1] + 'px'; R.style.transformOrigin = B[0] + 'px ' + B[1] + 'px';
+      var bars = [], rings = [];
+      for (var i = -n; i <= n; i++) {
+        var q = at(S / 2 + i * step);
+        if (i === 0) { place(C, q[0][0], q[0][1], q[1], BAR); continue; }
+        (i % 2 ? rings : bars).push([i < 0 ? L : R, q]);
+      }
+      // edge-on links first, rings over their ends so they read as threaded
+      bars.forEach(function (b) { place(b[0], b[1][0][0], b[1][0][1], b[1][1], BAR); });
+      rings.forEach(function (r) { place(r[0], r[1][0][0], r[1][0][1], r[1][1], RING); });
+      place(L, A[0], A[1], 0, CAP); place(R, B[0], B[1], 0, CAP);
+      svg.appendChild(L); svg.appendChild(R);
     });
-    svg.appendChild(L); svg.appendChild(R);
-    // centre bar sits in front of the padlock's shackle, so the lock hangs through the chain
     front.appendChild(C);
-    front.innerHTML = front.innerHTML.replace(/url\(#tcSteel\)/g, 'url(#tcSteelF)');
     bar.insertBefore(svg, bar.firstChild);
     bar.appendChild(front);
-    var lockW = pad.offsetWidth, scale = (lockW - 8) / 64;
-    pad.style.top = (centre[0][1] - 4 - 9 * scale) + 'px';
+    var scale = (pad.offsetWidth - 8) / 64;
+    pad.style.top = (cy - 3 - 9 * scale) + 'px';
   }
   build();
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(build, 150); });
