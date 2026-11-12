@@ -667,9 +667,9 @@ document.addEventListener('DOMContentLoaded', function () {
     go(1);
   });
 
-  function first() { return (name.value.trim().split(/\s+/)[0]) || 'Player 2'; }
+  function first() { return (name.value.trim().split(/\s+/)[0]) || 'there'; }
   var steps = [
-    { say: function () { return 'Hi Player 2! I’m the Pick & Mix Bot. What’s your name?'; }, show: [fName], field: name },
+    { say: function () { return 'Hi! I’m the Pick & Mix Bot. What’s your name?'; }, show: [fName], field: name },
     { say: function () { return 'Nice to meet you, ' + first() + '! What brings you here today?'; }, show: [choices], choice: true },
     { say: function () { return topic.value === 'client-work' ? 'Ooh, a secret level! Which organisation are you with? You can skip this one.' : 'Exciting! Who are you working with? You can skip this one.'; },
       show: function () { return topic.value === 'client-work' ? [note, fOrg] : [fOrg]; }, field: org,
@@ -739,7 +739,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (status.classList.contains('is-success')) {
       talk(sentTopic === 'client-work'
         ? 'Access request received! Achievement unlocked. We’ll email you a link to our client work soon.'
-        : 'Message received! Achievement unlocked. We’ll get back to you soon, Player 2.', true);
+        : 'Message received! Achievement unlocked. We’ll get back to you soon.', true);
       npc.classList.add('is-win');
       managed.forEach(function (el) { if (el) el.hidden = true; });
       back.hidden = true; next.hidden = true; submit.hidden = true; again.hidden = false;
@@ -756,6 +756,9 @@ document.addEventListener('DOMContentLoaded', function () {
   npc.hidden = false;
   form.classList.add('is-npc');
   render(0, true);
+  // the topic script can show the client-work note on load; tidy up after it
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { render(cur, true); });
+  else setTimeout(function () { render(cur, true); }, 0);
 })();
 
 // Home main menu: highlight + info panel. Hover or focus picks an item;
