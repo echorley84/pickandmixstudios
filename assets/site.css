@@ -3454,6 +3454,19 @@ html.simple .tc-padlock { top: 0 !important; }
 :root[data-theme="dark"] .tc-legal-updated { color: #7DC2F4 !important; }
 :root[data-theme="dark"] .tc-legal li::marker { color: #FF8DBC; }
 
+/* Sticker logotype headings, same style as the Tiny Bytes logo */
+.tc-sticker-h1 { text-shadow: none; margin: 4px auto 6px; line-height: 0; }
+.tc-sticker-h1 svg { display: block; width: 100%; height: auto; margin: 0 auto; overflow: visible; }
+.tc-l-edge { fill: #FFFFFF; stroke: #FFFFFF; stroke-width: 26px; stroke-linejoin: round; }
+.tc-l-depth { fill: #0E1A26; stroke: #0E1A26; stroke-width: 12px; stroke-linejoin: round; }
+.tc-l-face { fill: #FFFFFF; stroke: #0E1A26; stroke-width: 12px; stroke-linejoin: round; paint-order: stroke fill; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tc-l-edge { fill: #4A94E0; stroke: #4A94E0; } }
+:root[data-theme="dark"] .tc-l-edge { fill: #4A94E0; stroke: #4A94E0; }
+@keyframes tcStickerPop { from { transform: scale(.85) rotate(-3deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.tc-sticker-h1 svg { animation: tcStickerPop .6s cubic-bezier(.3, 1.6, .5, 1) both; }
+@media (prefers-reduced-motion: reduce) { .tc-sticker-h1 svg { animation: none; } }
+html.motion-off .tc-sticker-h1 svg, html.simple .tc-sticker-h1 svg { animation: none; }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
