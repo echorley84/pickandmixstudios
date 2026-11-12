@@ -614,23 +614,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Client work padlock
+  // Client work padlock: it stays locked. Tapping it just rattles the chain
+  // (handled by the chain script); the Request access button is always shown.
   var pad = document.getElementById('tcPadlock');
-  var card = document.getElementById('tcUnlock');
-  var action = document.getElementById('tcUnlockAction');
-  var hint = document.getElementById('tcUnlockHint');
-  if (pad && card && action) {
+  if (pad) {
     pad.hidden = false;
-    pad.setAttribute('aria-expanded', 'false');
-    action.hidden = true;
-    if (hint) hint.hidden = false;
-    pad.addEventListener('click', function () {
-      if (card.classList.contains('is-open')) { var b = action.querySelector('a'); if (b) b.focus(); return; }
-      card.classList.add('is-open');
-      pad.setAttribute('aria-expanded', 'true');
-      action.hidden = false;
-      if (hint) hint.textContent = 'Unlocked! Request access below.';
-    });
+    pad.removeAttribute('aria-expanded');
+    pad.removeAttribute('aria-controls');
+    pad.setAttribute('aria-hidden', 'true');
+    pad.setAttribute('tabindex', '-1');
   }
 })();
 
@@ -876,6 +868,6 @@ document.addEventListener('DOMContentLoaded', function () {
     card.classList.remove('is-jangle'); void card.offsetWidth; card.classList.add('is-jangle');
   }
   card.addEventListener('mouseenter', jangle);
-  card.addEventListener('click', function (e) { if (!pad.contains(e.target)) jangle(); });
+  card.addEventListener('click', function (e) { if (!e.target.closest('a')) jangle(); });
   card.addEventListener('animationend', function (e) { if (e.animationName === 'tcJangleL') card.classList.remove('is-jangle'); });
 })();
