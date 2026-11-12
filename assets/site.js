@@ -808,37 +808,59 @@ document.addEventListener('DOMContentLoaded', function () {
   bar.appendChild(pad);
   card.classList.add('has-chain');
   function build() {
-    var old = bar.querySelector('svg.tc-chain'); if (old) old.remove();
-    var W = card.clientWidth + 48, Y0 = 20, SAG = 62, step = 20;
-    var svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('class', 'tc-chain'); svg.setAttribute('aria-hidden', 'true');
-    svg.setAttribute('width', W); svg.setAttribute('height', 110);
-    svg.setAttribute('viewBox', '0 0 ' + W + ' 110');
-    svg.innerHTML = '<defs><linearGradient id="tcSteel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F7FA"/><stop offset=".5" stop-color="#A9B8C6"/><stop offset="1" stop-color="#6B7C8C"/></linearGradient></defs>';
-    var L = document.createElementNS(NS, 'g'), R = document.createElementNS(NS, 'g');
-    L.setAttribute('class', 'tc-chain-l'); R.setAttribute('class', 'tc-chain-r');
-    L.style.transformOrigin = '0px ' + Y0 + 'px'; R.style.transformOrigin = W + 'px ' + Y0 + 'px';
-    // sample a quadratic curve evenly by length
-    function pt(t) { var u = 1 - t; return [W * t, u * u * Y0 + 2 * u * t * (Y0 + SAG) + t * t * Y0]; }
-    var pts = [], prev = pt(0), acc = 0; pts.push([prev, 0]);
-    for (var k = 1; k <= 600; k++) {
-      var p = pt(k / 600), d = Math.hypot(p[0] - prev[0], p[1] - prev[1]); acc += d;
-      if (acc >= step) { pts.push([p, Math.atan2(p[1] - prev[1], p[0] - prev[0]) * 180 / Math.PI]); acc = 0; }
-      prev = p;
+    Array.prototype.forEach.call(bar.querySelectorAll('svg.tc-chain'), function (s) { s.remove(); });
+    var W = card.offsetWidth, Y0 = 36, SAG = 26, step = 19;
+    var off = bar.getBoundingClientRect().left - card.getBoundingClientRect().left;
+    var BAR = '<rect x="-13" y="-3.6" width="26" height="7.2" rx="3.6" fill="url(#tcSteel)" stroke="#2C3A47" stroke-width="1.8"/>';
+    var RING = '<ellipse rx="14" ry="9" fill="none" stroke="#2C3A47" stroke-width="9"/><ellipse rx="14" ry="9" fill="none" stroke="url(#tcSteel)" stroke-width="5.4"/><path d="M-8 -5.5 Q0 -8.5 8 -5.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>';
+    var CAP = '<ellipse rx="4.5" ry="11" fill="none" stroke="#2C3A47" stroke-width="7"/><ellipse rx="4.5" ry="11" fill="none" stroke="url(#tcSteel)" stroke-width="3.8"/>';
+    function mk(cls, front) {
+      var svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('class', 'tc-chain' + (front ? ' tc-chain-front' : '')); svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('width', W); svg.setAttribute('height', 110); svg.setAttribute('viewBox', '0 0 ' + W + ' 110');
+      svg.style.left = -off + 'px';
+      svg.innerHTML = '<defs><linearGradient id="tcSteel' + (front ? 'F' : '') + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F7FA"/><stop offset=".5" stop-color="#A9B8C6"/><stop offset="1" stop-color="#6B7C8C"/></linearGradient></defs>';
+      return svg;
     }
-    pts.forEach(function (q, i) {
-      var g = document.createElementNS(NS, 'g');
+    var svg = mk(), front = mk('', true);
+    var L = document.createElementNS(NS, 'g'), R = document.createElementNS(NS, 'g'), C = document.createElementNS(NS, 'g');
+    L.setAttribute('class', 'tc-chain-l'); R.setAttribute('class', 'tc-chain-r'); C.setAttribute('class', 'tc-chain-c');
+    L.style.transformOrigin = '0px ' + Y0 + 'px'; R.style.transformOrigin = W + 'px ' + Y0 + 'px';
+    // curve from edge to edge, sampled by length, links placed outwards from the centre
+    var x0 = 6, x1 = W - 6;
+    function pt(t) { var u = 1 - t; return [x0 + (x1 - x0) * t, u * u * Y0 + 2 * u * t * (Y0 + SAG * 2) + t * t * Y0]; }
+    var tab = [[0, pt(0)]], S = 0, prev = pt(0);
+    for (var k = 1; k <= 800; k++) { var p = pt(k / 800); S += Math.hypot(p[0] - prev[0], p[1] - prev[1]); tab.push([S, p]); prev = p; }
+    function at(s) {
+      for (var j = 1; j < tab.length; j++) if (tab[j][0] >= s) {
+        var a = tab[j - 1][1], b = tab[j][1];
+        return [b, Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI];
+      }
+      return [tab[tab.length - 1][1], 0];
+    }
+    var n = Math.max(2, Math.round((S / 2 - 5) / step)), centre;
+    step = (S / 2 - 5) / n;
+    for (var i = -n; i <= n; i++) {
+      var q = at(S / 2 + i * step), g = document.createElementNS(NS, 'g');
       g.setAttribute('transform', 'translate(' + q[0][0].toFixed(1) + ' ' + q[0][1].toFixed(1) + ') rotate(' + q[1].toFixed(1) + ')');
-      g.innerHTML = i % 2
-        ? '<rect x="-13" y="-3.6" width="26" height="7.2" rx="3.6" fill="url(#tcSteel)" stroke="#2C3A47" stroke-width="1.8"/>'
-        : '<ellipse rx="14" ry="9" fill="none" stroke="#2C3A47" stroke-width="9"/><ellipse rx="14" ry="9" fill="none" stroke="url(#tcSteel)" stroke-width="5.4"/><path d="M-8 -5.5 Q0 -8.5 8 -5.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>';
-      (q[0][0] < W / 2 ? L : R).appendChild(g);
+      g.innerHTML = (i % 2 ? RING : BAR);
+      if (i === 0) { centre = q; C.appendChild(g); }
+      else (i < 0 ? L : R).appendChild(g);
+    }
+    // the chain disappears round the card's sides
+    [[1.5, L], [W - 1.5, R]].forEach(function (e) {
+      var g = document.createElementNS(NS, 'g');
+      g.setAttribute('transform', 'translate(' + e[0] + ' ' + (Y0 + 1) + ')');
+      g.innerHTML = CAP; e[1].appendChild(g);
     });
     svg.appendChild(L); svg.appendChild(R);
-    var off = bar.getBoundingClientRect().left - card.getBoundingClientRect().left - card.clientLeft;
-    svg.style.left = -(off + 24) + 'px';
+    // centre bar sits in front of the padlock's shackle, so the lock hangs through the chain
+    front.appendChild(C);
+    front.innerHTML = front.innerHTML.replace(/url\(#tcSteel\)/g, 'url(#tcSteelF)');
     bar.insertBefore(svg, bar.firstChild);
-    pad.style.top = (Y0 + SAG / 2 - 14) + 'px';
+    bar.appendChild(front);
+    var lockW = pad.offsetWidth, scale = (lockW - 8) / 64;
+    pad.style.top = (centre[0][1] - 4 - 9 * scale) + 'px';
   }
   build();
   var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(build, 150); });
