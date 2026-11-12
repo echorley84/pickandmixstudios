@@ -1,0 +1,19 @@
+# Pick and Mix Studios
+
+> Pick and Mix Studios is an eLearning studio (Emily and Craig Chorley, "Team Chorley") that designs and builds game-inspired interactive eLearning, playable Articulate Storyline demos and AI-powered learning tools. Two-time Platinum winners at the LearnX LIVE! Awards 2020. Clients worldwide.
+
+## Main pages
+- [Home](https://pickandmixstudios.com/): who we are and what we make
+- [Team Chorley](https://pickandmixstudios.com/team-chorley.html): Emily (learning designer and eLearning developer) and Craig (game elements)
+- [Showcase](https://pickandmixstudios.com/showcase.html): playable Storyline demos, including award winners
+- [Free Tutorials](https://pickandmixstudios.com/tutorials.html): recorded Storyline build walkthroughs
+- [Pop-up Shop](https://pickandmixstudios.com/popup-shop.html): Storyline templates and game kits to buy
+- [Get in Touch](https://pickandmixstudios.com/contact.html): start a project, ask a question or request access to private client work
+
+## Tiny Bytes
+- [Tiny Bytes archive](https://pickandmixstudios.com/tinybytes/): a free newsletter showing non-technical people things they didn't know AI could do, each from one quick prompt on their phone, with any AI app
+- [Subscribe](https://tinybytes.beehiiv.com/subscribe)
+
+## Elsewhere
+- [Pick and Mix Arcade on Patreon](https://www.patreon.com/cw/pickandmixarcade)
+- [LinkedIn](https://www.linkedin.com/company/pick-and-mix-studios)

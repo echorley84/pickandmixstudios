@@ -1,0 +1,10 @@
+# pickandmixstudios.com
+User-agent: *
+Allow: /
+# other websites hosted in this account's folders (they have their own domains)
+Disallow: /website_0f147f10/
+Disallow: /website_c589091c/
+Disallow: /website_e5b228dd/
+Disallow: /cgi-bin/
+
+Sitemap: https://pickandmixstudios.com/sitemap.xml
