@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (save) { store.set('bs-theme', t); announce((t === 'auto' ? 'Automatic' : t) + ' theme on'); }
   }
   document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.addEventListener('click', function () { setTheme(b.dataset.themeSet, true); }); });
-  var savedTheme = store.get('bs-theme'); if (savedTheme) setTheme(savedTheme, false);
+  var savedTheme = store.get('bs-theme'); setTheme(savedTheme || 'light', false); // light on a first visit
 
   // Text size
   function setSize(n, save) {
