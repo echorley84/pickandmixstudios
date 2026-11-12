@@ -1010,6 +1010,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var page = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
   if (location.pathname.indexOf('/examples/') !== -1) page = 'examples';
+  // ?sweets=reset puts every sweet back (handy for testing)
+  if (/[?&]sweets=reset\b/.test(location.search)) { try { localStorage.removeItem('pm-sweets'); } catch (e) {} }
   var found = LS.get('pm-sweets', []);
   var spot = SPOTS[page], host = spot && document.querySelector(spot.sel);
   // never put the sweet inside a tab list or menu: use its container instead
