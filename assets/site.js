@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '<button type="button" class="tc-lang-go" id="tcLangGo">Translate</button></div>' +
         '<p class="tc-lang-note">Opens a translated copy of this page using Google Translate.</p></div>' +
     '</div>' +
-    '<button type="button" class="tc-tool-btn" id="tcSetBtn" aria-expanded="false" aria-controls="tcSetPanel" aria-label="Reading settings: theme and text size">Aa</button>' +
+    '<button type="button" class="tc-tool-btn" id="tcSetBtn" aria-expanded="false" aria-controls="tcSetPanel" aria-label="Reading settings">Aa</button>' +
     '<div class="tc-panel" id="tcSetPanel" role="region" aria-label="Reading settings" hidden>' +
       '<div class="tc-ctl"><span class="tc-ctl-label" id="tcLblTheme">Theme</span>' +
         '<div class="tc-seg" role="group" aria-labelledby="tcLblTheme">' +
@@ -207,6 +207,29 @@ document.addEventListener('DOMContentLoaded', function () {
           '<button type="button" data-size="1" aria-pressed="false" aria-label="Larger text" style="font-size:1.05rem">A+</button>' +
           '<button type="button" data-size="2" aria-pressed="false" aria-label="Largest text" style="font-size:1.2rem">A++</button>' +
         '</div></div>' +
+      '<div class="tc-ctl"><span class="tc-ctl-label" id="tcLblfont">Font</span>' +
+        '<div class="tc-seg" role="group" aria-labelledby="tcLblfont">' +
+          '<button type="button" data-pref="font" data-val="std" aria-pressed="true">Standard</button>' +
+          '<button type="button" data-pref="font" data-val="easy" aria-pressed="false">Easy-read</button>' +
+        '</div></div>' +
+      '<div class="tc-ctl"><span class="tc-ctl-label" id="tcLblspace">Spacing</span>' +
+        '<div class="tc-seg" role="group" aria-labelledby="tcLblspace">' +
+          '<button type="button" data-pref="space" data-val="normal" aria-pressed="true">Normal</button>' +
+          '<button type="button" data-pref="space" data-val="wide" aria-pressed="false">Wide</button>' +
+        '</div></div>' +
+      '<div class="tc-ctl"><span class="tc-ctl-label" id="tcLblmotion">Animation</span>' +
+        '<div class="tc-seg" role="group" aria-labelledby="tcLblmotion">' +
+          '<button type="button" data-pref="motion" data-val="on" aria-pressed="true">On</button>' +
+          '<button type="button" data-pref="motion" data-val="off" aria-pressed="false">Off</button>' +
+        '</div></div>' +
+      '<div class="tc-ctl"><span class="tc-ctl-label" id="tcLblsimple">Simple page</span>' +
+        '<div class="tc-seg" role="group" aria-labelledby="tcLblsimple">' +
+          '<button type="button" data-pref="simple" data-val="off" aria-pressed="true">Off</button>' +
+          '<button type="button" data-pref="simple" data-val="on" aria-pressed="false">On</button>' +
+        '</div></div>' +
+      '<div class="tc-ctl" id="tcCtlListen" hidden><span class="tc-ctl-label">Read aloud</span>' +
+        '<button type="button" class="tc-listen-btn" id="tcListenBtn" aria-pressed="false"><span aria-hidden="true">&#9654;</span> Listen to this page</button></div>' +
+      '<button type="button" class="tc-reset-btn" id="tcPrefsReset">Reset all</button>' +
     '</div>';
 
   var announcer = document.createElement('p');
@@ -256,6 +279,53 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   document.querySelectorAll('[data-size]').forEach(function (b) { b.addEventListener('click', function () { setSize(b.dataset.size, true); }); });
   var savedSize = store.get('bs-size'); if (savedSize) setSize(savedSize, false);
+
+  // Reading options (same saved settings as Tiny Bytes)
+  var PREFS = { font: ['std', 'font-easy'], space: ['normal', 'space-wide'], motion: ['on', 'motion-off'], simple: ['off', 'simple'] };
+  var PREF_NAMES = { font: { std: 'Standard font', easy: 'Easy-read font' }, space: { normal: 'Normal spacing', wide: 'Wide spacing' },
+    motion: { on: 'Animation on', off: 'Animation off' }, simple: { off: 'Simple page off', on: 'Simple page on' } };
+  function loadEasyFont() {
+    if (document.getElementById('tcEasyFont')) return;
+    var l = document.createElement('link'); l.id = 'tcEasyFont'; l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap';
+    document.head.appendChild(l);
+  }
+  function setPref(k, v, save) {
+    root.classList.toggle(PREFS[k][1], v !== PREFS[k][0]);
+    if (k === 'font' && v === 'easy') loadEasyFont();
+    document.querySelectorAll('[data-pref="' + k + '"]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.val === v)); });
+    if (save) { store.set('bs-' + k, v); announce(PREF_NAMES[k][v]); window.dispatchEvent(new Event('resize')); }
+  }
+  document.querySelectorAll('[data-pref]').forEach(function (b) { b.addEventListener('click', function () { setPref(b.dataset.pref, b.dataset.val, true); }); });
+  Object.keys(PREFS).forEach(function (k) { var v = store.get('bs-' + k); if (v) setPref(k, v, false); });
+
+  // Read aloud with the device's own voice
+  var listenCtl = document.getElementById('tcCtlListen'), listenBtn = document.getElementById('tcListenBtn');
+  if (listenCtl && 'speechSynthesis' in window) {
+    listenCtl.hidden = false;
+    var listenLabel = listenBtn.innerHTML;
+    var stopReading = function () { speechSynthesis.cancel(); listenBtn.setAttribute('aria-pressed', 'false'); listenBtn.innerHTML = listenLabel; };
+    listenBtn.addEventListener('click', function () {
+      if (listenBtn.getAttribute('aria-pressed') === 'true') { stopReading(); return; }
+      var main = document.getElementById('main-content') || document.querySelector('main'); if (!main) return;
+      var parts = main.innerText.split(/\n+/).map(function (t) { return t.trim(); }).filter(Boolean);
+      speechSynthesis.cancel();
+      parts.forEach(function (t, i) {
+        var u = new SpeechSynthesisUtterance(t); u.lang = document.documentElement.lang || 'en-GB'; u.rate = 0.95;
+        if (i === parts.length - 1) u.onend = stopReading;
+        speechSynthesis.speak(u);
+      });
+      listenBtn.setAttribute('aria-pressed', 'true'); listenBtn.innerHTML = '<span aria-hidden="true">&#9632;</span> Stop reading';
+    });
+    window.addEventListener('pagehide', stopReading);
+  }
+  var resetBtn = document.getElementById('tcPrefsReset');
+  if (resetBtn) resetBtn.addEventListener('click', function () {
+    setTheme('light', false); setSize('0', false);
+    Object.keys(PREFS).forEach(function (k) { setPref(k, PREFS[k][0], false); });
+    ['bs-theme', 'bs-size', 'bs-font', 'bs-space', 'bs-motion', 'bs-simple'].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
+    announce('Reading settings reset'); window.dispatchEvent(new Event('resize'));
+  });
 
   // Language: opens the page through Google Translate (live site only, where Google can reach it)
   if (!/pickandmixstudios\.com$|translate\.goog$/.test(location.hostname)) lBtn.hidden = true;
