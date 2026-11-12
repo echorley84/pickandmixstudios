@@ -1001,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', function () {
     index:          { sel: '.tc-sq-art', kind: 'bear', col: '#FF8DBC', pos: 'left:6px;bottom:2px' },
     'team-chorley': { sel: '.tc-page-heading', kind: 'lolly', col: '#C01F62', pos: 'right:6%;bottom:0' },
     showcase:       { sel: '#tcMap', kind: 'wrap', col: '#F4C24C', pos: 'right:4px;bottom:2px' },
-    tutorials:      { sel: '.tc-shelf-board', kind: 'bean', col: '#7BE0A5', pos: 'right:8px;top:-24px' },
+    tutorials:      { sel: '#tcShelf', kind: 'bean', col: '#7BE0A5', pos: 'right:6px;top:4px' },
     'popup-shop':   { sel: '.tc-loot-row', kind: 'bear', col: '#FFAA66', pos: 'left:0;bottom:0' },
     contact:        { sel: '.tc-page-heading', kind: 'wrap', col: '#7DC2F4', pos: 'left:4%;bottom:0' },
     privacy:        { sel: '.tc-legal', kind: 'lolly', col: '#1A64A8', pos: 'right:6px;bottom:4px' },
@@ -1014,6 +1014,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var spot = SPOTS[page], host = spot && document.querySelector(spot.sel);
   // never put the sweet inside a tab list or menu: use its container instead
   while (host && /^(tablist|menu|listbox|radiogroup)$/.test(host.getAttribute('role') || '')) host = host.parentElement;
+  while (host && host.closest('[aria-hidden="true"]')) host = host.closest('[aria-hidden="true"]').parentElement;
   if (host && found.indexOf(page) === -1) {
     if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
     var b = document.createElement('button');
