@@ -990,7 +990,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---- sweet shapes (SVG)
   var SWEET_SVG = {
     bear: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><g fill="' + c + '" stroke="#10324F" stroke-width="1.6"><circle cx="10" cy="7" r="3.2"/><circle cx="22" cy="7" r="3.2"/><circle cx="16" cy="11" r="6.5"/><ellipse cx="16" cy="22" rx="7.5" ry="8"/><circle cx="8.5" cy="18.5" r="2.8"/><circle cx="23.5" cy="18.5" r="2.8"/><circle cx="10.5" cy="28" r="3"/><circle cx="21.5" cy="28" r="3"/></g><ellipse cx="13" cy="9" rx="2" ry="1.3" fill="#fff" opacity=".6"/></svg>'; },
-    lolly: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="14.8" y="16" width="2.6" height="15" rx="1.3" fill="#fff" stroke="#10324F" stroke-width="1.4"/><circle cx="16" cy="12" r="10" fill="#fff" stroke="#10324F" stroke-width="1.6"/><path d="M16 12m-7 0a7 7 0 1 1 7 7a4.6 4.6 0 1 1 -4.6-4.6a2.4 2.4 0 1 1 2.4 2.4" fill="none" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/></svg>'; },
+    lolly: function (c) { var w = ''; for (var r = 0; r < 360; r += 90) w += '<path d="M16 12 L16 2.6 A9.4 9.4 0 0 1 25.4 12 Z" fill="' + c + '" transform="rotate(' + r + ' 16 12)"/>'; return '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="14.8" y="18" width="2.6" height="13" rx="1.3" fill="#fff" stroke="#10324F" stroke-width="1.4"/><circle cx="16" cy="12" r="10" fill="#fff"/>' + w + '<circle cx="16" cy="12" r="10" fill="none" stroke="#10324F" stroke-width="1.6"/><circle cx="16" cy="12" r="2" fill="#fff"/></svg>'; },
     wrap: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 9l7 4v6l-7 4zM30 9l-7 4v6l7 4z" fill="' + c + '" stroke="#10324F" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="16" cy="16" rx="8.5" ry="7" fill="' + c + '" stroke="#10324F" stroke-width="1.6"/><path d="M11 12.5c2-2 6-2.5 9-1" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/></svg>'; },
     bean: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 9c5-6 19-4 18 6s-6 7-9 9-11 4-12-4 0-8 3-11z" fill="' + c + '" stroke="#10324F" stroke-width="1.6"/><ellipse cx="13" cy="11" rx="3.4" ry="1.6" fill="#fff" opacity=".55" transform="rotate(-25 13 11)"/></svg>'; }
   };
@@ -998,15 +998,16 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---- sweet hunt: one hidden sweet per page
   var TOTAL = 8;
   var SPOTS = {
-    index:          { sel: '#tcTS', kind: 'bear', col: '#FF8DBC', pos: 'right:14px;bottom:12px' },
-    'team-chorley': { sel: '.tc-cyp-pill', kind: 'lolly', col: '#C01F62', pos: 'right:-40px;top:0' },
-    showcase:       { sel: '#tcMap', kind: 'wrap', col: '#F4C24C', pos: 'left:12px;bottom:10px' },
-    tutorials:      { sel: '#tcShelf', kind: 'bean', col: '#7BE0A5', pos: 'right:12px;top:10px' },
-    'popup-shop':   { sel: '#tcLoot', kind: 'bear', col: '#FFAA66', pos: 'left:12px;top:10px' },
-    contact:        { sel: '#tcNPC', kind: 'wrap', col: '#7DC2F4', pos: 'left:-4px;top:-8px' },
-    privacy:        { sel: '.tc-legal', kind: 'lolly', col: '#1A64A8', pos: 'right:16px;bottom:14px' },
-    accessibility:  { sel: '.tc-legal', kind: 'bean', col: '#C01F62', pos: 'right:18px;top:18px' }
+    index:          { sel: '.tc-sq-art', kind: 'bear', col: '#FF8DBC', pos: 'left:6px;bottom:2px' },
+    'team-chorley': { sel: '.tc-page-heading', kind: 'lolly', col: '#C01F62', pos: 'right:6%;bottom:0' },
+    showcase:       { sel: '#tcMap', kind: 'wrap', col: '#F4C24C', pos: 'right:4px;bottom:2px' },
+    tutorials:      { sel: '.tc-shelf-board', kind: 'bean', col: '#7BE0A5', pos: 'right:8px;top:-24px' },
+    'popup-shop':   { sel: '.tc-loot-row', kind: 'bear', col: '#FFAA66', pos: 'left:0;bottom:0' },
+    contact:        { sel: '.tc-page-heading', kind: 'wrap', col: '#7DC2F4', pos: 'left:4%;bottom:0' },
+    privacy:        { sel: '.tc-legal', kind: 'lolly', col: '#1A64A8', pos: 'right:6px;bottom:4px' },
+    accessibility:  { sel: '.tc-sticker-h1', kind: 'bean', col: '#C01F62', pos: 'right:4%;top:6%' }
   };
+
   var page = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
   if (location.pathname.indexOf('/examples/') !== -1) page = 'examples';
   var found = LS.get('pm-sweets', []);
@@ -1064,21 +1065,38 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () { layer.remove(); }, 5200);
   }
 
-  // ---- grumpy padlock (from the second try)
+  // ---- grumpy padlock: wakes up (eyes) on the first tap, talks from the second
   var card = document.getElementById('tcUnlock'), padTries = 0, padIdx = 0;
-  var LINES = ['Nice try! Request access like everyone else &#x1F624;', 'Still locked. Still not opening. &#x1F512;', 'I&rsquo;m a padlock, not a pinata!', 'OK, that tickles. Press Request access! &#x1F606;'];
-  if (card) {
+  var LINES = [
+    'Oi! That tickles! &#x1F606;',
+    'Nice try. I went to padlock school. &#x1F393;',
+    'No key, no entry. Them&rsquo;s the rules. &#x1F511;',
+    'Error 403: padlock says no. &#x1F645;',
+    'Have you tried turning me off and on again?',
+    'Keep poking and I&rsquo;ll tell the robot. &#x1F916;',
+    'I&rsquo;m not even locked to anything. I just like the chain. &#x26D3;&#xFE0F;',
+    'Psst&hellip; the Request access button is RIGHT there &#x1F447;'
+  ];
+  var padSvg = document.querySelector('.tc-padlock-svg');
+  if (card && padSvg) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var eyes = document.createElementNS(NS, 'g'); eyes.setAttribute('class', 'tc-pad-eyes');
+    eyes.innerHTML = '<g class="tc-pad-lids"><ellipse cx="23.5" cy="40.5" rx="5" ry="5.2" fill="#fff" stroke="#3A1A06" stroke-width="1.6"/><ellipse cx="40.5" cy="40.5" rx="5" ry="5.2" fill="#fff" stroke="#3A1A06" stroke-width="1.6"/>' +
+      '<g class="tc-pad-pupils"><circle cx="24" cy="41" r="2.3" fill="#10324F"/><circle cx="41" cy="41" r="2.3" fill="#10324F"/><circle cx="24.8" cy="40.1" r=".8" fill="#fff"/><circle cx="41.8" cy="40.1" r=".8" fill="#fff"/></g></g>' +
+      '<path class="tc-pad-brows" d="M18.5 33.6 L28 35.6 M45.5 33.6 L36 35.6" stroke="#3A1A06" stroke-width="2" stroke-linecap="round"/>';
+    padSvg.appendChild(eyes);
     var bubble = document.createElement('div'); bubble.className = 'pm-pad-bubble'; bubble.setAttribute('role', 'status');
-    var bar = document.getElementById('tcChainBar') || card;
-    bar.appendChild(bubble);
+    (document.getElementById('tcChainBar') || card).appendChild(bubble);
     var bT;
     card.addEventListener('click', function (e) {
       if (e.target.closest('a, .pm-sweet')) return;
       padTries++;
+      card.classList.add('is-awake');
+      if (padTries >= 3) card.classList.add('is-cross');
       if (padTries < 2) return;
       bubble.innerHTML = LINES[padIdx % LINES.length]; padIdx++;
       bubble.classList.add('is-on'); clearTimeout(bT);
-      bT = setTimeout(function () { bubble.classList.remove('is-on'); }, 3500);
+      bT = setTimeout(function () { bubble.classList.remove('is-on'); }, 3800);
     });
   }
 

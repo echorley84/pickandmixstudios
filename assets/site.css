@@ -3477,10 +3477,10 @@ html.motion-off .tc-sticker-h1 svg, html.simple .tc-sticker-h1 svg { animation: 
 .pm-toast strong { color: #FF8DBC; }
 .pm-toast-btn { background: #C01F62; color: #FFFFFF; border: 2px solid #FFFFFF; border-radius: 999px; padding: 6px 14px; font: 800 .875rem 'Maven Pro', Arial, sans-serif; cursor: pointer; }
 .pm-toast-btn:focus-visible { outline: 3px solid #FF8DBC; outline-offset: 2px; }
-.pm-sweet { position: absolute; z-index: 5; width: 30px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 50%; }
+.pm-sweet { position: absolute; z-index: 5; width: 34px; height: 34px; padding: 7px; box-sizing: border-box; border: 0; background: none; cursor: pointer; border-radius: 50%; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .pm-sweet svg { width: 100%; height: 100%; display: block; filter: drop-shadow(1px 2px 0 rgba(16, 50, 79, .35)); }
-@keyframes pmWiggle { 0%, 88%, 100% { transform: rotate(0); } 91% { transform: rotate(-14deg); } 94% { transform: rotate(12deg); } 97% { transform: rotate(-6deg); } }
-.pm-sweet { animation: pmWiggle 5s ease-in-out infinite; }
+@keyframes pmWiggle { 0%, 96%, 100% { transform: rotate(0); } 97% { transform: rotate(-12deg); } 98.5% { transform: rotate(10deg); } }
+.pm-sweet { animation: pmWiggle 16s ease-in-out infinite; }
 .pm-sweet:hover { transform: scale(1.2) rotate(-8deg); animation: none; }
 .pm-sweet:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 2px; box-shadow: 0 0 0 6px #10324F; }
 @keyframes pmGot { 0% { transform: scale(1); } 40% { transform: scale(1.7) rotate(20deg); } 100% { transform: scale(0) rotate(-40deg); opacity: 0; } }
@@ -3517,6 +3517,18 @@ body.pm-game-open { overflow: hidden; }
 .pm-game-help { margin: 10px 2px 0 !important; color: #CFE3F5 !important; font-size: .875rem; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .pm-sweet, .pm-sweet.is-got { animation: none; } .pm-toast, .pm-pad-bubble { transition: none; } }
 html.motion-off .pm-sweet, html.simple .pm-sweet { animation: none; }
+
+/* Padlock wakes up */
+.tc-pad-eyes { opacity: 0; transform: scale(.4); transform-box: fill-box; transform-origin: center; transition: opacity .25s, transform .35s cubic-bezier(.3, 1.8, .5, 1); }
+.tc-pad-brows { opacity: 0; transition: opacity .2s; }
+.tc-unlock.is-awake .tc-pad-eyes { opacity: 1; transform: none; }
+.tc-unlock.is-cross .tc-pad-brows { opacity: 1; }
+@keyframes tcLook { 0%, 30% { transform: translate(0, 0); } 38%, 58% { transform: translate(-1.6px, .4px); } 66%, 86% { transform: translate(1.6px, -.3px); } 100% { transform: translate(0, 0); } }
+@keyframes tcBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.tc-unlock.is-awake .tc-pad-pupils { animation: tcLook 3.6s ease-in-out infinite; }
+.tc-unlock.is-awake .tc-pad-lids { transform-box: fill-box; transform-origin: center; animation: tcBlink 4.2s infinite; }
+@media (prefers-reduced-motion: reduce) { .tc-unlock.is-awake .tc-pad-pupils, .tc-unlock.is-awake .tc-pad-lids { animation: none; } .tc-pad-eyes { transition: none; } }
+html.motion-off .tc-unlock.is-awake .tc-pad-pupils, html.motion-off .tc-unlock.is-awake .tc-pad-lids { animation: none; }
 
 /* PALETTE START */
 :root {
