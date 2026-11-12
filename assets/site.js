@@ -1,3 +1,15 @@
+// Email address, put together in the page so spam bots reading the raw HTML don't see it.
+var MAIL = ['hello', 'pickandmixstudios.com'].join(String.fromCharCode(64));
+(function () {
+  function fill() {
+    document.querySelectorAll('.tc-mail').forEach(function (s) { s.textContent = MAIL; });
+    document.querySelectorAll('a[data-mailto]').forEach(function (a) {
+      var subj = a.getAttribute('data-subject');
+      a.href = 'mailto:' + MAIL + (subj ? '?subject=' + encodeURIComponent(subj) : '');
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill); else fill();
+})();
 // ==========================================================================
 // Pick and Mix Studios — shared site script
 // ==========================================================================
@@ -131,11 +143,11 @@ document.addEventListener('DOMContentLoaded', function () {
               ? 'Thanks! Your request has been sent. We’ll email you a link to our client work.'
               : 'Thanks! Your message has been sent. We’ll get back to you soon.', 'success');
           } else {
-            setStatus('Sorry, that didn’t send: ' + (data.message || 'please try again.') + ' You can also email hello@pickandmixstudios.com.', 'error');
+            setStatus('Sorry, that didn’t send: ' + (data.message || 'please try again.') + ' You can also email ' + MAIL + '.', 'error');
           }
         })
         .catch(function () {
-          setStatus('Sorry, something went wrong sending your message. Please try again, or email hello@pickandmixstudios.com.', 'error');
+          setStatus('Sorry, something went wrong sending your message. Please try again, or email ' + MAIL + '.', 'error');
         })
         .finally(function () {
           btnLabel.textContent = 'Send message';
