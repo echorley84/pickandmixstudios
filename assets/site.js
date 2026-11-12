@@ -956,3 +956,289 @@ document.addEventListener('DOMContentLoaded', function () {
   card.addEventListener('click', function (e) { if (!e.target.closest('a')) jangle(); });
   card.addEventListener('animationend', function (e) { if (e.animationName === 'tcJangleL') card.classList.remove('is-jangle'); });
 })();
+
+// ==========================================================================
+// Easter eggs: sweet hunt (8 hidden sweets, one per page), cheat code
+// (Konami code, or tap the big home logo 7 times), a grumpy padlock and the
+// Sweet catch mini-game. All optional; progress is kept on this device only.
+// ==========================================================================
+(function () {
+  var LS = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function calm() { return reduce || document.documentElement.classList.contains('motion-off') || document.documentElement.classList.contains('simple'); }
+
+  // ---- toast
+  var toast = document.createElement('div');
+  toast.className = 'pm-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(toast);
+  var toastTimer;
+  function say(html, ms, action) {
+    toast.innerHTML = html;
+    if (action) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'pm-toast-btn'; b.textContent = action.label;
+      b.addEventListener('click', function () { hideToast(); action.fn(); });
+      toast.appendChild(b);
+    }
+    toast.classList.add('is-on');
+    clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, ms || 3500);
+  }
+  function hideToast() { toast.classList.remove('is-on'); }
+
+  // ---- sweet shapes (SVG)
+  var SWEET_SVG = {
+    bear: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><g fill="' + c + '" stroke="#10324F" stroke-width="1.6"><circle cx="10" cy="7" r="3.2"/><circle cx="22" cy="7" r="3.2"/><circle cx="16" cy="11" r="6.5"/><ellipse cx="16" cy="22" rx="7.5" ry="8"/><circle cx="8.5" cy="18.5" r="2.8"/><circle cx="23.5" cy="18.5" r="2.8"/><circle cx="10.5" cy="28" r="3"/><circle cx="21.5" cy="28" r="3"/></g><ellipse cx="13" cy="9" rx="2" ry="1.3" fill="#fff" opacity=".6"/></svg>'; },
+    lolly: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="14.8" y="16" width="2.6" height="15" rx="1.3" fill="#fff" stroke="#10324F" stroke-width="1.4"/><circle cx="16" cy="12" r="10" fill="#fff" stroke="#10324F" stroke-width="1.6"/><path d="M16 12m-7 0a7 7 0 1 1 7 7a4.6 4.6 0 1 1 -4.6-4.6a2.4 2.4 0 1 1 2.4 2.4" fill="none" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/></svg>'; },
+    wrap: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 9l7 4v6l-7 4zM30 9l-7 4v6l7 4z" fill="' + c + '" stroke="#10324F" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="16" cy="16" rx="8.5" ry="7" fill="' + c + '" stroke="#10324F" stroke-width="1.6"/><path d="M11 12.5c2-2 6-2.5 9-1" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/></svg>'; },
+    bean: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 9c5-6 19-4 18 6s-6 7-9 9-11 4-12-4 0-8 3-11z" fill="' + c + '" stroke="#10324F" stroke-width="1.6"/><ellipse cx="13" cy="11" rx="3.4" ry="1.6" fill="#fff" opacity=".55" transform="rotate(-25 13 11)"/></svg>'; }
+  };
+
+  // ---- sweet hunt: one hidden sweet per page
+  var TOTAL = 8;
+  var SPOTS = {
+    index:          { sel: '#tcTS', kind: 'bear', col: '#FF8DBC', pos: 'right:14px;bottom:12px' },
+    'team-chorley': { sel: '.tc-cyp-pill', kind: 'lolly', col: '#C01F62', pos: 'right:-40px;top:0' },
+    showcase:       { sel: '#tcMap', kind: 'wrap', col: '#F4C24C', pos: 'left:12px;bottom:10px' },
+    tutorials:      { sel: '#tcShelf', kind: 'bean', col: '#7BE0A5', pos: 'right:12px;top:10px' },
+    'popup-shop':   { sel: '#tcLoot', kind: 'bear', col: '#FFAA66', pos: 'left:12px;top:10px' },
+    contact:        { sel: '#tcNPC', kind: 'wrap', col: '#7DC2F4', pos: 'left:-4px;top:-8px' },
+    privacy:        { sel: '.tc-legal', kind: 'lolly', col: '#1A64A8', pos: 'right:16px;bottom:14px' },
+    accessibility:  { sel: '.tc-legal', kind: 'bean', col: '#C01F62', pos: 'right:18px;top:18px' }
+  };
+  var page = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
+  if (location.pathname.indexOf('/examples/') !== -1) page = 'examples';
+  var found = LS.get('pm-sweets', []);
+  var spot = SPOTS[page], host = spot && document.querySelector(spot.sel);
+  // never put the sweet inside a tab list or menu: use its container instead
+  while (host && /^(tablist|menu|listbox|radiogroup)$/.test(host.getAttribute('role') || '')) host = host.parentElement;
+  if (host && found.indexOf(page) === -1) {
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'pm-sweet'; b.style.cssText = spot.pos;
+    b.setAttribute('aria-label', 'A hidden sweet! Collect it');
+    b.innerHTML = SWEET_SVG[spot.kind](spot.col);
+    host.appendChild(b);
+    b.addEventListener('click', function (e) {
+      e.stopPropagation(); e.preventDefault();
+      if (found.indexOf(page) === -1) found.push(page);
+      LS.set('pm-sweets', found);
+      b.classList.add('is-got'); b.disabled = true;
+      setTimeout(function () { b.remove(); }, calm() ? 0 : 600);
+      if (found.length >= TOTAL) {
+        say('<strong>Achievement unlocked: Sweet tooth!</strong> You found all ' + TOTAL + ' sweets.', 9000, { label: 'Play Sweet catch', fn: openGame });
+      } else {
+        say('<strong>Sweet found!</strong> ' + found.length + ' of ' + TOTAL + '. There&rsquo;s one hidden on every page&hellip;', 4000);
+      }
+    });
+  }
+
+  // ---- cheat code
+  var KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'], ki = 0;
+  document.addEventListener('keydown', function (e) {
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    ki = (k === KONAMI[ki]) ? ki + 1 : (k === KONAMI[0] ? 1 : 0);
+    if (ki === KONAMI.length) { ki = 0; cheat(); }
+  });
+  var logo = document.querySelector('img.tc-hero-welcome-img'), taps = 0, tapT;
+  if (logo) logo.addEventListener('click', function () {
+    taps++; clearTimeout(tapT); tapT = setTimeout(function () { taps = 0; }, 1500);
+    if (taps >= 7) { taps = 0; cheat(); }
+  });
+  function cheat() {
+    say('<strong>Cheat mode activated!</strong> Sweets for everyone.', 8000, { label: 'Play Sweet catch', fn: openGame });
+    if (calm()) return;
+    var layer = document.createElement('div'); layer.className = 'pm-rain'; layer.setAttribute('aria-hidden', 'true');
+    var kinds = Object.keys(SWEET_SVG), cols = ['#FF8DBC', '#F4C24C', '#7DC2F4', '#7BE0A5', '#FFAA66', '#C01F62'];
+    for (var i = 0; i < 40; i++) {
+      var s = document.createElement('span');
+      s.innerHTML = SWEET_SVG[kinds[i % kinds.length]](cols[i % cols.length]);
+      s.style.left = (Math.random() * 100) + 'vw';
+      s.style.animationDelay = (Math.random() * 1.6) + 's';
+      s.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
+      s.style.setProperty('--spin', (Math.random() * 720 - 360) + 'deg');
+      layer.appendChild(s);
+    }
+    document.body.appendChild(layer);
+    setTimeout(function () { layer.remove(); }, 5200);
+  }
+
+  // ---- grumpy padlock (from the second try)
+  var card = document.getElementById('tcUnlock'), padTries = 0, padIdx = 0;
+  var LINES = ['Nice try! Request access like everyone else &#x1F624;', 'Still locked. Still not opening. &#x1F512;', 'I&rsquo;m a padlock, not a pinata!', 'OK, that tickles. Press Request access! &#x1F606;'];
+  if (card) {
+    var bubble = document.createElement('div'); bubble.className = 'pm-pad-bubble'; bubble.setAttribute('role', 'status');
+    var bar = document.getElementById('tcChainBar') || card;
+    bar.appendChild(bubble);
+    var bT;
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('a, .pm-sweet')) return;
+      padTries++;
+      if (padTries < 2) return;
+      bubble.innerHTML = LINES[padIdx % LINES.length]; padIdx++;
+      bubble.classList.add('is-on'); clearTimeout(bT);
+      bT = setTimeout(function () { bubble.classList.remove('is-on'); }, 3500);
+    });
+  }
+
+  // ---- Sweet catch mini-game
+  var dlg, cv, ctx, raf, state;
+  function openGame() {
+    if (!dlg) build();
+    dlg.hidden = false; document.body.classList.add('pm-game-open');
+    lastFocus = document.activeElement;
+    showStart();
+    dlg.querySelector('.pm-game-go').focus();
+  }
+  var lastFocus;
+  function closeGame() {
+    stop(); dlg.hidden = true; document.body.classList.remove('pm-game-open');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function build() {
+    dlg = document.createElement('div');
+    dlg.className = 'pm-game'; dlg.setAttribute('role', 'dialog'); dlg.setAttribute('aria-modal', 'true'); dlg.setAttribute('aria-labelledby', 'pmGameTitle');
+    dlg.innerHTML =
+      '<div class="pm-game-box">' +
+        '<div class="pm-game-top"><h2 id="pmGameTitle">Sweet catch</h2><button type="button" class="pm-game-x" aria-label="Close game">&times;</button></div>' +
+        '<p class="pm-game-hud" aria-live="off"><span>Score <b id="pmScore">0</b></span><span>Time <b id="pmTime">30</b></span><span>Best <b id="pmBest">0</b></span></p>' +
+        '<div class="pm-game-stage"><canvas width="360" height="440" aria-label="Sweet catch game area"></canvas>' +
+          '<div class="pm-game-screen"><p class="pm-game-msg"></p><button type="button" class="pm-game-go">&#9654; Press start</button></div></div>' +
+        '<p class="pm-game-help">Catch the sweets, dodge the broccoli. Move with the arrow keys, or drag on the game.</p>' +
+        '<p class="pm-sr" id="pmGameStatus" role="status" aria-live="polite"></p>' +
+      '</div>';
+    document.body.appendChild(dlg);
+    cv = dlg.querySelector('canvas'); ctx = cv.getContext('2d');
+    dlg.querySelector('.pm-game-x').addEventListener('click', closeGame);
+    dlg.querySelector('.pm-game-go').addEventListener('click', start);
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) closeGame(); });
+    dlg.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); closeGame(); return; }
+      if (e.key === 'Tab') {
+        var f = [].slice.call(dlg.querySelectorAll('button')).filter(function (x) { return x.offsetParent; });
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+      if (state && state.on) {
+        if (e.key === 'ArrowLeft' || e.key === 'a') { state.left = true; e.preventDefault(); }
+        if (e.key === 'ArrowRight' || e.key === 'd') { state.right = true; e.preventDefault(); }
+      }
+    });
+    dlg.addEventListener('keyup', function (e) {
+      if (!state) return;
+      if (e.key === 'ArrowLeft' || e.key === 'a') state.left = false;
+      if (e.key === 'ArrowRight' || e.key === 'd') state.right = false;
+    });
+    function pointer(e) {
+      if (!state || !state.on) return;
+      var r = cv.getBoundingClientRect();
+      state.x = Math.max(28, Math.min(332, (e.clientX - r.left) * (360 / r.width)));
+    }
+    cv.addEventListener('pointerdown', function (e) { cv.setPointerCapture(e.pointerId); pointer(e); });
+    cv.addEventListener('pointermove', function (e) { if (e.buttons || e.pointerType === 'mouse') pointer(e); });
+    document.addEventListener('visibilitychange', function () { if (document.hidden && state && state.on) end(); });
+  }
+  var robot = new Image();
+  var cssLink = document.querySelector('link[href*="site.css"]');
+  robot.src = cssLink ? cssLink.href.replace(/site\.css.*$/, 'img/robot-logo.webp') : '/assets/img/robot-logo.webp';
+  var COLS = ['#FF8DBC', '#F4C24C', '#7DC2F4', '#7BE0A5', '#FFAA66', '#C01F62', '#B48CF0'];
+  function showStart(msg) {
+    var scr = dlg.querySelector('.pm-game-screen');
+    scr.hidden = false;
+    dlg.querySelector('.pm-game-msg').innerHTML = msg || 'Catch as many sweets as you can in 30 seconds!';
+    dlg.querySelector('.pm-game-go').innerHTML = msg ? '&#9654; Play again' : '&#9654; Press start';
+    document.getElementById('pmBest').textContent = LS.get('pm-catch-best', 0);
+    drawBg();
+  }
+  function start() {
+    dlg.querySelector('.pm-game-screen').hidden = true;
+    state = { on: true, x: 180, left: false, right: false, items: [], score: 0, t0: performance.now(), last: performance.now(), spawn: 0, combo: 0, pops: [] };
+    document.getElementById('pmScore').textContent = '0';
+    document.getElementById('pmGameStatus').textContent = 'Game started.';
+    cv.focus && cv.setAttribute('tabindex', '-1');
+    dlg.querySelector('.pm-game-box').focus && dlg.focus();
+    raf = requestAnimationFrame(tick);
+  }
+  function stop() { cancelAnimationFrame(raf); if (state) state.on = false; }
+  function end() {
+    stop();
+    var best = LS.get('pm-catch-best', 0), s = state.score, nb = s > best;
+    if (nb) LS.set('pm-catch-best', s);
+    var msg = '<strong>Game over!</strong> You scored ' + s + '.' + (nb ? ' <span class="pm-new">New best!</span>' : ' Best: ' + best + '.');
+    document.getElementById('pmGameStatus').textContent = 'Game over. You scored ' + s + (nb ? ', a new best.' : '.');
+    showStart(msg);
+    dlg.querySelector('.pm-game-go').focus();
+  }
+  function tick(now) {
+    var dt = Math.min(0.05, (now - state.last) / 1000); state.last = now;
+    var left = Math.max(0, 30 - (now - state.t0) / 1000);
+    document.getElementById('pmTime').textContent = Math.ceil(left);
+    if (state.left) state.x -= 330 * dt;
+    if (state.right) state.x += 330 * dt;
+    state.x = Math.max(28, Math.min(332, state.x));
+    var speedUp = 1 + (30 - left) / 30;
+    state.spawn -= dt;
+    if (state.spawn <= 0) {
+      state.spawn = (0.55 / speedUp) + Math.random() * 0.25;
+      var bad = Math.random() < 0.18;
+      state.items.push({ x: 20 + Math.random() * 320, y: -20, v: (110 + Math.random() * 80) * speedUp, bad: bad, c: COLS[(Math.random() * COLS.length) | 0], k: (Math.random() * 4) | 0, r: Math.random() * 6 });
+    }
+    for (var i = state.items.length - 1; i >= 0; i--) {
+      var it = state.items[i]; it.y += it.v * dt; it.r += dt * 2;
+      if (it.y > 372 && it.y < 412 && Math.abs(it.x - state.x) < 34) {
+        if (it.bad) { state.score = Math.max(0, state.score - 3); state.pops.push({ x: it.x, y: 380, t: 0.8, txt: '-3', c: '#3BB273' }); }
+        else { state.score += 1; state.pops.push({ x: it.x, y: 380, t: 0.6, txt: '+1', c: '#FFFFFF' }); }
+        document.getElementById('pmScore').textContent = state.score;
+        state.items.splice(i, 1); continue;
+      }
+      if (it.y > 460) state.items.splice(i, 1);
+    }
+    for (var j = state.pops.length - 1; j >= 0; j--) { state.pops[j].t -= dt; state.pops[j].y -= 40 * dt; if (state.pops[j].t <= 0) state.pops.splice(j, 1); }
+    draw();
+    if (left <= 0) { end(); return; }
+    raf = requestAnimationFrame(tick);
+  }
+  function drawBg() {
+    var g = ctx.createLinearGradient(0, 0, 0, 440); g.addColorStop(0, '#2C8BCB'); g.addColorStop(1, '#16568C');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 360, 440);
+    ctx.fillStyle = 'rgba(255,255,255,.12)';
+    for (var y = 8; y < 440; y += 18) for (var x = 8; x < 360; x += 18) { ctx.beginPath(); ctx.arc(x, y, 1.3, 0, 7); ctx.fill(); }
+    ctx.fillStyle = '#10324F'; ctx.fillRect(0, 418, 360, 22);
+  }
+  function sweet(it) {
+    ctx.save(); ctx.translate(it.x, it.y); ctx.scale(1.35, 1.35); ctx.rotate(it.k === 2 ? 0 : Math.sin(it.r) * 0.4);
+    ctx.lineWidth = 2; ctx.strokeStyle = '#10324F';
+    if (it.bad) {
+      ctx.fillStyle = '#6B8E3A'; ctx.fillRect(-3, 0, 6, 14); ctx.strokeRect(-3, 0, 6, 14);
+      ctx.fillStyle = '#3BB273';
+      [[-8, -2, 8], [8, -2, 8], [0, -9, 9], [-3, 2, 7], [4, 2, 7]].forEach(function (p) { ctx.beginPath(); ctx.arc(p[0], p[1], p[2], 0, 7); ctx.fill(); ctx.stroke(); });
+    } else if (it.k === 0) {
+      ctx.fillStyle = it.c;
+      [[-6, -11, 4], [6, -11, 4], [0, -5, 8], [0, 7, 10], [-9, 3, 3.5], [9, 3, 3.5]].forEach(function (p) { ctx.beginPath(); ctx.arc(p[0], p[1], p[2], 0, 7); ctx.fill(); ctx.stroke(); });
+    } else if (it.k === 1) {
+      ctx.fillStyle = '#fff'; ctx.fillRect(-1.5, 8, 3, 14);
+      ctx.beginPath(); ctx.arc(0, 0, 12, 0, 7); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = it.c; ctx.lineWidth = 3; ctx.beginPath(); for (var a = 0; a < 12; a += 0.3) { var rr = a * 0.85; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } ctx.stroke();
+    } else if (it.k === 2) {
+      ctx.fillStyle = it.c;
+      ctx.beginPath(); ctx.moveTo(-18, -8); ctx.lineTo(-9, 0); ctx.lineTo(-18, 8); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(18, -8); ctx.lineTo(9, 0); ctx.lineTo(18, 8); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(0, 0, 11, 9, 0, 0, 7); ctx.fill(); ctx.stroke();
+    } else {
+      ctx.fillStyle = it.c; ctx.beginPath(); ctx.ellipse(0, 0, 13, 8, 0.4, 0, 7); ctx.fill(); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function draw() {
+    drawBg();
+    state.items.forEach(sweet);
+    if (robot.complete && robot.naturalWidth) ctx.drawImage(robot, state.x - 30, 360, 60, 60);
+    else { ctx.fillStyle = '#7DC2F4'; ctx.beginPath(); ctx.arc(state.x, 390, 28, 0, 7); ctx.fill(); }
+    ctx.font = '800 18px "Maven Pro", Arial, sans-serif'; ctx.textAlign = 'center';
+    state.pops.forEach(function (p) { ctx.globalAlpha = Math.max(0, p.t / 0.8); ctx.fillStyle = p.c; ctx.fillText(p.txt, p.x, p.y); });
+    ctx.globalAlpha = 1;
+  }
+  window.pmOpenSweetCatch = openGame;
+})();
