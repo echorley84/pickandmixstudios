@@ -796,3 +796,57 @@ document.addEventListener('DOMContentLoaded', function () {
   sel(0);
   if (!reduce) auto = setInterval(function () { if (!menu.hidden) sel((cur + 1) % links.length); }, 2600);
 })();
+
+// Home: chain across the client work card. It jangles on hover or tap and
+// falls away when the padlock is opened. Decorative only.
+(function () {
+  var card = document.getElementById('tcUnlock');
+  var bar = document.getElementById('tcChainBar');
+  var pad = document.getElementById('tcPadlock');
+  if (!card || !bar || !pad) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  bar.appendChild(pad);
+  card.classList.add('has-chain');
+  function build() {
+    var old = bar.querySelector('svg.tc-chain'); if (old) old.remove();
+    var W = card.clientWidth + 48, Y0 = 20, SAG = 62, step = 20;
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'tc-chain'); svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('width', W); svg.setAttribute('height', 110);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' 110');
+    svg.innerHTML = '<defs><linearGradient id="tcSteel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F7FA"/><stop offset=".5" stop-color="#A9B8C6"/><stop offset="1" stop-color="#6B7C8C"/></linearGradient></defs>';
+    var L = document.createElementNS(NS, 'g'), R = document.createElementNS(NS, 'g');
+    L.setAttribute('class', 'tc-chain-l'); R.setAttribute('class', 'tc-chain-r');
+    L.style.transformOrigin = '0px ' + Y0 + 'px'; R.style.transformOrigin = W + 'px ' + Y0 + 'px';
+    // sample a quadratic curve evenly by length
+    function pt(t) { var u = 1 - t; return [W * t, u * u * Y0 + 2 * u * t * (Y0 + SAG) + t * t * Y0]; }
+    var pts = [], prev = pt(0), acc = 0; pts.push([prev, 0]);
+    for (var k = 1; k <= 600; k++) {
+      var p = pt(k / 600), d = Math.hypot(p[0] - prev[0], p[1] - prev[1]); acc += d;
+      if (acc >= step) { pts.push([p, Math.atan2(p[1] - prev[1], p[0] - prev[0]) * 180 / Math.PI]); acc = 0; }
+      prev = p;
+    }
+    pts.forEach(function (q, i) {
+      var g = document.createElementNS(NS, 'g');
+      g.setAttribute('transform', 'translate(' + q[0][0].toFixed(1) + ' ' + q[0][1].toFixed(1) + ') rotate(' + q[1].toFixed(1) + ')');
+      g.innerHTML = i % 2
+        ? '<rect x="-13" y="-3.6" width="26" height="7.2" rx="3.6" fill="url(#tcSteel)" stroke="#2C3A47" stroke-width="1.8"/>'
+        : '<ellipse rx="14" ry="9" fill="none" stroke="#2C3A47" stroke-width="9"/><ellipse rx="14" ry="9" fill="none" stroke="url(#tcSteel)" stroke-width="5.4"/><path d="M-8 -5.5 Q0 -8.5 8 -5.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>';
+      (q[0][0] < W / 2 ? L : R).appendChild(g);
+    });
+    svg.appendChild(L); svg.appendChild(R);
+    var off = bar.getBoundingClientRect().left - card.getBoundingClientRect().left - card.clientLeft;
+    svg.style.left = -(off + 24) + 'px';
+    bar.insertBefore(svg, bar.firstChild);
+    pad.style.top = (Y0 + SAG / 2 - 14) + 'px';
+  }
+  build();
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(build, 150); });
+  function jangle() {
+    if (card.classList.contains('is-open')) return;
+    card.classList.remove('is-jangle'); void card.offsetWidth; card.classList.add('is-jangle');
+  }
+  card.addEventListener('mouseenter', jangle);
+  card.addEventListener('click', function (e) { if (!pad.contains(e.target)) jangle(); });
+  card.addEventListener('animationend', function (e) { if (e.animationName === 'tcJangleL') card.classList.remove('is-jangle'); });
+})();
