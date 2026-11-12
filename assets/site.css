@@ -3182,6 +3182,45 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 }
 @media (prefers-reduced-motion: reduce) { .tc-npc-bot, .tc-npc.is-talking .tc-npc-bot, .tc-npc.is-win .tc-npc-bot, .tc-npc-more { animation: none; } .tc-npc-opt { transition: none; } }
 
+/* Home main menu, M3: game list + info panel (12 Nov) */
+.tc-mm-panel {
+  max-width: 420px; margin: 0 auto;
+  background: #16314D; border: 1.5px solid #0E1A26; border-radius: 16px;
+  box-shadow: 3px 4px 0 #0E1A26; padding: 10px; text-align: left;
+}
+.tc-ts .tc-mm-panel ul { display: flex; flex-direction: column; gap: 2px; }
+.tc-ts .tc-mm-panel a {
+  flex-direction: row; align-items: center; gap: 10px; height: auto;
+  padding: 9px 12px; border-radius: 10px;
+  background: transparent; color: #D7E3EE; border: 0; box-shadow: none;
+  font: 700 1.125rem 'Maven Pro', Arial, sans-serif; transform: none;
+}
+.tc-ts .tc-mm-panel .tc-mm-cur { width: 14px; color: #C01F62; font-size: .75em; visibility: hidden; }
+.tc-mm-svg { display: none; }
+.has-info .tc-mm-desc { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tc-mm-panel .tc-mm-desc { margin-left: auto; font-size: .8125rem; font-weight: 600; color: #8FB3D6; }
+.tc-ts .tc-mm-panel a:hover, .tc-ts .tc-mm-panel a:focus-visible, .tc-ts .tc-mm-panel a.is-sel {
+  background: #ffffff; color: #16314D; transform: none; box-shadow: none; outline: none;
+}
+.tc-ts .tc-mm-panel a:focus-visible { box-shadow: 0 0 0 3px #FF8DBC; }
+.tc-ts .tc-mm-panel a:hover .tc-mm-cur, .tc-ts .tc-mm-panel a:focus-visible .tc-mm-cur, .tc-ts .tc-mm-panel a.is-sel .tc-mm-cur { visibility: visible; }
+.tc-mm-info {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 10px; padding: 12px 14px; border-radius: 12px;
+  background: #ffffff; min-height: 66px; box-sizing: border-box;
+}
+.tc-mm-info[hidden] { display: none; }
+.tc-mm-info .tc-mm-svg { display: block; width: 20px; height: 20px; }
+.tc-mm-info .tc-mm-ic { width: 40px; height: 40px; flex-shrink: 0; }
+.tc-mm-info-t { display: flex; flex-direction: column; gap: 2px; color: #16314D; font-size: .9375rem; font-weight: 600; line-height: 1.35; }
+.tc-mm-info-t small { font-size: .6875rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #C01F62; }
+@keyframes tcInfoPop { from { opacity: .3; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.tc-mm-info.is-pop .tc-mm-info-t, .tc-mm-info.is-pop .tc-mm-ic { animation: tcInfoPop .3s ease-out; }
+.tc-ts .tc-mainmenu.is-in li { animation: none; }
+.tc-ts .tc-mainmenu.is-in .tc-mm-panel { animation: tcMenuIn .35s ease-out; }
+@media (max-width: 480px) { .tc-ts .tc-mm-panel a { font-size: 1.0625rem; padding: 8px 10px; } }
+@media (prefers-reduced-motion: reduce) { .tc-mm-info.is-pop .tc-mm-info-t, .tc-mm-info.is-pop .tc-mm-ic, .tc-ts .tc-mainmenu.is-in .tc-mm-panel { animation: none; } }
+
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;

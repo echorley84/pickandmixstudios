@@ -765,3 +765,34 @@ document.addEventListener('DOMContentLoaded', function () {
   form.classList.add('is-npc');
   render(0, true);
 })();
+
+// Home main menu: highlight + info panel. Hover or focus picks an item;
+// until then it gently cycles through them like a game's attract mode.
+(function () {
+  var menu = document.getElementById('tcMainMenu');
+  var info = document.getElementById('tcMMInfo');
+  if (!menu || !info) return;
+  var links = Array.prototype.slice.call(menu.querySelectorAll('a'));
+  var ic = document.getElementById('tcMMIc'), tag = document.getElementById('tcMMTag'), desc = document.getElementById('tcMMDesc');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = 0, auto = null;
+  info.hidden = false;
+  menu.classList.add('has-info');
+  function sel(i) {
+    cur = i;
+    links.forEach(function (a, k) { a.classList.toggle('is-sel', k === i); });
+    var a = links[i];
+    ic.className = 'tc-mm-ic ' + a.getAttribute('data-ic');
+    ic.innerHTML = a.querySelector('.tc-mm-svg').outerHTML;
+    tag.textContent = a.getAttribute('data-tag');
+    desc.textContent = a.querySelector('.tc-mm-desc').textContent;
+    info.classList.remove('is-pop'); void info.offsetWidth; info.classList.add('is-pop');
+  }
+  function stop() { clearInterval(auto); auto = null; }
+  links.forEach(function (a, i) {
+    a.addEventListener('mouseenter', function () { stop(); sel(i); });
+    a.addEventListener('focus', function () { stop(); sel(i); });
+  });
+  sel(0);
+  if (!reduce) auto = setInterval(function () { if (!menu.hidden) sel((cur + 1) % links.length); }, 2600);
+})();
