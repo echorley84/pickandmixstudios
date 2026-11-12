@@ -809,7 +809,7 @@ document.addEventListener('DOMContentLoaded', function () {
   card.classList.add('has-chain');
   function build() {
     Array.prototype.forEach.call(bar.querySelectorAll('svg.tc-chain'), function (s) { s.remove(); });
-    var W = card.offsetWidth, H = 180, Y1 = 30, Y2 = 142, PITCH = 21;
+    var W = card.offsetWidth, H = 130, Y0 = 40, PITCH = 21;
     var off = bar.getBoundingClientRect().left - card.getBoundingClientRect().left;
     var DEFS = '<defs>' +
       '<linearGradient id="tcStR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#C9D4DE"/><stop offset=".75" stop-color="#7F90A0"/><stop offset="1" stop-color="#4A5A6A"/></linearGradient>' +
@@ -822,7 +822,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var BAR = '<rect x="-16" y="-4.2" width="32" height="8.4" rx="4.2" fill="url(#tcStB)" stroke="#1F2B36" stroke-width="1.8"/>' +
       '<line x1="-9" y1="0.4" x2="9" y2="0.4" stroke="rgba(16,30,45,.55)" stroke-width="1.4" stroke-linecap="round"/>' +
       '<line x1="-12" y1="-2.1" x2="12" y2="-2.1" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round" opacity=".85"/>';
-    var CAP = '<ellipse rx="5" ry="12" fill="none" stroke="#1F2B36" stroke-width="8"/><ellipse rx="5" ry="12" fill="none" stroke="url(#tcStR)" stroke-width="4.4"/>';
     function mk(front) {
       var svg = document.createElementNS(NS, 'svg');
       svg.setAttribute('class', 'tc-chain' + (front ? ' tc-chain-front' : '')); svg.setAttribute('aria-hidden', 'true');
@@ -837,9 +836,10 @@ document.addEventListener('DOMContentLoaded', function () {
       g.innerHTML = html; parent.appendChild(g);
     }
     var svg = mk(false), front = mk(true), C = G('tc-chain-c');
-    var cx = W / 2, cy = (Y1 + Y2) / 2 + 3;
+    var cx = W / 2, cy = Y0 + 34;
     // two chains in an X, pulled down a little at the middle by the padlock
-    [[[2, Y1], [W - 2, Y2], 'tc-chain-l', 'tc-chain-r'], [[2, Y2], [W - 2, Y1], 'tc-chain-l tc-chain-2', 'tc-chain-r tc-chain-2']].forEach(function (ch, idx) {
+    // one chain, edge to edge, pulled down in the middle by the padlock; the ends are clipped at the card's edges
+    [[[-12, Y0], [W + 12, Y0], 'tc-chain-l', 'tc-chain-r']].forEach(function (ch, idx) {
       var A = ch[0], B = ch[1];
       var ctl = [2 * cx - (A[0] + B[0]) / 2, 2 * cy - (A[1] + B[1]) / 2];
       function pt(t) { var u = 1 - t; return [u * u * A[0] + 2 * u * t * ctl[0] + t * t * B[0], u * u * A[1] + 2 * u * t * ctl[1] + t * t * B[1]]; }
@@ -849,7 +849,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (var j = 1; j < tab.length; j++) if (tab[j][0] >= s) { var a = tab[j - 1][1], b = tab[j][1]; return [b, Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI]; }
         return [tab[tab.length - 1][1], 0];
       }
-      var n = Math.max(2, Math.round((S / 2 - 6) / PITCH)), step = (S / 2 - 6) / n;
+      var n = Math.max(2, Math.round((S / 2) / PITCH)), step = (S / 2) / n;
       var L = G(ch[2]), R = G(ch[3]);
       L.style.transformOrigin = A[0] + 'px ' + A[1] + 'px'; R.style.transformOrigin = B[0] + 'px ' + B[1] + 'px';
       var bars = [], rings = [];
@@ -861,7 +861,6 @@ document.addEventListener('DOMContentLoaded', function () {
       // edge-on links first, rings over their ends so they read as threaded
       bars.forEach(function (b) { place(b[0], b[1][0][0], b[1][0][1], b[1][1], BAR); });
       rings.forEach(function (r) { place(r[0], r[1][0][0], r[1][0][1], r[1][1], RING); });
-      place(L, A[0], A[1], 0, CAP); place(R, B[0], B[1], 0, CAP);
       svg.appendChild(L); svg.appendChild(R);
     });
     front.appendChild(C);

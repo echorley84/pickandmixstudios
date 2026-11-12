@@ -3269,10 +3269,11 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .tc-unlock.has-chain { display: block !important; position: relative; overflow: visible !important; }
 .has-chain .tc-chainbar { width: 100%; }
 .tc-chainbar { position: relative; height: 0; }
-.has-chain .tc-chainbar { height: 196px; margin: -6px 0 6px; }
+.has-chain .tc-chainbar { height: 168px; margin: -6px 0 6px; }
 .tc-unlock.has-chain { max-width: 660px; margin-left: auto; margin-right: auto; }
 .tc-chain { position: absolute; top: 0; overflow: visible; pointer-events: none; filter: drop-shadow(1px 4px 2px rgba(16, 50, 79, .32)); }
 .tc-chain-front { filter: none; }
+.tc-chain:not(.tc-chain-front) { overflow: hidden; }
 .tc-chain g.tc-chain-l, .tc-chain g.tc-chain-r { transition: transform .7s cubic-bezier(.5, 0, .8, .4), opacity .5s .3s; }
 .has-chain .tc-padlock { position: absolute; left: 50%; margin-left: -50px; width: 100px; z-index: 2; animation: none; transform-origin: 50% 8%; }
 .has-chain .tc-padlock .tc-padlock-svg { filter: drop-shadow(2px 4px 0 rgba(16, 50, 79, .45)); }
@@ -3293,7 +3294,7 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 .has-chain .tc-unlock-copy { text-align: center; max-width: 560px; margin: 0 auto; }
 .has-chain .tc-unlock-copy .tc-label { margin-left: auto; margin-right: auto; }
 .has-chain .tc-unlock-action { display: flex; justify-content: center; }
-@media (max-width: 640px) { .has-chain .tc-chainbar { height: 192px; } .has-chain .tc-padlock { width: 88px; margin-left: -44px; } }
+@media (max-width: 640px) { .has-chain .tc-chainbar { height: 164px; } .has-chain .tc-padlock { width: 88px; margin-left: -44px; } }
 @media (prefers-reduced-motion: reduce) {
   .tc-unlock.is-jangle .tc-chain-l, .tc-unlock.is-jangle .tc-chain-r, .tc-unlock.is-jangle .tc-padlock { animation: none; }
   .tc-chain g.tc-chain-l, .tc-chain g.tc-chain-r { transition: opacity .3s; }
