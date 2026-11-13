@@ -1097,6 +1097,8 @@ document.addEventListener('DOMContentLoaded', function () {
       card.classList.add('is-awake');
       if (padTries >= 3) card.classList.add('is-cross');
       if (padTries < 2) return;
+      var padEl = document.getElementById('tcPadlock');
+      if (padEl && bubble.parentNode === padEl.parentNode) bubble.style.top = (padEl.offsetTop + 4) + 'px';
       bubble.innerHTML = LINES[padIdx % LINES.length]; padIdx++;
       bubble.classList.add('is-on'); clearTimeout(bT);
       bT = setTimeout(function () { bubble.classList.remove('is-on'); }, 3800);

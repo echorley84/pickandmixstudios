@@ -324,54 +324,63 @@
     }
   });
 
-  // 5. Whack-a-gummy -----------------------------------------------------
+  // 5. Whack-a-gummy: gummy bears pop out of a chocolate box -------------
   GAMES.push({
     id: 'whack', name: 'Whack-a-gummy', blurb: 'Bonk the gummy bears before they hide.', icon: [4, 0], time: true,
-    help: 'Tap a jar when a gummy bear pops up: +1. Leave the broccoli alone: −2. Number keys 1 to 9 work too. 30 seconds.',
+    help: 'Tap a gummy bear as it pops out of the box: +1. Leave the broccoli alone: −2. Number keys 1 to 9 work too. 30 seconds.',
     start: function (stage, api) {
-      var g = document.createElement('div'); g.className = 'pa-whack'; stage.appendChild(g);
-      var score = 0, on = true, jars = [], timers = [];
+      var tray = document.createElement('div'); tray.className = 'pa-box-tray'; stage.appendChild(tray);
+      var score = 0, on = true, holes = [], timers = [];
+      var BEAR_COLS = ['#FF8DBC', '#FFAA66', '#7BE0A5', '#F4C24C', '#C79BF2', '#7DC2F4'];
+      var BROC = '<svg viewBox="-22 -24 44 44" width="100%" height="100%" aria-hidden="true"><rect x="-4" y="0" width="8" height="17" rx="3" fill="#8DBF4A" stroke="#10324F" stroke-width="2.2"/><g fill="#3BA55C" stroke="#10324F" stroke-width="2.2"><circle cx="-10" cy="-3" r="9"/><circle cx="10" cy="-3" r="9"/><circle cx="0" cy="-11" r="10"/><circle cx="-4" cy="2" r="7.5"/><circle cx="5" cy="2" r="7.5"/></g><circle cx="-5" cy="-6" r="1.6" fill="#10324F"/><circle cx="5" cy="-6" r="1.6" fill="#10324F"/><path d="M-4 -1q4 -3 8 0" stroke="#10324F" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
+      function bear(col) { return sweetSVG(0, 40).replace(SWEETS[0].c, col).replace('width="40" height="40"', 'width="100%" height="100%"'); }
       for (var i = 0; i < 9; i++) {
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'pa-jar'; b.setAttribute('aria-label', 'Jar ' + (i + 1) + ', empty');
-        b.innerHTML = '<span class="pa-pop" aria-hidden="true"></span><span class="pa-jar-glass" aria-hidden="true"></span><span class="pa-jar-n" aria-hidden="true">' + (i + 1) + '</span>';
-        (function (k) { b.addEventListener('click', function () { hit(k); }); })(i);
-        g.appendChild(b); jars.push({ b: b, who: null, until: 0 });
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'pa-hole';
+        b.setAttribute('aria-label', 'Cup ' + (i + 1) + ', empty');
+        b.innerHTML = '<span class="pa-cup" aria-hidden="true"></span><span class="pa-who" aria-hidden="true"></span><span class="pa-bonk" aria-hidden="true">BONK!</span><span class="pa-hole-n" aria-hidden="true">' + (i + 1) + '</span>';
+        (function (k, btn) {
+          // pointerdown reacts the instant a finger touches, so quick taps always count
+          btn.addEventListener('pointerdown', function (e) { e.preventDefault(); hit(k); });
+          btn.addEventListener('click', function (e) { if (e.detail === 0) hit(k); });
+        })(i, b);
+        tray.appendChild(b); holes.push({ b: b, who: null, t: null });
       }
       var kd = function (e) { var n = +e.key; if (n >= 1 && n <= 9) { e.preventDefault(); hit(n - 1); } };
       document.addEventListener('keydown', kd);
       function hit(k) {
-        var j = jars[k]; if (!on || !j.who) return;
-        if (j.who === 'bad') { score = Math.max(0, score - 2); j.b.classList.add('is-oops'); api.status('Oops, broccoli! −2'); }
-        else { score++; j.b.classList.add('is-bonk'); }
-        api.score(score); hide(k, true);
+        var h = holes[k]; if (!on) return;
+        if (!h.who) { h.b.classList.remove('is-miss'); void h.b.offsetWidth; h.b.classList.add('is-miss'); return; }
+        clearTimeout(h.t);
+        h.b.querySelector('.pa-bonk').textContent = h.who === 'bad' ? 'Yuck! −2' : 'BONK!';
+        if (h.who === 'bad') { score = Math.max(0, score - 2); h.b.classList.add('is-oops'); api.status('Oops, broccoli! −2'); }
+        else { score++; h.b.classList.add('is-bonk'); }
+        api.score(score);
+        h.who = null; h.b.setAttribute('aria-label', 'Cup ' + (k + 1) + ', empty');
+        setTimeout(function () { h.b.classList.remove('is-up', 'is-bonk', 'is-oops'); }, 380);
       }
-      function hide(k, hitIt) {
-        var j = jars[k]; j.who = null; j.b.classList.remove('is-up');
-        j.b.setAttribute('aria-label', 'Jar ' + (k + 1) + ', empty');
-        setTimeout(function () { j.b.classList.remove('is-bonk', 'is-oops'); }, hitIt ? 300 : 0);
-      }
+      function hide(k) { var h = holes[k]; h.who = null; h.b.classList.remove('is-up'); h.b.setAttribute('aria-label', 'Cup ' + (k + 1) + ', empty'); }
       var t0 = performance.now();
       function spawn() {
         if (!on) return;
-        var el = (performance.now() - t0) / 1000, free = jars.map(function (j, i) { return j.who ? -1 : i; }).filter(function (i) { return i >= 0; });
+        var el = (performance.now() - t0) / 1000;
+        var free = []; holes.forEach(function (h, i) { if (!h.who && !h.b.classList.contains('is-up')) free.push(i); });
         if (free.length) {
-          var k = free[(Math.random() * free.length) | 0], j = jars[k], bad = Math.random() < 0.16;
-          j.who = bad ? 'bad' : (Math.random() * 5) | 0;
-          j.b.querySelector('.pa-pop').innerHTML = bad ? '<svg viewBox="-20 -22 40 42" width="46" height="46" aria-hidden="true"><rect x="-4" y="0" width="8" height="16" rx="3" fill="#8DBF4A" stroke="#10324F" stroke-width="2.2"/><g fill="#3BA55C" stroke="#10324F" stroke-width="2.2"><circle cx="-9" cy="-3" r="8"/><circle cx="9" cy="-3" r="8"/><circle cx="0" cy="-10" r="9"/><circle cx="-4" cy="1" r="7"/><circle cx="5" cy="1" r="7"/></g></svg>' : sweetSVG(0, 46).replace(SWEETS[0].c, ['#FF8DBC', '#FFAA66', '#7BE0A5', '#F4C24C', '#C79BF2'][j.who]);
-          j.b.setAttribute('aria-label', 'Jar ' + (k + 1) + (bad ? ', broccoli! Leave it' : ', gummy bear! Bonk it'));
-          j.b.classList.add('is-up');
-          var stay = Math.max(560, 1100 - el * 18);
-          timers.push(setTimeout(function () { if (j.who !== null) hide(k); }, stay));
+          var k = free[(Math.random() * free.length) | 0], h = holes[k], bad = Math.random() < 0.15;
+          h.who = bad ? 'bad' : 'bear';
+          h.b.querySelector('.pa-who').innerHTML = bad ? BROC : bear(BEAR_COLS[(Math.random() * BEAR_COLS.length) | 0]);
+          h.b.setAttribute('aria-label', 'Cup ' + (k + 1) + (bad ? ', broccoli! Leave it' : ', gummy bear! Bonk it'));
+          h.b.classList.add('is-up');
+          h.t = setTimeout(function () { if (h.who) hide(k); }, Math.max(750, 1400 - el * 20));
         }
-        timers.push(setTimeout(spawn, Math.max(380, 820 - el * 15)));
+        timers.push(setTimeout(spawn, Math.max(450, 900 - el * 15)));
       }
-      spawn();
+      timers.push(setTimeout(spawn, 400));
       var tm = setInterval(function () {
         var left = Math.max(0, 30 - (performance.now() - t0) / 1000); api.time(Math.ceil(left));
         if (left <= 0) { on = false; clearInterval(tm); api.finish(score); }
       }, 200);
-      setTimeout(function () { jars[4].b.focus(); }, 50);
-      return function stop() { on = false; clearInterval(tm); timers.forEach(clearTimeout); document.removeEventListener('keydown', kd); };
+      setTimeout(function () { holes[4].b.focus(); }, 50);
+      return function stop() { on = false; clearInterval(tm); timers.forEach(clearTimeout); holes.forEach(function (h) { clearTimeout(h.t); }); document.removeEventListener('keydown', kd); };
     }
   });
 
