@@ -20,7 +20,7 @@
   };
   var robotImg = new Image();
   var cssLink = document.querySelector('link[href*="site.css"]');
-  robotImg.src = cssLink ? cssLink.href.replace(/site\.css.*$/, 'img/robot-logo.webp') : '/assets/img/robot-logo.webp';
+  robotImg.src = cssLink ? cssLink.href.replace(/site\.css.*$/, 'img/robot-logo.webp?v=2') : '/assets/img/robot-logo.webp?v=2';
 
   // ---------------------------------------------------------------- shapes
   // Glossy outlined sweets as SVG (menu art, DOM games) ...
