@@ -20,7 +20,7 @@
   };
   var robotImg = new Image();
   var cssLink = document.querySelector('link[href*="site.css"]');
-  robotImg.src = cssLink ? cssLink.href.replace(/site\.css.*$/, 'img/robot-logo.webp?v=2') : '/assets/img/robot-logo.webp?v=2';
+  robotImg.src = cssLink ? cssLink.href.replace(/site\.css.*$/, 'img/robot-logo.webp?v=3') : '/assets/img/robot-logo.webp?v=3';
 
   // ---------------------------------------------------------------- shapes
   // Glossy outlined sweets as SVG (menu art, DOM games) ...
@@ -327,17 +327,19 @@
   // 5. Whack-a-gummy: gummy bears pop out of a chocolate box -------------
   GAMES.push({
     id: 'whack', name: 'Whack-a-gummy', blurb: 'Bonk the gummy bears before they hide.', icon: [4, 0], time: true,
-    help: 'Tap a gummy bear as it pops out of the box: +1. Leave the broccoli alone: −2. Number keys 1 to 9 work too. 30 seconds.',
+    help: 'Tap a gummy bear as it pops out of a tub: +1. Leave the broccoli alone: −2. Number keys 1 to 9 work too. 30 seconds.',
     start: function (stage, api) {
-      var tray = document.createElement('div'); tray.className = 'pa-box-tray'; stage.appendChild(tray);
+      var shop = document.createElement('div'); shop.className = 'pa-shop'; shop.innerHTML = '<div class="pa-shop-awning" aria-hidden="true"></div><div class="pa-shop-sign" aria-hidden="true">Pick &amp; Mix</div>';
+      var tray = document.createElement('div'); tray.className = 'pa-box-tray'; shop.appendChild(tray); stage.appendChild(shop);
+      var TUB_COLS = ['#FF8DBC', '#F4C24C', '#7BE0A5', '#7DC2F4', '#C79BF2', '#FFAA66', '#7BE0A5', '#FF8DBC', '#7DC2F4'];
       var score = 0, on = true, holes = [], timers = [];
       var BEAR_COLS = ['#FF8DBC', '#FFAA66', '#7BE0A5', '#F4C24C', '#C79BF2', '#7DC2F4'];
       var BROC = '<svg viewBox="-22 -24 44 44" width="100%" height="100%" aria-hidden="true"><rect x="-4" y="0" width="8" height="17" rx="3" fill="#8DBF4A" stroke="#10324F" stroke-width="2.2"/><g fill="#3BA55C" stroke="#10324F" stroke-width="2.2"><circle cx="-10" cy="-3" r="9"/><circle cx="10" cy="-3" r="9"/><circle cx="0" cy="-11" r="10"/><circle cx="-4" cy="2" r="7.5"/><circle cx="5" cy="2" r="7.5"/></g><circle cx="-5" cy="-6" r="1.6" fill="#10324F"/><circle cx="5" cy="-6" r="1.6" fill="#10324F"/><path d="M-4 -1q4 -3 8 0" stroke="#10324F" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
       function bear(col) { return sweetSVG(0, 40).replace(SWEETS[0].c, col).replace('width="40" height="40"', 'width="100%" height="100%"'); }
       for (var i = 0; i < 9; i++) {
         var b = document.createElement('button'); b.type = 'button'; b.className = 'pa-hole';
-        b.setAttribute('aria-label', 'Cup ' + (i + 1) + ', empty');
-        b.innerHTML = '<span class="pa-cup" aria-hidden="true"></span><span class="pa-who" aria-hidden="true"></span><span class="pa-bonk" aria-hidden="true">BONK!</span><span class="pa-hole-n" aria-hidden="true">' + (i + 1) + '</span>';
+        b.setAttribute('aria-label', 'Tub ' + (i + 1) + ', empty'); b.style.setProperty('--tub', TUB_COLS[i]);
+        b.innerHTML = '<span class="pa-tub-in" aria-hidden="true"></span><span class="pa-pop" aria-hidden="true"><span class="pa-who"></span></span><span class="pa-cup" aria-hidden="true"></span><span class="pa-bonk" aria-hidden="true">BONK!</span><span class="pa-hole-n" aria-hidden="true">' + (i + 1) + '</span>';
         (function (k, btn) {
           // pointerdown reacts the instant a finger touches, so quick taps always count
           btn.addEventListener('pointerdown', function (e) { e.preventDefault(); hit(k); });
@@ -355,10 +357,10 @@
         if (h.who === 'bad') { score = Math.max(0, score - 2); h.b.classList.add('is-oops'); api.status('Oops, broccoli! −2'); }
         else { score++; h.b.classList.add('is-bonk'); }
         api.score(score);
-        h.who = null; h.b.setAttribute('aria-label', 'Cup ' + (k + 1) + ', empty');
+        h.who = null; h.b.setAttribute('aria-label', 'Tub ' + (k + 1) + ', empty');
         setTimeout(function () { h.b.classList.remove('is-up', 'is-bonk', 'is-oops'); }, 380);
       }
-      function hide(k) { var h = holes[k]; h.who = null; h.b.classList.remove('is-up'); h.b.setAttribute('aria-label', 'Cup ' + (k + 1) + ', empty'); }
+      function hide(k) { var h = holes[k]; h.who = null; h.b.classList.remove('is-up'); h.b.setAttribute('aria-label', 'Tub ' + (k + 1) + ', empty'); }
       var t0 = performance.now();
       function spawn() {
         if (!on) return;
@@ -368,7 +370,7 @@
           var k = free[(Math.random() * free.length) | 0], h = holes[k], bad = Math.random() < 0.15;
           h.who = bad ? 'bad' : 'bear';
           h.b.querySelector('.pa-who').innerHTML = bad ? BROC : bear(BEAR_COLS[(Math.random() * BEAR_COLS.length) | 0]);
-          h.b.setAttribute('aria-label', 'Cup ' + (k + 1) + (bad ? ', broccoli! Leave it' : ', gummy bear! Bonk it'));
+          h.b.setAttribute('aria-label', 'Tub ' + (k + 1) + (bad ? ', broccoli! Leave it' : ', gummy bear! Bonk it'));
           h.b.classList.add('is-up');
           h.t = setTimeout(function () { if (h.who) hide(k); }, Math.max(750, 1400 - el * 20));
         }
@@ -511,7 +513,7 @@
     stopGame(); current = null;
     el.menu.hidden = false; el.play.hidden = true; el.hud.hidden = true; el.back.hidden = true;
     dlg.querySelector('#paTitle').textContent = 'arcade'; dlg.querySelector('#paTitle').classList.remove('is-game');
-    GAMES.forEach(function (g) { dlg.querySelector('[data-best="' + g.id + '"]').textContent = bestText(g); });
+    GAMES.forEach(function (g) { var el = dlg.querySelector('[data-best="' + g.id + '"]'); el.textContent = bestText(g); el.classList.toggle('is-played', best(g) !== null); });
     var first = el.menu.querySelector('.pa-game'); if (first) first.focus();
   }
   function find(id) { for (var i = 0; i < GAMES.length; i++) if (GAMES[i].id === id) return GAMES[i]; return null; }

@@ -988,11 +988,21 @@ document.addEventListener('DOMContentLoaded', function () {
   function hideToast() { toast.classList.remove('is-on'); }
 
   // ---- sweet shapes (SVG)
+  // each sweet is drawn three times: a thick white sticker edge, a dark outline, then the colour
+  function stk(shape, c, extra) {
+    return '<svg viewBox="0 0 40 40" aria-hidden="true" focusable="false"><g fill="#fff" stroke="#fff" stroke-width="6" stroke-linejoin="round">' + shape + '</g>' +
+      '<g fill="' + c + '" stroke="#10324F" stroke-width="1.8" stroke-linejoin="round">' + shape + '</g>' + (extra || '') + '</svg>';
+  }
   var SWEET_SVG = {
-    bear: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><g fill="' + c + '" stroke="#10324F" stroke-width="1.6"><circle cx="10" cy="7" r="3.2"/><circle cx="22" cy="7" r="3.2"/><circle cx="16" cy="11" r="6.5"/><ellipse cx="16" cy="22" rx="7.5" ry="8"/><circle cx="8.5" cy="18.5" r="2.8"/><circle cx="23.5" cy="18.5" r="2.8"/><circle cx="10.5" cy="28" r="3"/><circle cx="21.5" cy="28" r="3"/></g><ellipse cx="13" cy="9" rx="2" ry="1.3" fill="#fff" opacity=".6"/></svg>'; },
-    lolly: function (c) { var w = ''; for (var r = 0; r < 360; r += 90) w += '<path d="M16 12 L16 2.6 A9.4 9.4 0 0 1 25.4 12 Z" fill="' + c + '" transform="rotate(' + r + ' 16 12)"/>'; return '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="14.8" y="18" width="2.6" height="13" rx="1.3" fill="#fff" stroke="#10324F" stroke-width="1.4"/><circle cx="16" cy="12" r="10" fill="#fff"/>' + w + '<circle cx="16" cy="12" r="10" fill="none" stroke="#10324F" stroke-width="1.6"/><circle cx="16" cy="12" r="2" fill="#fff"/></svg>'; },
-    wrap: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 9l7 4v6l-7 4zM30 9l-7 4v6l7 4z" fill="' + c + '" stroke="#10324F" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="16" cy="16" rx="8.5" ry="7" fill="' + c + '" stroke="#10324F" stroke-width="1.6"/><path d="M11 12.5c2-2 6-2.5 9-1" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/></svg>'; },
-    bean: function (c) { return '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 9c5-6 19-4 18 6s-6 7-9 9-11 4-12-4 0-8 3-11z" fill="' + c + '" stroke="#10324F" stroke-width="1.6"/><ellipse cx="13" cy="11" rx="3.4" ry="1.6" fill="#fff" opacity=".55" transform="rotate(-25 13 11)"/></svg>'; }
+    bear: function (c) { return stk('<circle cx="13" cy="9" r="3.6"/><circle cx="27" cy="9" r="3.6"/><circle cx="20" cy="13.5" r="7.2"/><ellipse cx="20" cy="26" rx="8.6" ry="9"/><circle cx="11" cy="22" r="3.2"/><circle cx="29" cy="22" r="3.2"/><circle cx="14" cy="33.5" r="3.4"/><circle cx="26" cy="33.5" r="3.4"/>', c,
+      '<circle cx="17.3" cy="12.5" r="1.2" fill="#10324F"/><circle cx="22.7" cy="12.5" r="1.2" fill="#10324F"/><path d="M18 16q2 1.6 4 0" stroke="#10324F" stroke-width="1.3" fill="none" stroke-linecap="round"/><ellipse cx="16" cy="23" rx="2.6" ry="1.4" fill="#fff" opacity=".6" transform="rotate(-30 16 23)"/>'); },
+    lolly: function (c) { return stk('<rect x="18.6" y="22" width="2.8" height="15" rx="1.4"/><circle cx="20" cy="15" r="11.5"/>', c,
+      '<rect x="18.6" y="27" width="2.8" height="10" rx="1.4" fill="#fff" stroke="#10324F" stroke-width="1.4"/><path d="M20 15 a2 2 0 0 1 2 2 a4 4 0 0 1 -4 4 a6 6 0 0 1 -6 -6 a8 8 0 0 1 8 -8 a9 9 0 0 1 8.6 6.3" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>'); },
+    wrap: function (c) { return stk('<path d="M3 11l8.5 5.5v7L3 29zM37 11l-8.5 5.5v7L37 29z"/><ellipse cx="20" cy="20" rx="10" ry="8.5"/>', c,
+      '<path d="M13.5 17.5q6.5-6 13 0M13.5 22.5q6.5 6 13 0" stroke="#fff" stroke-width="1.8" fill="none" opacity=".75" stroke-linecap="round"/><path d="M6 15l3 1.8M6 25l3-1.8M34 15l-3 1.8M34 25l-3-1.8" stroke="#10324F" stroke-width="1.2" stroke-linecap="round"/>'); },
+    // cola bottle, the pick & mix classic (kept under the old "bean" name so saved spots still work)
+    bean: function (c) { return stk('<path d="M16 3h8v4.5c0 2.5 4.5 4.5 4.5 11v4.5c0 1.5-1.2 2.3-1.2 3.7s1.2 2.1 1.2 3.6V35c0 1.8-3 2.6-8.5 2.6S11.5 36.8 11.5 35v-4.7c0-1.5 1.2-2.2 1.2-3.6s-1.2-2.2-1.2-3.7V18.5c0-6.5 4.5-8.5 4.5-11z"/>', c,
+      '<path d="M12.6 25.4h14.8" stroke="#10324F" stroke-width="1.4"/><rect x="15.5" y="3" width="9" height="3.4" rx="1" fill="#fff" stroke="#10324F" stroke-width="1.4"/><path d="M15 15c-1 2-1.3 4-1.2 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>'); }
   };
 
   // ---- sweet hunt: one hidden sweet per page
@@ -1003,7 +1013,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showcase:       { sel: '#tcMap', kind: 'wrap', col: '#F4C24C', pos: 'right:4px;bottom:2px' },
     tutorials:      { sel: '#tcShelf', kind: 'bean', col: '#7BE0A5', pos: 'right:6px;top:4px' },
     'popup-shop':   { sel: '.tc-loot-row', kind: 'bear', col: '#FFAA66', pos: 'left:0;bottom:0' },
-    contact:        { sel: '.tc-cyp-pill', kind: 'wrap', col: '#F4C24C', pos: 'right:-22px;top:-14px;transform:rotate(18deg)' },
+    contact:        { sel: '.tc-cyp-pill', kind: 'wrap', col: '#F4C24C', pos: 'right:-38px;top:-18px;transform:rotate(18deg)' },
     privacy:        { sel: '.tc-legal', kind: 'lolly', col: '#1A64A8', pos: 'right:6px;bottom:4px' },
     accessibility:  { sel: '.tc-sticker-h1', kind: 'bean', col: '#C01F62', pos: 'right:4%;top:6%' }
   };
