@@ -3469,11 +3469,11 @@ html.motion-off .tc-sticker-h1 svg, html.simple .tc-sticker-h1 svg { animation: 
 
 /* Easter eggs: toast, hidden sweets, sweet rain, padlock bubble, Sweet catch */
 .pm-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
-.pm-toast { position: fixed; left: 50%; bottom: 20px; z-index: 90; transform: translate(-50%, 160%); width: max-content; max-width: calc(100vw - 32px); box-sizing: border-box;
+.pm-toast { position: fixed; left: 50%; bottom: 20px; z-index: 90; transform: translate(-50%, calc(100% + 140px)); visibility: hidden; width: max-content; max-width: calc(100vw - 32px); box-sizing: border-box;
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px;
   background: #16314D; color: #FFFFFF; border: 3px solid #FFFFFF; border-radius: 18px; box-shadow: 0 0 0 1.5px #0E1A26, 3px 4px 0 1.5px #0E1A26;
-  padding: 10px 16px; font: 600 .9375rem/1.35 'Maven Pro', Arial, sans-serif; text-align: center; transition: transform .35s cubic-bezier(.3, 1.4, .5, 1); }
-.pm-toast.is-on { transform: translate(-50%, 0); }
+  padding: 10px 16px; font: 600 .9375rem/1.35 'Maven Pro', Arial, sans-serif; text-align: center; transition: transform .35s cubic-bezier(.3, 1.4, .5, 1), visibility 0s .35s; }
+.pm-toast.is-on { transform: translate(-50%, 0); visibility: visible; transition-delay: 0s; }
 .pm-toast strong { color: #FF8DBC; }
 .pm-toast-btn { background: #C01F62; color: #FFFFFF; border: 2px solid #FFFFFF; border-radius: 999px; padding: 6px 14px; font: 800 .875rem 'Maven Pro', Arial, sans-serif; cursor: pointer; }
 .pm-toast-btn:focus-visible { outline: 3px solid #FF8DBC; outline-offset: 2px; }
@@ -3683,6 +3683,18 @@ body.pa-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .pm-ap-lock:not(.is-open), .pm-arcade-tab.is-bump { animation: none; } }
 html.motion-off .pm-ap-lock:not(.is-open), html.simple .pm-ap-lock:not(.is-open) { animation: none; }
 
+/* Home robot: boing and sweets burst on tap */
+.tc-hero img.tc-hero-welcome-img { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+@keyframes pmBoing { 0% { transform: none; } 15% { transform: translateY(6px) scale(1.08, .9); } 40% { transform: translateY(-34px) scale(.95, 1.06) rotate(-4deg); } 60% { transform: translateY(-34px) rotate(5deg); } 80% { transform: translateY(4px) scale(1.05, .94); } 100% { transform: none; } }
+.tc-hero img.tc-hero-welcome-img.is-boing { animation: pmBoing .8s cubic-bezier(.3, .7, .4, 1); }
+.pm-burst { position: absolute; z-index: 4; width: 34px; height: 34px; margin: -17px 0 0 -17px; pointer-events: none; animation: pmBurst .95s cubic-bezier(.2, .8, .3, 1) forwards; }
+.pm-burst svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(1.5px 2px 0 #10324F); }
+@keyframes pmBurst { 0% { transform: translate(0, 0) scale(.3) rotate(0); opacity: 0; } 15% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translate(var(--dx), calc(var(--dy) + 40px)) scale(1) rotate(var(--spin)); opacity: 0; } }
+/* Showcase: flash the level card that just opened */
+@keyframes pmCardIn { 0% { transform: translateY(14px); opacity: .3; } 100% { transform: none; opacity: 1; } }
+.tc-card.is-new { animation: pmCardIn .4s ease-out; }
+@media (prefers-reduced-motion: reduce) { .tc-hero img.tc-hero-welcome-img.is-boing, .tc-card.is-new { animation: none; } }
+html.motion-off .tc-card.is-new, html.motion-off .tc-hero img.tc-hero-welcome-img.is-boing { animation: none; }
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;

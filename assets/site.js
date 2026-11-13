@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (save) { store.set('bs-theme', t); announce((t === 'auto' ? 'Automatic' : t) + ' theme on'); }
   }
   document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.addEventListener('click', function () { setTheme(b.dataset.themeSet, true); }); });
-  var savedTheme = store.get('bs-theme'); setTheme(savedTheme || 'light', false); // light on a first visit
+  var savedTheme = store.get('bs-theme'); setTheme(savedTheme || 'auto', false); // follow the device on a first visit
 
   // Text size
   function setSize(n, save) {
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   var resetBtn = document.getElementById('tcPrefsReset');
   if (resetBtn) resetBtn.addEventListener('click', function () {
-    setTheme('light', false); setSize('0', false);
+    setTheme('auto', false); setSize('0', false);
     Object.keys(PREFS).forEach(function (k) { setPref(k, PREFS[k][0], false); });
     ['bs-theme', 'bs-size', 'bs-font', 'bs-space', 'bs-motion', 'bs-simple'].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
     announce('Reading settings reset'); window.dispatchEvent(new Event('resize'));
@@ -510,7 +510,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   nodes.forEach(function (n, i) {
-    n.addEventListener('click', function () { select(i, false); });
+    n.addEventListener('click', function () {
+      select(i, false);
+      // bring the level's details into view so it's clear something changed
+      var card = cards[i], r = card.getBoundingClientRect();
+      if (r.top > window.innerHeight * .6 || r.bottom < 80) {
+        var still = document.documentElement.classList.contains('motion-off') || matchMedia('(prefers-reduced-motion: reduce)').matches;
+        setTimeout(function () { card.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' }); }, still ? 0 : 250);
+      }
+      card.classList.remove('is-new'); void card.offsetWidth; card.classList.add('is-new');
+    });
     n.addEventListener('keydown', function (e) {
       var k = e.key, t = null;
       if (k === 'ArrowRight' || k === 'ArrowDown') t = (i + 1) % nodes.length;
@@ -1057,7 +1066,23 @@ document.addEventListener('DOMContentLoaded', function () {
     if (ki === KONAMI.length) { ki = 0; cheat(); }
   });
   var logo = document.querySelector('img.tc-hero-welcome-img'), taps = 0, tapT;
-  if (logo) logo.addEventListener('click', function () {
+  if (logo) logo.addEventListener('click', function (e) {
+    // a happy boing and a little burst of sweets on every tap
+    if (!calm()) {
+      logo.classList.remove('is-boing'); void logo.offsetWidth; logo.classList.add('is-boing');
+      var hero = logo.parentElement, hr = hero.getBoundingClientRect(), lr = logo.getBoundingClientRect();
+      if (getComputedStyle(hero).position === 'static') hero.style.position = 'relative';
+      var bk = Object.keys(SWEET_SVG), bc = ['#FF8DBC', '#F4C24C', '#7DC2F4', '#7BE0A5', '#FFAA66', '#C01F62'];
+      for (var j = 0; j < 7; j++) {
+        var sp = document.createElement('span'); sp.className = 'pm-burst'; sp.setAttribute('aria-hidden', 'true');
+        sp.innerHTML = SWEET_SVG[bk[(j + taps) % bk.length]](bc[(j * 2 + taps) % bc.length]);
+        var ang = (j / 7) * Math.PI * 2 + Math.random() * .5, dist = 90 + Math.random() * 70;
+        sp.style.left = (lr.left - hr.left + lr.width / 2) + 'px'; sp.style.top = (lr.top - hr.top + lr.height * .45) + 'px';
+        sp.style.setProperty('--dx', Math.cos(ang) * dist + 'px'); sp.style.setProperty('--dy', Math.sin(ang) * dist * .8 - 30 + 'px');
+        sp.style.setProperty('--spin', (Math.random() * 540 - 270) + 'deg');
+        hero.appendChild(sp); setTimeout(function (el) { return function () { el.remove(); }; }(sp), 1000);
+      }
+    }
     taps++; clearTimeout(tapT); tapT = setTimeout(function () { taps = 0; }, 1500);
     if (taps >= 7) { taps = 0; cheat(); }
   });
