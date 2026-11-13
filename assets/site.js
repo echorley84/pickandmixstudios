@@ -1030,10 +1030,11 @@ document.addEventListener('DOMContentLoaded', function () {
       LS.set('pm-sweets', found);
       b.classList.add('is-got'); b.disabled = true;
       setTimeout(function () { b.remove(); }, calm() ? 0 : 600);
+      if (window.pmUpdateArcadeTab) window.pmUpdateArcadeTab();
       if (found.length >= TOTAL) {
         say('<strong>Achievement unlocked: Sweet tooth!</strong> You found all ' + TOTAL + ' sweets.', 9000, { label: 'Open the arcade', fn: function () { openGame(); } });
       } else {
-        say('<strong>Sweet found!</strong> ' + found.length + ' of ' + TOTAL + '. There&rsquo;s one hidden on every page&hellip;', 4000);
+        say('<strong>Sweet found!</strong> ' + found.length + ' of ' + TOTAL + '. Find them all to unlock the arcade!', 4000);
       }
     });
   }
@@ -1120,6 +1121,57 @@ document.addEventListener('DOMContentLoaded', function () {
     arcadeLoading.then(function () { window.pmArcade.open(id); });
   }
   window.pmOpenArcade = openGame;
+
+  // ---- floating Arcade tab: locked until all the sweets are found
+  var PAGES = [['index', 'Home', ''], ['team-chorley', 'Team', 'team-chorley.html'], ['showcase', 'Showcase', 'showcase.html'], ['tutorials', 'Tutorials', 'tutorials.html'],
+    ['popup-shop', 'Pop-up Shop', 'popup-shop.html'], ['contact', 'Get in touch', 'contact.html'], ['privacy', 'Privacy', 'privacy.html'], ['accessibility', 'Accessibility', 'accessibility.html']];
+  if (page !== 'examples') {
+    var pre = location.pathname.indexOf('/examples/') !== -1 ? '../' : '';
+    var tabBtn = document.createElement('button');
+    tabBtn.type = 'button'; tabBtn.className = 'pm-arcade-tab'; tabBtn.setAttribute('aria-expanded', 'false'); tabBtn.setAttribute('aria-controls', 'pmArcadePanel');
+    var panel = document.createElement('div');
+    panel.className = 'pm-arcade-panel'; panel.id = 'pmArcadePanel'; panel.hidden = true; panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-labelledby', 'pmArcadePanelTitle');
+    document.body.appendChild(tabBtn); document.body.appendChild(panel);
+    var LOCK = '<svg viewBox="0 0 64 76" aria-hidden="true" focusable="false"><path d="M17 36 V22 Q17 8 32 8 Q47 8 47 22 V36" fill="none" stroke="#3A2A0A" stroke-width="10" stroke-linecap="round"/><path d="M17 36 V22 Q17 8 32 8 Q47 8 47 22 V36" fill="none" stroke="#DCE4EC" stroke-width="6.5" stroke-linecap="round"/><rect x="7" y="32" width="50" height="40" rx="9" fill="#F4C24C" stroke="#5A3A06" stroke-width="2.5"/><circle cx="32" cy="49" r="5.5" fill="#3A1A06"/><path d="M29.5 51 L28 62 H36 L34.5 51 Z" fill="#3A1A06"/></svg>';
+    var SLOT_COLS = ['#FF8DBC', '#C01F62', '#F4C24C', '#7BE0A5', '#FFAA66', '#7DC2F4', '#1A64A8', '#C01F62'];
+    var SLOT_KINDS = ['bear', 'lolly', 'wrap', 'bean', 'bear', 'wrap', 'lolly', 'bean'];
+    function renderTab() {
+      var f = LS.get('pm-sweets', []), n = f.length, open = n >= TOTAL;
+      tabBtn.classList.toggle('is-open', open);
+      tabBtn.innerHTML = '<span class="pm-at-ic" aria-hidden="true">' + (open ? '&#127918;' : '&#128274;') + '</span><span class="pm-at-txt">Arcade</span>' +
+        (open ? '' : '<span class="pm-at-n" aria-hidden="true">' + n + '/' + TOTAL + '</span>');
+      tabBtn.setAttribute('aria-label', open ? 'Arcade: unlocked, play the games' : 'Arcade: locked, ' + n + ' of ' + TOTAL + ' sweets found');
+      var slots = '', list = '';
+      PAGES.forEach(function (p, i) {
+        var got = f.indexOf(p[0]) !== -1;
+        slots += '<span class="pm-ap-slot' + (got ? ' is-got' : '') + '">' + SWEET_SVG[SLOT_KINDS[i]](got ? SLOT_COLS[i] : '#C9D4DE') + '</span>';
+        list += '<li class="' + (got ? 'is-got' : '') + '">' + (got ? '<span aria-hidden="true">&#10003;</span> ' : '') +
+          (got ? p[1] + '<span class="pm-sr">: found</span>' : '<a href="' + pre + (p[2] || 'index.html') + '">' + p[1] + '</a><span class="pm-sr">: not found yet</span>') + '</li>';
+      });
+      panel.innerHTML =
+        '<button type="button" class="pm-ap-x" aria-label="Close">&times;</button>' +
+        '<div class="pm-ap-lock' + (open ? ' is-open' : '') + '">' + LOCK + '</div>' +
+        '<h2 class="pm-ap-title" id="pmArcadePanelTitle">' + (open ? 'Arcade unlocked!' : 'The arcade is locked') + '</h2>' +
+        '<p class="pm-ap-txt">' + (open ? 'You found every sweet. Six games are waiting for you.' :
+          'There&rsquo;s a sweet hidden on every page of this site. Find all ' + TOTAL + ' to unlock six mini-games.') + '</p>' +
+        '<div class="pm-ap-slots" aria-hidden="true">' + slots + '</div>' +
+        '<p class="pm-ap-count">' + n + ' of ' + TOTAL + ' sweets found</p>' +
+        (open ? '<button type="button" class="pm-ap-play">&#9654; Play now</button>' :
+          '<p class="pm-ap-hint">Tip: look closely at the pictures, boards and headings. Your progress:</p><ul class="pm-ap-list">' + list + '</ul>');
+      panel.querySelector('.pm-ap-x').addEventListener('click', function () { togglePanel(false); });
+      var pb = panel.querySelector('.pm-ap-play'); if (pb) pb.addEventListener('click', function () { togglePanel(false); openGame(); });
+    }
+    function togglePanel(show) {
+      if (show) renderTab();
+      panel.hidden = !show; tabBtn.setAttribute('aria-expanded', String(show));
+      if (show) { var f = panel.querySelector('.pm-ap-play, .pm-ap-list a, .pm-ap-x'); if (f) f.focus(); } else tabBtn.focus();
+    }
+    tabBtn.addEventListener('click', function () { togglePanel(panel.hidden); });
+    panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') togglePanel(false); });
+    document.addEventListener('click', function (e) { if (!panel.hidden && e.target.isConnected && !panel.contains(e.target) && !tabBtn.contains(e.target)) { panel.hidden = true; tabBtn.setAttribute('aria-expanded', 'false'); } });
+    window.pmUpdateArcadeTab = function () { renderTab(); tabBtn.classList.remove('is-bump'); void tabBtn.offsetWidth; tabBtn.classList.add('is-bump'); };
+    renderTab();
+  }
   // ?game=play opens the arcade; ?game=catch, match, memory, hop, whack or claw opens that game
   var gm = /[?&]game=([a-z]+)/.exec(location.search);
   if (gm) openGame(gm[1] === 'play' ? null : gm[1]);
