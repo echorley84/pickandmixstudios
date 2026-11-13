@@ -1138,8 +1138,18 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderTab() {
       var f = LS.get('pm-sweets', []), n = f.length, open = n >= TOTAL;
       tabBtn.classList.toggle('is-open', open);
-      tabBtn.innerHTML = '<span class="pm-at-ic" aria-hidden="true">' + (open ? '&#127918;' : '&#128274;') + '</span><span class="pm-at-txt">Arcade</span>' +
-        (open ? '' : '<span class="pm-at-n" aria-hidden="true">' + n + '/' + TOTAL + '</span>');
+      tabBtn.innerHTML = '<svg class="pm-at-cab" viewBox="0 0 64 84" aria-hidden="true" focusable="false">' +
+        '<path d="M10 14 L14 4 H50 L54 14 V80 H10 Z" fill="#16314D" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"/>' +
+        '<rect x="13" y="7" width="38" height="10" rx="2" fill="' + (open ? '#F4C24C' : '#E2367D') + '"/>' +
+        '<text x="32" y="15" text-anchor="middle" font-family="Maven Pro, Arial, sans-serif" font-weight="800" font-size="7.5" letter-spacing=".6" fill="' + (open ? '#3A2A0A' : '#FFFFFF') + '">ARCADE</text>' +
+        '<rect x="15" y="21" width="34" height="27" rx="4" fill="' + (open ? '#1A64A8' : '#0E1A26') + '" stroke="#7DC2F4" stroke-width="1.5"/>' +
+        (open ? '<path d="M24 39 L28 29 L32 36 L36 31 L40 39 Z" fill="#7BE0A5"/><circle cx="25" cy="28" r="2" fill="#F4C24C"/><circle cx="40" cy="27" r="1.4" fill="#FFFFFF"/>' :
+          '<path d="M27 34 V30 Q27 25 32 25 Q37 25 37 30 V34" fill="none" stroke="#DCE4EC" stroke-width="2.6"/><rect x="24.5" y="33" width="15" height="11" rx="2.5" fill="#F4C24C"/><circle cx="32" cy="38" r="1.6" fill="#3A1A06"/>') +
+        '<path d="M8 52 H56 L54 62 H10 Z" fill="#1F4B75" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>' +
+        '<line x1="22" y1="57" x2="20" y2="51" stroke="#DCE4EC" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="50" r="2.6" fill="#E2367D"/>' +
+        '<circle cx="36" cy="57" r="2.2" fill="#F4C24C"/><circle cx="43" cy="57" r="2.2" fill="#7BE0A5"/>' +
+        '<rect x="22" y="67" width="20" height="5" rx="1.5" fill="#0E1A26"/></svg>' +
+        '<span class="pm-at-n' + (open ? ' is-open' : '') + '" aria-hidden="true">' + (open ? 'Play!' : n + '/' + TOTAL) + '</span>';
       tabBtn.setAttribute('aria-label', open ? 'Arcade: unlocked, play the games' : 'Arcade: locked, ' + n + ' of ' + TOTAL + ' sweets found');
       var slots = '', list = '';
       PAGES.forEach(function (p, i) {

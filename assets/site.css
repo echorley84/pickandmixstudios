@@ -3630,18 +3630,17 @@ body.pa-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .pa-game, .pa-cell, .pa-card-in, .pa-pop { transition: none; } .pa-cell.is-pop svg, .pa-cell.is-new svg, .pa-cell.is-no { animation: none; } }
 
 /* Floating Arcade tab and its locked panel */
-.pm-arcade-tab { position: fixed; right: 0; top: 58%; z-index: 60; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px 10px 8px; cursor: pointer;
-  background: #16314D; color: #FFFFFF; border: 2.5px solid #FFFFFF; border-right: 0; border-radius: 14px 0 0 14px; box-shadow: 0 0 0 1.5px #0E1A26, -2px 3px 0 1.5px #0E1A26;
-  font: 800 .75rem 'Maven Pro', Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; transition: transform .15s, padding .15s; }
-.pm-arcade-tab:hover { padding-right: 12px; }
-.pm-arcade-tab:focus-visible { outline: 3px solid #FF8DBC; outline-offset: 2px; }
-.pm-at-ic { font-size: 1.05rem; letter-spacing: 0; }
-.pm-at-txt { writing-mode: vertical-rl; transform: rotate(180deg); }
-.pm-at-n { background: #C01F62; border-radius: 999px; padding: 2px 5px; font-size: .6875rem; letter-spacing: 0; }
-.pm-arcade-tab.is-open { background: linear-gradient(180deg, #E2367D, #C01F62); }
-@keyframes pmBump { 30% { transform: translateX(-8px) scale(1.08); } 60% { transform: translateX(2px); } }
+.pm-arcade-tab { position: fixed; left: 14px; bottom: 14px; z-index: 60; width: 64px; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; line-height: 0;
+  filter: drop-shadow(2px 3px 0 #0E1A26); transition: transform .15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.pm-at-cab { display: block; width: 64px; height: 84px; }
+.pm-arcade-tab:hover { transform: translateY(-3px) rotate(-3deg); }
+.pm-arcade-tab:focus-visible { outline: 3px solid #FF8DBC; outline-offset: 4px; border-radius: 10px; }
+.pm-at-n { position: absolute; right: -14px; bottom: 6px; background: #C01F62; color: #FFFFFF; border: 2px solid #FFFFFF; border-radius: 999px; padding: 3px 7px; line-height: 1;
+  font: 800 .75rem 'Maven Pro', Arial, sans-serif; }
+.pm-at-n.is-open { background: #F4C24C; color: #3A2A0A; }
+@keyframes pmBump { 30% { transform: translateY(-10px) scale(1.1) rotate(-4deg); } 60% { transform: translateY(2px) rotate(2deg); } }
 .pm-arcade-tab.is-bump { animation: pmBump .5s; }
-.pm-arcade-panel { position: fixed; right: 56px; top: 50%; z-index: 61; transform: translateY(-50%); width: min(320px, calc(100vw - 76px)); max-height: calc(100vh - 40px); overflow: auto; box-sizing: border-box;
+.pm-arcade-panel { position: fixed; left: 14px; bottom: 112px; z-index: 61; width: min(320px, calc(100vw - 28px)); max-height: calc(100vh - 130px); overflow: auto; box-sizing: border-box;
   padding: 18px 18px 16px; text-align: center; color: #FFFFFF; border-radius: 20px; border: 3px solid #FFFFFF; box-shadow: 0 0 0 1.5px #0E1A26, 3px 5px 0 1.5px #0E1A26;
   background: radial-gradient(rgba(255, 255, 255, .16) 1.2px, transparent 1.8px) 0 0 / 14px 14px, linear-gradient(160deg, #2C8BCB, #1A64A8 70%); }
 .pm-arcade-panel[hidden] { display: none; }
@@ -3668,7 +3667,8 @@ body.pa-open { overflow: hidden; }
 .pm-ap-play { margin-top: 6px; background: linear-gradient(180deg, #E2367D, #C01F62); color: #FFFFFF; border: 3px solid #FFFFFF; border-radius: 999px; padding: 9px 22px; cursor: pointer;
   font: 800 1rem 'Maven Pro', Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 0 0 1.5px #10324F, 0 4px 0 1.5px #10324F; }
 .pm-ap-x:focus-visible, .pm-ap-play:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
-@media (max-width: 600px) { .pm-arcade-tab { top: auto; bottom: 96px; } .pm-arcade-panel { top: auto; bottom: 20px; transform: none; right: 50px; } }
+@media (max-width: 600px) { .pm-arcade-tab, .pm-at-cab { width: 50px; height: 66px; } .pm-arcade-tab { left: 10px; bottom: 10px; } .pm-arcade-panel { left: 10px; bottom: 90px; width: calc(100vw - 20px); max-height: calc(100vh - 106px); } }
+@media (max-width: 600px) { .pm-toast { bottom: 86px; } .tc-footer { padding-bottom: 96px; } }
 @media (prefers-reduced-motion: reduce) { .pm-ap-lock:not(.is-open), .pm-arcade-tab.is-bump { animation: none; } }
 html.motion-off .pm-ap-lock:not(.is-open), html.simple .pm-ap-lock:not(.is-open) { animation: none; }
 
