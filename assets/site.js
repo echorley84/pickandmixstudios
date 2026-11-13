@@ -1003,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showcase:       { sel: '#tcMap', kind: 'wrap', col: '#F4C24C', pos: 'right:4px;bottom:2px' },
     tutorials:      { sel: '#tcShelf', kind: 'bean', col: '#7BE0A5', pos: 'right:6px;top:4px' },
     'popup-shop':   { sel: '.tc-loot-row', kind: 'bear', col: '#FFAA66', pos: 'left:0;bottom:0' },
-    contact:        { sel: '.tc-page-heading', kind: 'wrap', col: '#7DC2F4', pos: 'left:4%;bottom:0' },
+    contact:        { sel: '.tc-cyp-pill', kind: 'wrap', col: '#F4C24C', pos: 'right:-22px;top:-14px;transform:rotate(18deg)' },
     privacy:        { sel: '.tc-legal', kind: 'lolly', col: '#1A64A8', pos: 'right:6px;bottom:4px' },
     accessibility:  { sel: '.tc-sticker-h1', kind: 'bean', col: '#C01F62', pos: 'right:4%;top:6%' }
   };
