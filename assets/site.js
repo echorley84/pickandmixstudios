@@ -1069,23 +1069,36 @@ document.addEventListener('DOMContentLoaded', function () {
   if (logo) logo.addEventListener('click', function (e) {
     // a happy boing and a little burst of sweets on every tap
     if (!calm()) {
-      logo.classList.remove('is-boing'); void logo.offsetWidth; logo.classList.add('is-boing');
-      var hero = logo.parentElement, hr = hero.getBoundingClientRect(), lr = logo.getBoundingClientRect();
-      if (getComputedStyle(hero).position === 'static') hero.style.position = 'relative';
-      var bk = Object.keys(SWEET_SVG), bc = ['#FF8DBC', '#F4C24C', '#7DC2F4', '#7BE0A5', '#FFAA66', '#C01F62'];
-      for (var j = 0; j < 7; j++) {
-        var sp = document.createElement('span'); sp.className = 'pm-burst'; sp.setAttribute('aria-hidden', 'true');
-        sp.innerHTML = SWEET_SVG[bk[(j + taps) % bk.length]](bc[(j * 2 + taps) % bc.length]);
-        var ang = (j / 7) * Math.PI * 2 + Math.random() * .5, dist = 90 + Math.random() * 70;
-        sp.style.left = (lr.left - hr.left + lr.width / 2) + 'px'; sp.style.top = (lr.top - hr.top + lr.height * .45) + 'px';
-        sp.style.setProperty('--dx', Math.cos(ang) * dist + 'px'); sp.style.setProperty('--dy', Math.sin(ang) * dist * .8 - 30 + 'px');
-        sp.style.setProperty('--spin', (Math.random() * 540 - 270) + 'deg');
-        hero.appendChild(sp); setTimeout(function (el) { return function () { el.remove(); }; }(sp), 1000);
-      }
+      var bot = logo.parentElement;
+      bot.classList.remove('is-boing'); void bot.offsetWidth; bot.classList.add('is-boing');
+      juggle(bot);
     }
     taps++; clearTimeout(tapT); tapT = setTimeout(function () { taps = 0; }, 1500);
     if (taps >= 7) { taps = 0; cheat(); }
   });
+  // the robot throws his lollipop and gummy bear from hand to hand, twice
+  var juggling = false;
+  function juggle(bot) {
+    var lol = bot.querySelector('.tc-juggle-lolly'), bear = bot.querySelector('.tc-juggle-bear');
+    if (juggling || !lol || !bear || !lol.animate) return;
+    juggling = true;
+    var w = bot.offsetWidth, h = bot.offsetHeight;
+    var dx = w * (764 - 100) / 858, dy = h * (404 - 354) / 802;
+    function arc(fromX, fromY, toX, toY, lift, spin, n) {
+      var f = [];
+      for (var i = 0; i <= n; i++) {
+        var t = i / n, x = fromX + (toX - fromX) * t, y = fromY + (toY - fromY) * t - 4 * lift * t * (1 - t);
+        f.push({ transform: 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (spin * t).toFixed(0) + 'deg)' });
+      }
+      return f;
+    }
+    // lollipop: left hand to right hand and back; bear: right to left and back, on a higher arc so they pass
+    var lk = arc(0, 0, dx, dy, h * .34, 360, 12).concat(arc(dx, dy, 0, 0, h * .34, -360, 12).slice(1));
+    var bk = arc(0, 0, -dx, -dy, h * .52, -300, 12).concat(arc(-dx, -dy, 0, 0, h * .52, 300, 12).slice(1));
+    lol.animate(lk, { duration: 1500, easing: 'linear' });
+    var a = bear.animate(bk, { duration: 1500, easing: 'linear', delay: 120 });
+    a.onfinish = function () { juggling = false; };
+  }
   function cheat() {
     say('<strong>Cheat mode activated!</strong> Sweets for everyone.', 8000, { label: 'Open the arcade', fn: function () { openGame(); } });
     if (calm()) return;

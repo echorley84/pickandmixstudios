@@ -2942,7 +2942,7 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
 @keyframes tcBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes tcBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0.55; } }
 @keyframes tcMenuIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
-.tc-hero img.tc-hero-welcome-img { animation: tcBob 3.2s ease-in-out infinite; }
+.tc-hero .tc-hero-robot { animation: tcBob 3.2s ease-in-out infinite; }
 .tc-start {
   margin: 22px auto 0;
   display: inline-flex; align-items: center; gap: 8px;
@@ -3038,7 +3038,7 @@ a:focus-visible, button:focus-visible, .tc-btn:focus-visible { outline: 3px soli
   .tc-padlock { width: 74px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tc-hero img.tc-hero-welcome-img, .tc-start, .tc-unlock:not(.is-open) .tc-padlock { animation: none; }
+  .tc-hero .tc-hero-robot, .tc-start, .tc-unlock:not(.is-open) .tc-padlock { animation: none; }
   .tc-flip-in, .tc-pad-shackle { transition: none; }
   .tc-mainmenu.is-in, .tc-unlock.is-open .tc-unlock-action { animation: none; }
 }
@@ -3686,15 +3686,20 @@ html.motion-off .pm-ap-lock:not(.is-open), html.simple .pm-ap-lock:not(.is-open)
 /* Home robot: boing and sweets burst on tap */
 .tc-hero img.tc-hero-welcome-img { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 @keyframes pmBoing { 0% { transform: none; } 15% { transform: translateY(6px) scale(1.08, .9); } 40% { transform: translateY(-34px) scale(.95, 1.06) rotate(-4deg); } 60% { transform: translateY(-34px) rotate(5deg); } 80% { transform: translateY(4px) scale(1.05, .94); } 100% { transform: none; } }
-.tc-hero img.tc-hero-welcome-img.is-boing { animation: pmBoing .8s cubic-bezier(.3, .7, .4, 1); }
+.tc-hero .tc-hero-robot.is-boing { animation: pmBoing .8s cubic-bezier(.3, .7, .4, 1); }
+.tc-hero .tc-hero-robot { display: block; position: relative; width: min(260px, 100%); margin: 0 auto 20px; }
+.tc-hero .tc-hero-robot img.tc-hero-welcome-img { max-width: none; width: 100%; margin: 0; }
+.tc-juggle { position: absolute; height: auto; pointer-events: none; z-index: 2; }
+.tc-juggle-lolly { left: 3.96%; top: 36.03%; width: 15.5%; }
+.tc-juggle-bear { left: 81.59%; top: 38.78%; width: 14.92%; }
 .pm-burst { position: absolute; z-index: 4; width: 34px; height: 34px; margin: -17px 0 0 -17px; pointer-events: none; animation: pmBurst .95s cubic-bezier(.2, .8, .3, 1) forwards; }
 .pm-burst svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(1.5px 2px 0 #10324F); }
 @keyframes pmBurst { 0% { transform: translate(0, 0) scale(.3) rotate(0); opacity: 0; } 15% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translate(var(--dx), calc(var(--dy) + 40px)) scale(1) rotate(var(--spin)); opacity: 0; } }
 /* Showcase: flash the level card that just opened */
 @keyframes pmCardIn { 0% { transform: translateY(14px); opacity: .3; } 100% { transform: none; opacity: 1; } }
 .tc-card.is-new { animation: pmCardIn .4s ease-out; }
-@media (prefers-reduced-motion: reduce) { .tc-hero img.tc-hero-welcome-img.is-boing, .tc-card.is-new { animation: none; } }
-html.motion-off .tc-card.is-new, html.motion-off .tc-hero img.tc-hero-welcome-img.is-boing { animation: none; }
+@media (prefers-reduced-motion: reduce) { .tc-hero .tc-hero-robot.is-boing, .tc-card.is-new { animation: none; } }
+html.motion-off .tc-card.is-new, html.motion-off .tc-hero .tc-hero-robot.is-boing, html.simple .tc-hero .tc-hero-robot { animation: none; }
 /* PALETTE START */
 :root {
   --page-top: #1C6CA3; --page-bot: #2479B3;
